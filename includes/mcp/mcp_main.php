@@ -921,7 +921,6 @@ function mcp_fork_topic($topic_ids)
 					'post_text'         => (string) $row['post_text'],
 					'post_edit_reason'  => (string) $row['post_edit_reason'],
 					'post_edit_user'    => (int) $row['post_edit_user'],
-					'post_checksum'     => (string) $row['post_checksum'],
 					'post_attachment'   => (int) $row['post_attachment'],
 					'bbcode_bitfield'   => $row['bbcode_bitfield'],
 					'bbcode_uid'        => (string) $row['bbcode_uid'],

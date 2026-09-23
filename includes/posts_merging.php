@@ -50,7 +50,7 @@ if (!$do_merge) return;
 // Do merging
 $message_parser = new parse_message();
 
-$message_parser->message = &$merge_post_data['post_text'];
+$message_parser->message = $merge_post_data['post_text'];
 unset($merge_post_data['post_text']);
 
 // Decode text for update properly
@@ -86,7 +86,6 @@ $sql_data[POSTS_TABLE]['sql'] = [
 	'bbcode_uid'        => $merge_post_data['bbcode_uid'],
 	'bbcode_bitfield'   => $merge_post_data['bbcode_bitfield'],
 	'post_text'         => $merge_post_data['post_text'],
-	'post_checksum'     => md5($merge_post_data['post_text']),
 	'post_merged'       => $current_time,
 	'post_attachment'   => (!empty($data['attachment_data'])) ? 1 : ($merge_post_data['post_attachment'] ? 1 : 0),
 ];

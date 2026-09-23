@@ -315,7 +315,6 @@ else
 }
 
 $post_data['post_edit_locked']  = (isset($post_data['post_edit_locked'])) ? (int) $post_data['post_edit_locked'] : 0;
-$post_data['post_subject_md5']  = (isset($post_data['post_subject']) && $mode == 'edit') ? md5($post_data['post_subject']) : '';
 $post_data['topic_time_limit']  = (isset($post_data['topic_time_limit'])) ? (($post_data['topic_time_limit']) ? (int) $post_data['topic_time_limit'] / 86400 : (int) $post_data['topic_time_limit']) : 0;
 $post_data['poll_length']       = (!empty($post_data['poll_length'])) ? (int) $post_data['poll_length'] / 86400 : 0;
 $post_data['poll_start']        = (!empty($post_data['poll_start'])) ? (int) $post_data['poll_start'] : 0;
@@ -356,10 +355,20 @@ $orig_poll_options_size = sizeof($post_data['poll_options']);
 
 $message_parser = new parse_message();
 
+$db_subject_hash = (isset($post_data['post_subject']) && $mode == 'edit') ? md5($post_data['post_subject']) : '';
+$db_message_hash = '';
+
 if (isset($post_data['post_text']))
 {
-	$message_parser->message = &$post_data['post_text'];
+	$message_parser->message = $post_data['post_text'];
 	unset($post_data['post_text']);
+
+	if ($mode == 'edit')
+	{
+		$db_message = $message_parser->message;
+		decode_message($db_message, $post_data['bbcode_uid']);
+		$db_message_hash = md5($db_message);
+	}
 }
 
 // Set some default variables
@@ -725,31 +734,31 @@ if ($submit || $preview || $refresh)
 		$refresh = true;
 	}
 
-	// Parse Attachments - before checksum is calculated
+	// Apply attachment changes before calculating the new message hash.
 	$message_parser->parse_attachments('fileupload', $mode, $forum_id, $submit, $preview, $refresh);
 
-	// Grab md5 'checksum' of new message
-	$message_md5 = md5($message_parser->message);
+	$new_message_hash = md5($message_parser->message);
+	$new_subject_hash = md5($post_data['post_subject']);
 
 	// Save message for posts merging
 	$addon_for_merge = $message_parser->message;
 
-	// If editing and checksum has changed we know the post was edited while we're editing
+	// If the hash has changed, the post was edited while we were editing it.
 	// Notify and show user the changed post
 	if ($mode == 'edit')
 	{
-		$edit_post_message_checksum = request_var('edit_post_message_checksum', '');
-		$edit_post_subject_checksum = request_var('edit_post_subject_checksum', '');
+		$old_message_hash = request_var('old_message_hash', '');
+		$old_subject_hash = request_var('old_subject_hash', '');
 
-		// $post_data['post_checksum'] is the checksum of the post submitted in the meantime
-		// $message_md5 is the checksum of the post we're about to submit
-		// $edit_post_message_checksum is the checksum of the post we're editing
+		// $db_message_hash is the hash of the post submitted in the meantime
+		// $new_message_hash is the hash of the post we're about to submit
+		// $old_message_hash is the hash of the post we're editing
 		// ...
 
 		// We make sure nobody else made exactly the same change
-		// we're about to submit by also checking $message_md5 != $post_data['post_checksum']
-		if (($edit_post_message_checksum !== '' && $edit_post_message_checksum != $post_data['post_checksum'] && $message_md5 != $post_data['post_checksum'])
-		 || ($edit_post_subject_checksum !== '' && $edit_post_subject_checksum != $post_data['post_subject_md5'] && md5($post_data['post_subject']) != $post_data['post_subject_md5']))
+		// we're about to submit by also checking $new_message_hash != $db_message_hash
+		if (($old_message_hash && $old_message_hash != $db_message_hash && $new_message_hash != $db_message_hash)
+		 || ($old_subject_hash && $old_subject_hash != $db_subject_hash && $new_subject_hash != $db_subject_hash))
 		{
 			if (topic_review($topic_id, $forum_id, 'post_review_edit', $post_id))
 			{
@@ -766,11 +775,11 @@ if ($submit || $preview || $refresh)
 		}
 	}
 
-	// Check checksum ... don't re-parse message if the same
-	$update_message = ($mode != 'edit' || $message_md5 != $post_data['post_checksum'] || $status_switch || strlen($post_data['bbcode_uid']) < BBCODE_UID_LEN);
+	// Compare against the actual stored message.
+	$update_message = ($mode != 'edit' || $new_message_hash != $db_message_hash || $status_switch || strlen($post_data['bbcode_uid']) < BBCODE_UID_LEN);
 
 	// Also check if subject got updated...
-	$update_subject = $mode != 'edit' || ($post_data['post_subject_md5'] && $post_data['post_subject_md5'] != md5($post_data['post_subject']));
+	$update_subject = $mode != 'edit' || $db_subject_hash != $new_subject_hash;
 
 	// Parse message
 	if ($update_message)
@@ -1034,9 +1043,7 @@ if ($submit || $preview || $refresh)
 			'enable_smilies'        => (bool) $post_data['enable_smilies'],
 			'enable_urls'           => (bool) $post_data['enable_urls'],
 			'enable_indexing'       => (bool) $post_data['enable_indexing'],
-			'message_md5'           => (string) $message_md5,
 			'post_time'             => (isset($post_data['post_time'])) ? (int) $post_data['post_time'] : $current_time,
-			'post_checksum'         => (isset($post_data['post_checksum'])) ? (string) $post_data['post_checksum'] : '',
 			'post_edit_reason'      => $post_data['post_edit_reason'],
 			'post_edit_user'        => ($mode == 'edit') ? $user->data['user_id'] : ((isset($post_data['post_edit_user'])) ? (int) $post_data['post_edit_user'] : 0),
 			'forum_parents'         => $post_data['forum_parents'],
@@ -1348,8 +1355,8 @@ $s_hidden_fields .= ($load_draft_id || $loaded_draft_id) ? '<input type="hidden"
 if ($mode == 'edit')
 {
 	$s_hidden_fields .= build_hidden_fields([
-		'edit_post_message_checksum'    => $post_data['post_checksum'],
-		'edit_post_subject_checksum'    => $post_data['post_subject_md5'],
+		'old_subject_hash'    => $db_subject_hash,
+		'old_message_hash'    => $db_message_hash,
 	]);
 }
 

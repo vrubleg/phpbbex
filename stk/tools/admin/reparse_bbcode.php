@@ -558,7 +558,6 @@ class reparse_bbcode
 			'bbcode_bitfield'   => $this->message_parser->bbcode_bitfield,
 			'bbcode_uid'        => $this->message_parser->bbcode_uid,
 			'message'           => $this->message_parser->message,
-			'message_md5'       => md5($this->message_parser->message),
 			'attachment_data'   => $this->message_parser->attachment_data,
 			'filename_data'     => $this->message_parser->filename_data,
 		]);

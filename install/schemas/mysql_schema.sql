@@ -383,7 +383,6 @@ CREATE TABLE phpbb_posts (
 	post_username varchar(191) DEFAULT '' NOT NULL,
 	post_subject varchar(255) DEFAULT '' NOT NULL COLLATE utf8mb4_unicode_ci,
 	post_text mediumtext NOT NULL COLLATE utf8mb4_unicode_ci,
-	post_checksum varchar(32) DEFAULT '' NOT NULL,
 	post_attachment tinyint(1) UNSIGNED DEFAULT '0' NOT NULL,
 	bbcode_bitfield varchar(255) DEFAULT '' NOT NULL,
 	bbcode_uid varchar(8) DEFAULT '' NOT NULL,
