@@ -13,6 +13,14 @@ AddCharset utf-8 .html .css .js .xml .json .rss
 Options -Indexes -MultiViews
 FileETag None
 
+# Use X-SendFile to deliver files if supported
+<IfModule mod_xsendfile.c>
+<Files "file.php">
+XSendFile On
+SetEnv XSENDFILE on
+</Files>
+</IfModule>
+
 # Default expiration.
 <IfModule mod_expires.c>
 ExpiresActive On
