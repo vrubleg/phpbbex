@@ -75,10 +75,7 @@ $lang = array_merge($lang, [
 	'SEARCH_TITLE_ONLY'         => 'Topic titles only',
 	'SEARCH_WITHIN'             => 'Search within',
 	'SORT_ASCENDING'            => 'Ascending',
-	'SORT_AUTHOR'               => 'Author',
 	'SORT_DESCENDING'           => 'Descending',
-	'SORT_FORUM'                => 'Forum',
-	'SORT_POST_SUBJECT'         => 'Post subject',
 	'SORT_RELEVANCE'            => 'Relevance',
 	'SORT_TIME'                 => 'Post time',
 

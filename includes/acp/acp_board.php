@@ -672,7 +672,7 @@ class acp_board
 	{
 		global $user, $config;
 
-		$limit_days = [0 => $user->lang['ALL_DAYS'], 1 => $user->lang['1_DAY'], 7 => $user->lang['7_DAYS'], 14 => $user->lang['2_WEEKS'], 30 => $user->lang['1_MONTH'], 90 => $user->lang['3_MONTHS'], 180 => $user->lang['6_MONTHS'], 365 => $user->lang['1_YEAR']];
+		$limit_days = [0 => $user->lang['ALL_DAYS'], 7 => $user->lang['7_DAYS'], 30 => $user->lang['1_MONTH'], 90 => $user->lang['3_MONTHS'], 180 => $user->lang['6_MONTHS'], 365 => $user->lang['1_YEAR']];
 		if (!$zero) unset($limit_days[0]);
 		$act_options = '';
 		foreach ($limit_days as $days => $title)

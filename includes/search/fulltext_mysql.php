@@ -272,24 +272,6 @@ class fulltext_mysql extends search_backend
 		// Build sql strings for sorting
 		$sql_sort_dir = ($sort_dir == 'a') ? ' ASC' : ' DESC';
 		$sql_sort = $sort_by_sql[$sort_key] . $sql_sort_dir . ', ' . (($type == 'posts') ? 'p.post_id' : 't.topic_id') . $sql_sort_dir;
-		$sql_sort_table = $sql_sort_join = '';
-
-		switch ($sql_sort[0])
-		{
-			case 'u':
-				$sql_sort_table = USERS_TABLE . ' u, ';
-				$sql_sort_join  = ($type == 'posts') ? ' AND u.user_id = p.poster_id ' : ' AND u.user_id = t.topic_poster ';
-			break;
-
-			case 't':
-				$join_topic = true;
-			break;
-
-			case 'f':
-				$sql_sort_table = FORUMS_TABLE . ' f, ';
-				$sql_sort_join  = ' AND f.forum_id = p.forum_id ';
-			break;
-		}
 
 		// Build some display specific sql strings
 		switch ($fields)
@@ -363,7 +345,6 @@ class fulltext_mysql extends search_backend
 		}
 
 		$sql_where_options = $sql_match_query;
-		$sql_where_options .= $sql_sort_join;
 		$sql_where_options .= ($topic_id) ? ' AND p.topic_id = ' . $topic_id : '';
 		$sql_where_options .= ($join_topic) ? ' AND t.topic_id = p.topic_id' : '';
 		$sql_where_options .= (sizeof($ex_fid_ary)) ? ' AND ' . $db->sql_in_set('p.forum_id', $ex_fid_ary, true) : '';
@@ -373,7 +354,7 @@ class fulltext_mysql extends search_backend
 		$sql_where_options .= $sql_match_where;
 
 		$sql = "SELECT {$sql_select}
-			FROM {$sql_from}{$sql_sort_table}" . POSTS_TABLE . " p
+			FROM {$sql_from}" . POSTS_TABLE . " p
 			WHERE {$sql_where_options}
 				{$sql_group_by}
 			ORDER BY {$sql_sort}";
@@ -487,25 +468,6 @@ class fulltext_mysql extends search_backend
 		// Build sql strings for sorting
 		$sql_sort_dir = ($sort_dir == 'a') ? ' ASC' : ' DESC';
 		$sql_sort = $sort_by_sql[$sort_key] . $sql_sort_dir . ', ' . (($type == 'posts') ? 'p.post_id' : 't.topic_id') . $sql_sort_dir;
-		$sql_sort_table = $sql_sort_join = '';
-
-		switch ($sql_sort[0])
-		{
-			case 'u':
-				$sql_sort_table = USERS_TABLE . ' u, ';
-				$sql_sort_join  = ($type == 'posts') ? ' AND u.user_id = p.poster_id ' : ' AND u.user_id = t.topic_poster ';
-			break;
-
-			case 't':
-				$sql_sort_table = ($type == 'posts' && !$firstpost_only) ? TOPICS_TABLE . ' t, ' : '';
-				$sql_sort_join  = ($type == 'posts' && !$firstpost_only) ? ' AND t.topic_id = p.topic_id ' : '';
-			break;
-
-			case 'f':
-				$sql_sort_table = FORUMS_TABLE . ' f, ';
-				$sql_sort_join  = ' AND f.forum_id = p.forum_id ';
-			break;
-		}
 
 		if (!sizeof($m_approve_fid_ary))
 		{
@@ -527,13 +489,12 @@ class fulltext_mysql extends search_backend
 		if ($type == 'posts')
 		{
 			$sql = "SELECT {$calc_results}p.post_id
-				FROM " . $sql_sort_table . POSTS_TABLE . ' p' . (($firstpost_only) ? ', ' . TOPICS_TABLE . ' t ' : ' ') . "
+				FROM " . POSTS_TABLE . ' p' . (($firstpost_only) ? ', ' . TOPICS_TABLE . ' t ' : ' ') . "
 				WHERE {$sql_author}
 					{$sql_topic_id}
 					{$sql_firstpost}
 					{$m_approve_fid_sql}
 					{$sql_fora}
-					{$sql_sort_join}
 					{$sql_time}
 				ORDER BY {$sql_sort}";
 			$field = 'post_id';
@@ -541,14 +502,13 @@ class fulltext_mysql extends search_backend
 		else
 		{
 			$sql = "SELECT {$calc_results}t.topic_id
-				FROM " . $sql_sort_table . TOPICS_TABLE . ' t, ' . POSTS_TABLE . " p
+				FROM " . TOPICS_TABLE . ' t, ' . POSTS_TABLE . " p
 				WHERE {$sql_author}
 					{$sql_topic_id}
 					{$sql_firstpost}
 					{$m_approve_fid_sql}
 					{$sql_fora}
 					AND t.topic_id = p.topic_id
-					{$sql_sort_join}
 					{$sql_time}
 				GROUP BY t.topic_id
 				ORDER BY {$sql_sort}";

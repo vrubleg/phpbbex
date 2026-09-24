@@ -374,7 +374,7 @@ class acp_forums
 				}
 
 				$topic_sortby_type_options = '';
-				$topic_sortby_type_ary = ['' => $user->lang['DEFAULT'], 't' => $user->lang['POST_TIME'], 'c' => $user->lang['CREATION_TIME'], 'r' => $user->lang['REPLIES'], 'v' => $user->lang['VIEWS'], 'a' => $user->lang['AUTHOR'], 's' => $user->lang['SUBJECT']];
+				$topic_sortby_type_ary = ['' => $user->lang['DEFAULT'], 't' => $user->lang['POST_TIME'], 'c' => $user->lang['CREATION_TIME'], 'r' => $user->lang['REPLIES']];
 				foreach ($topic_sortby_type_ary as $value => $title)
 				{
 					$selected = ($forum_data['forum_topic_sortby_type'] == $value) ? ' selected="selected"' : '';

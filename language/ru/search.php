@@ -75,10 +75,7 @@ $lang = array_merge($lang, [
 	'SEARCH_TITLE_ONLY'         => 'Только по названию темы',
 	'SEARCH_WITHIN'             => 'Искать',
 	'SORT_ASCENDING'            => 'по возрастанию',
-	'SORT_AUTHOR'               => 'Автор',
 	'SORT_DESCENDING'           => 'по убыванию',
-	'SORT_FORUM'                => 'Раздел',
-	'SORT_POST_SUBJECT'         => 'Заголовок сообщения',
 	'SORT_RELEVANCE'            => 'Релевантность',
 	'SORT_TIME'                 => 'Время ответа',
 
