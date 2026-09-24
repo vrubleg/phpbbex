@@ -829,7 +829,6 @@ if ($keywords || $author || $author_id || $search_id || $submit)
 					'ATTACH_ICON_IMG'       => ($auth->acl_get('u_download') && $auth->acl_get('f_download', $forum_id) && $row['topic_attachment']) ? $user->img('icon_topic_attach', 'TOTAL_ATTACHMENTS') : '',
 					'UNAPPROVED_IMG'        => ($topic_unapproved || $posts_unapproved) ? $user->img('icon_topic_unapproved', ($topic_unapproved) ? 'TOPIC_UNAPPROVED' : 'POSTS_UNAPPROVED') : '',
 
-					'S_TOPIC_GLOBAL'        => !$forum_id,
 					'S_TOPIC_TYPE'          => $row['topic_type'],
 					'S_USER_POSTED'         => !empty($row['topic_posted']),
 					'S_UNREAD_TOPIC'        => $unread_topic,

@@ -137,7 +137,6 @@ $lang = array_merge($lang, [
 	'HIDE_ONLINE'               => 'Скрывать моё пребывание на форуме',
 	'HIDE_ONLINE_EXPLAIN'       => 'Изменение настройки вступит в силу только со следующего посещения форума.',
 
-	'IMPORTANT_NEWS'            => 'Важные объявления',
 	'INVALID_USER_BIRTHDAY'     => 'Введённая дата дня рождения имеет неверный формат.',
 	'INVALID_CHARS_USERNAME'    => 'Имя пользователя содержит запрещённые символы.',
 	'INVALID_CHARS_NEW_PASSWORD'=> 'Пароль не содержит требуемых символов.',
@@ -203,7 +202,6 @@ $lang = array_merge($lang, [
 	'NO_FRIENDS_OFFLINE'        => 'Нет друзей офлайн',
 	'NO_FRIENDS_ONLINE'         => 'Нет друзей онлайн',
 	'NO_GROUP_SELECTED'         => 'Группа не выбрана.',
-	'NO_IMPORTANT_NEWS'         => 'Нет важных объявлений.',
 	'NO_MESSAGE'                => 'Личное сообщение не найдено.',
 	'NO_PASSWORD_SUPPLIED'      => 'Вы не можете войти без пароля.',
 	'NO_RECIPIENT'              => 'Получатель сообщения не выбран.',

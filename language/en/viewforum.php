@@ -17,7 +17,6 @@ if (empty($lang) || !is_array($lang))
 
 $lang = array_merge($lang, [
 	'ACTIVE_TOPICS'         => 'Active topics',
-	'ANNOUNCEMENTS'         => 'Announcements',
 
 	'FORUM_PERMISSIONS'     => 'Forum permissions',
 

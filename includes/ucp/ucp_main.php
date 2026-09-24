@@ -51,12 +51,17 @@ class ucp_main
 					$sql = "SELECT t.* {$sql_select}
 						FROM {$sql_from}
 						WHERE " . $db->sql_in_set('t.forum_id', $forum_ary) . "
-							AND t.topic_type = " . POST_GLOBAL . '
+							AND t.topic_type = " . POST_ANNOUNCE . '
 						ORDER BY t.topic_priority DESC, t.topic_time DESC';
 					$result = $db->sql_query($sql);
 
 					while ($row = $db->sql_fetchrow($result))
 					{
+						if (!$row['topic_approved'] && !$auth->acl_get('m_approve', $row['forum_id']))
+						{
+							continue;
+						}
+
 						$topic_id = $row['topic_id'];
 						$rowset[$topic_id] = $row;
 					}
@@ -641,7 +646,6 @@ class ucp_main
 				'U_LAST_POST_AUTHOR'        => get_username_string('profile', $row['topic_last_poster_id'], $row['topic_last_poster_name'], $row['topic_last_poster_colour']),
 
 				'S_DELETED_TOPIC'   => !$row['topic_id'],
-				'S_GLOBAL_TOPIC'    => !$forum_id,
 
 				'PAGINATION'        => topic_generate_pagination($replies, append_sid(PHPBB_ROOT_PATH . 'viewtopic.php', "t={$topic_id}")),
 				'REPLIES'           => $replies,

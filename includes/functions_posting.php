@@ -292,57 +292,41 @@ function posting_gen_topic_icons($mode, $icon_id)
 */
 function posting_gen_topic_types($forum_id, $cur_topic_type = POST_NORMAL)
 {
-	global $auth, $user, $template, $topic_type;
+	global $auth, $user, $template;
 
-	$toggle = false;
+	$can_sticky = $auth->acl_get('f_sticky', $forum_id);
+	$can_announce = $auth->acl_get('f_announce', $forum_id);
 
-	$topic_types = [
-		'sticky'    => ['const' => POST_STICKY, 'lang' => 'POST_STICKY'],
-		'announce'  => ['const' => POST_ANNOUNCE, 'lang' => 'POST_ANNOUNCEMENT'],
-		'global'    => ['const' => POST_GLOBAL, 'lang' => 'POST_GLOBAL']
-	];
-
-	$topic_type_array = [];
-
-	foreach ($topic_types as $auth_key => $topic_value)
+	if (!$can_sticky && !$can_announce)
 	{
-		// We do not have a special post global announcement permission
-		$auth_key = ($auth_key == 'global') ? 'announce' : $auth_key;
-
-		if ($auth->acl_get('f_' . $auth_key, $forum_id))
-		{
-			$toggle = true;
-
-			$topic_type_array[] = [
-				'VALUE'         => $topic_value['const'],
-				'S_CHECKED'     => ($cur_topic_type == $topic_value['const']) ? ' checked="checked"' : '',
-				'L_TOPIC_TYPE'  => $user->lang[$topic_value['lang']]
-			];
-		}
+		return false;
 	}
 
-	if ($toggle)
+	$topic_types = [POST_NORMAL => 'POST_NORMAL'];
+	if ($can_sticky)
 	{
-		$topic_type_array = array_merge([0 => [
-			'VALUE'         => POST_NORMAL,
-			'S_CHECKED'     => ($cur_topic_type == POST_NORMAL) ? ' checked="checked"' : '',
-			'L_TOPIC_TYPE'  => $user->lang['POST_NORMAL']]],
-
-			$topic_type_array
-		);
-
-		foreach ($topic_type_array as $array)
-		{
-			$template->assign_block_vars('topic_type', $array);
-		}
-
-		$template->assign_vars([
-			'S_TOPIC_TYPE_STICKY'   => ($auth->acl_get('f_sticky', $forum_id)),
-			'S_TOPIC_TYPE_ANNOUNCE' => ($auth->acl_get('f_announce', $forum_id))]
-		);
+		$topic_types[POST_STICKY] = 'POST_STICKY';
+	}
+	if ($can_announce)
+	{
+		$topic_types[POST_ANNOUNCE] = 'POST_ANNOUNCEMENT';
 	}
 
-	return $toggle;
+	foreach ($topic_types as $value => $lang)
+	{
+		$template->assign_block_vars('topic_type', [
+			'VALUE'        => $value,
+			'S_CHECKED'    => ($cur_topic_type == $value) ? ' checked="checked"' : '',
+			'L_TOPIC_TYPE' => $user->lang[$lang],
+		]);
+	}
+
+	$template->assign_vars([
+		'S_TOPIC_TYPE_STICKY'   => $can_sticky,
+		'S_TOPIC_TYPE_ANNOUNCE' => $can_announce,
+	]);
+
+	return true;
 }
 
 //

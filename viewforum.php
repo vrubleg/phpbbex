@@ -180,8 +180,6 @@ $s_limit_days = $s_sort_key = $s_sort_dir = $u_sort_param = '';
 gen_sort_selects($limit_days, $sort_by_text, $sort_days, $sort_key, $sort_dir, $s_limit_days, $s_sort_key, $s_sort_dir, $u_sort_param, $default_sort_days, $default_sort_key, $default_sort_dir);
 
 // Limit topics to certain time frame, obtain correct topic count
-// global announcements must not be counted, normal announcements have to
-// be counted, as forum_topics(_real) includes them
 if ($sort_days)
 {
 	$min_post_time = time() - ($sort_days * 86400);
@@ -189,8 +187,7 @@ if ($sort_days)
 	$sql = 'SELECT COUNT(topic_id) AS num_topics
 		FROM ' . TOPICS_TABLE . "
 		WHERE forum_id = {$forum_id}
-			AND (topic_last_post_time >= {$min_post_time}
-				OR topic_type = " . POST_ANNOUNCE . " OR topic_type = " . POST_GLOBAL . ")
+			AND topic_last_post_time >= {$min_post_time}
 		" . (($auth->acl_get('m_approve', $forum_id)) ? '' : 'AND topic_approved = 1');
 	$result = $db->sql_query($sql);
 	$topics_count = (int) $db->sql_fetchfield('num_topics');
@@ -282,7 +279,7 @@ $template->assign_vars([
 $icons = $cache->obtain_icons();
 
 // Grab all topic data
-$rowset = $announcement_list = $topic_list = $global_announce_list = [];
+$rowset = $topic_list = [];
 
 $sql_array = [
 	'SELECT'    => 't.*',
@@ -298,49 +295,6 @@ if ($user->data['is_registered'])
 {
 	$sql_array['LEFT_JOIN'][] = ['FROM' => [TOPICS_TRACK_TABLE => 'tt'], 'ON' => 'tt.topic_id = t.topic_id AND tt.user_id = ' . $user->data['user_id']];
 	$sql_array['SELECT'] .= ', tt.mark_time';
-}
-
-if ($forum_data['forum_type'] == FORUM_POST || $s_display_active)
-{
-	// Obtain announcements ... removed sort ordering, sort by time in all cases
-	$forum_ids = [$forum_id];
-	if ($forum_data['forum_type'] == FORUM_CAT && sizeof($active_forum_ary))
-	{
-		$forum_ids = empty($active_forum_ary['exclude_forum_id'])
-			? $active_forum_ary['forum_id']
-			: array_diff($active_forum_ary['forum_id'], $active_forum_ary['exclude_forum_id']);
-		if (empty($forum_ids)) $forum_ids = [$forum_id];
-	}
-
-	$sql = $db->sql_build_query('SELECT', [
-		'SELECT'    => $sql_array['SELECT'],
-		'FROM'      => $sql_array['FROM'],
-		'LEFT_JOIN' => $sql_array['LEFT_JOIN'],
-
-		'WHERE'     => $db->sql_in_set('t.forum_id', $forum_ids) . '
-			AND t.topic_type IN (' . POST_ANNOUNCE . ', ' . POST_GLOBAL . ')',
-
-		'ORDER_BY'  => 't.topic_priority DESC, t.topic_time DESC',
-	]);
-	$result = $db->sql_query($sql);
-
-	while ($row = $db->sql_fetchrow($result))
-	{
-		if (!$row['topic_approved'] && !$auth->acl_get('m_approve', $row['forum_id']))
-		{
-			// Do not display announcements that are waiting for approval.
-			continue;
-		}
-
-		$rowset[$row['topic_id']] = $row;
-		$announcement_list[] = $row['topic_id'];
-
-		if ($row['topic_type'] == POST_GLOBAL)
-		{
-			$global_announce_list[$row['topic_id']] = true;
-		}
-	}
-	$db->sql_freeresult($result);
 }
 
 // If the user is trying to reach late pages, start searching from the end
@@ -384,7 +338,6 @@ else
 $sql = 'SELECT t.topic_id
 	FROM ' . TOPICS_TABLE . " t
 	WHERE {$sql_where}
-		AND t.topic_type IN (" . POST_NORMAL . ', ' . POST_STICKY . ")
 		{$sql_approved}
 		{$sql_limit_time}
 	ORDER BY t.topic_type " . ((!$store_reverse) ? 'DESC' : 'ASC') . ', t.topic_priority ' . ((!$store_reverse) ? 'DESC' : 'ASC') . ', ' . $sql_sort_order;
@@ -398,7 +351,7 @@ $db->sql_freeresult($result);
 
 if (sizeof($topic_list))
 {
-	// SQL array for obtaining topics/stickies
+	// SQL array for obtaining topics
 	$sql_array = [
 		'SELECT'        => $sql_array['SELECT'],
 		'FROM'          => $sql_array['FROM'],
@@ -426,16 +379,13 @@ if ($s_display_active)
 	$topics_count = 1;
 }
 
-// We need to readd the local announcements to the forums total topic count, otherwise the number is different from the one on the forum list
-$total_topic_count = $topics_count + sizeof($announcement_list) - sizeof($global_announce_list);
-
 $template->assign_vars([
 	'PAGINATION'    => generate_pagination(append_sid(PHPBB_ROOT_PATH . 'viewforum.php', "f={$forum_id}" . ((strlen($u_sort_param)) ? "&amp;{$u_sort_param}" : '')), $topics_count, $config['topics_per_page'], $start),
 	'PAGE_NUMBER'   => on_page($topics_count, $config['topics_per_page'], $start),
-	'TOTAL_TOPICS'  => ($s_display_active) ? false : (($total_topic_count == 1) ? $user->lang['VIEW_FORUM_TOPIC'] : sprintf($user->lang['VIEW_FORUM_TOPICS'], $total_topic_count))]
+	'TOTAL_TOPICS'  => ($s_display_active) ? false : (($topics_count == 1) ? $user->lang['VIEW_FORUM_TOPIC'] : sprintf($user->lang['VIEW_FORUM_TOPICS'], $topics_count))]
 );
 
-$topic_list = ($store_reverse) ? array_merge($announcement_list, array_reverse($topic_list)) : array_merge($announcement_list, $topic_list);
+$topic_list = ($store_reverse) ? array_reverse($topic_list) : $topic_list;
 $topic_tracking_info = [];
 mark_user_posted_topics($rowset);
 
@@ -447,16 +397,11 @@ if (sizeof($topic_list))
 		$topic_tracking_info = get_topic_tracking($topic_list, $rowset);
 	}
 
-	$s_type_switch = 0;
 	foreach ($topic_list as $topic_id)
 	{
 		$row = &$rowset[$topic_id];
 
 		$topic_forum_id = (int) $row['forum_id'];
-
-		// This will allow the style designer to output a different header
-		// or even separate the list of announcements from sticky and normal topics
-		$s_type_switch_test = ($row['topic_type'] == POST_ANNOUNCE || $row['topic_type'] == POST_GLOBAL) ? 1 : 0;
 
 		// Replies
 		$replies = ($auth->acl_get('m_approve', $topic_forum_id)) ? $row['topic_replies_real'] : $row['topic_replies'];
@@ -516,7 +461,6 @@ if (sizeof($topic_list))
 			'S_POSTS_UNAPPROVED'    => $posts_unapproved,
 			'S_HAS_POLL'            => (bool) $row['poll_start'],
 			'S_POST_ANNOUNCE'       => ($row['topic_type'] == POST_ANNOUNCE),
-			'S_POST_GLOBAL'         => ($row['topic_type'] == POST_GLOBAL),
 			'S_POST_STICKY'         => ($row['topic_type'] == POST_STICKY),
 			'S_TOPIC_LOCKED'        => ($row['topic_status'] == ITEM_LOCKED),
 
@@ -527,11 +471,7 @@ if (sizeof($topic_list))
 			'U_VIEW_TOPIC'          => $view_topic_url,
 			'U_MCP_REPORT'          => append_sid(PHPBB_ROOT_PATH . 'mcp.php', 'i=reports&amp;mode=reports&amp;f=' . $topic_forum_id . '&amp;t=' . $topic_id),
 			'U_MCP_QUEUE'           => $u_mcp_queue,
-
-			'S_TOPIC_TYPE_SWITCH'   => ($s_type_switch == $s_type_switch_test) ? -1 : $s_type_switch_test,
 		]);
-
-		$s_type_switch = ($row['topic_type'] == POST_ANNOUNCE || $row['topic_type'] == POST_GLOBAL) ? 1 : 0;
 
 		unset($rowset[$topic_id]);
 	}

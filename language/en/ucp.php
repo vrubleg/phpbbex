@@ -137,7 +137,6 @@ $lang = array_merge($lang, [
 	'HIDE_ONLINE'               => 'Hide my online status',
 	'HIDE_ONLINE_EXPLAIN'       => 'Changing this setting won’t become effective until your next visit to the board.',
 
-	'IMPORTANT_NEWS'            => 'Important announcements',
 	'INVALID_USER_BIRTHDAY'     => 'The entered birthday is not a valid date.',
 	'INVALID_CHARS_USERNAME'    => 'The username contains forbidden characters.',
 	'INVALID_CHARS_NEW_PASSWORD'=> 'The password does not contain the required characters.',
@@ -203,7 +202,6 @@ $lang = array_merge($lang, [
 	'NO_FRIENDS_OFFLINE'        => 'No friends offline',
 	'NO_FRIENDS_ONLINE'         => 'No friends online',
 	'NO_GROUP_SELECTED'         => 'No group specified.',
-	'NO_IMPORTANT_NEWS'         => 'No important announcements present.',
 	'NO_MESSAGE'                => 'Private message could not be found.',
 	'NO_PASSWORD_SUPPLIED'      => 'You cannot login without a password.',
 	'NO_RECIPIENT'              => 'No recipient defined.',

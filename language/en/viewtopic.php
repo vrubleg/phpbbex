@@ -44,7 +44,6 @@ $lang = array_merge($lang, [
 	'LOGIN_VIEWTOPIC'       => 'The board requires you to be registered and logged in to view this topic.',
 
 	'MAKE_ANNOUNCE'             => 'Change to “Announcement”',
-	'MAKE_GLOBAL'               => 'Change to “Global”',
 	'MAKE_NORMAL'               => 'Change to “Standard Topic”',
 	'MAKE_STICKY'               => 'Change to “Sticky”',
 	'MAX_OPTIONS_SELECT'        => 'You may select up to <strong>%d</strong> options',

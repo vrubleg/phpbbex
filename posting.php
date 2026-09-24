@@ -953,7 +953,6 @@ if ($submit || $preview || $refresh)
 	{
 		switch ($post_data['topic_type'])
 		{
-			case POST_GLOBAL:
 			case POST_ANNOUNCE:
 				$auth_option = 'f_announce';
 			break;

@@ -123,11 +123,11 @@ if (!empty($config['active_topics_on_index']))
 	display_active_topics('activetopic', $config['active_topics_on_index']);
 }
 
-// Global announcements
+// Announcements
 $template->assign_var('S_ANNOUNCE_INDEX', !empty($config['announce_index']));
 if (!empty($config['announce_index']))
 {
-	display_global_announcements('announcetopic');
+	display_announcements('announcetopic');
 }
 
 // Assign index specific vars
