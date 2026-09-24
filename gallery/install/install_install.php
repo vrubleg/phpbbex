@@ -150,7 +150,7 @@ class install_install extends module
 		else
 		{
 			$gd_info = gd_info();
-			$result = '<strong style="color:red">' . $user->lang['NO'] . '</strong><br />' . sprintf($user->lang['OPTIONAL_IMAGEROTATE_EXP'], $gd_info['GD Version']);
+			$result = '<strong style="color:red">' . $user->lang['NO'] . '</strong><br>' . sprintf($user->lang['OPTIONAL_IMAGEROTATE_EXP'], $gd_info['GD Version']);
 		}
 		$template->assign_block_vars('checks', [
 			'TITLE'         => $user->lang['OPTIONAL_IMAGEROTATE'],
@@ -168,7 +168,7 @@ class install_install extends module
 		}
 		else
 		{
-			$result = '<strong style="color:red">' . $user->lang['NO'] . '</strong><br />' . $user->lang['OPTIONAL_EXIFDATA_EXP'];
+			$result = '<strong style="color:red">' . $user->lang['NO'] . '</strong><br>' . $user->lang['OPTIONAL_EXIFDATA_EXP'];
 		}
 		$template->assign_block_vars('checks', [
 			'TITLE'         => $user->lang['OPTIONAL_EXIFDATA'],
@@ -451,7 +451,7 @@ class install_install extends module
 					]
 				);
 			}
-			$s_hidden_fields = '<input type="hidden" name="create" value="true" />';
+			$s_hidden_fields = '<input type="hidden" name="create" value="true">';
 			$url = append_sid($this->p_master->module_url, "mode={$mode}&amp;sub=advanced");
 		}
 

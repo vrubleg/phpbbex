@@ -423,7 +423,7 @@ class acp_gallery
 			$message_string = '';
 			foreach ($message as $lang_key)
 			{
-				$message_string .= (($message_string) ? '<br />' : '') . $user->lang[$lang_key];
+				$message_string .= (($message_string) ? '<br>' : '') . $user->lang[$lang_key];
 			}
 
 			trigger_error($message_string . adm_back_link($this->u_action));
@@ -439,19 +439,19 @@ class acp_gallery
 				$user->lang['CLEAN_GALLERY_CONFIRM'] = $user->lang['CONFIRM_CLEAN'];
 				if ($missing_sources)
 				{
-					$user->lang['CLEAN_GALLERY_CONFIRM'] = $user->lang['CONFIRM_CLEAN_SOURCES'] . '<br />' . $user->lang['CLEAN_GALLERY_CONFIRM'];
+					$user->lang['CLEAN_GALLERY_CONFIRM'] = $user->lang['CONFIRM_CLEAN_SOURCES'] . '<br>' . $user->lang['CLEAN_GALLERY_CONFIRM'];
 				}
 				if ($missing_entries)
 				{
-					$user->lang['CLEAN_GALLERY_CONFIRM'] = $user->lang['CONFIRM_CLEAN_ENTRIES'] . '<br />' . $user->lang['CLEAN_GALLERY_CONFIRM'];
+					$user->lang['CLEAN_GALLERY_CONFIRM'] = $user->lang['CONFIRM_CLEAN_ENTRIES'] . '<br>' . $user->lang['CLEAN_GALLERY_CONFIRM'];
 				}
 				if ($missing_authors)
 				{
-					$user->lang['CLEAN_GALLERY_CONFIRM'] = $user->lang['CONFIRM_CLEAN_AUTHORS'] . '<br />' . $user->lang['CLEAN_GALLERY_CONFIRM'];
+					$user->lang['CLEAN_GALLERY_CONFIRM'] = $user->lang['CONFIRM_CLEAN_AUTHORS'] . '<br>' . $user->lang['CLEAN_GALLERY_CONFIRM'];
 				}
 				if ($missing_comments)
 				{
-					$user->lang['CLEAN_GALLERY_CONFIRM'] = $user->lang['CONFIRM_CLEAN_COMMENTS'] . '<br />' . $user->lang['CLEAN_GALLERY_CONFIRM'];
+					$user->lang['CLEAN_GALLERY_CONFIRM'] = $user->lang['CONFIRM_CLEAN_COMMENTS'] . '<br>' . $user->lang['CLEAN_GALLERY_CONFIRM'];
 				}
 				if ($personals_bad || $missing_personals)
 				{
@@ -474,11 +474,11 @@ class acp_gallery
 				}
 				if ($missing_personals)
 				{
-					$user->lang['CLEAN_GALLERY_CONFIRM'] = $user->lang('CONFIRM_CLEAN_PERSONALS', implode(', ', $missing_personals_names)) . '<br />' . $user->lang['CLEAN_GALLERY_CONFIRM'];
+					$user->lang['CLEAN_GALLERY_CONFIRM'] = $user->lang('CONFIRM_CLEAN_PERSONALS', implode(', ', $missing_personals_names)) . '<br>' . $user->lang['CLEAN_GALLERY_CONFIRM'];
 				}
 				if ($personals_bad)
 				{
-					$user->lang['CLEAN_GALLERY_CONFIRM'] = $user->lang('CONFIRM_CLEAN_PERSONALS_BAD', implode(', ', $personals_bad_names)) . '<br />' . $user->lang['CLEAN_GALLERY_CONFIRM'];
+					$user->lang['CLEAN_GALLERY_CONFIRM'] = $user->lang('CONFIRM_CLEAN_PERSONALS_BAD', implode(', ', $personals_bad_names)) . '<br>' . $user->lang['CLEAN_GALLERY_CONFIRM'];
 				}
 				if ($prune && empty($prune_pattern))
 				{
@@ -486,7 +486,7 @@ class acp_gallery
 				}
 				elseif ($prune && $prune_pattern)
 				{
-					$user->lang['CLEAN_GALLERY_CONFIRM'] = $user->lang('CONFIRM_PRUNE', phpbb_gallery_cleanup::lang_prune_pattern($prune_pattern)) . '<br />' . $user->lang['CLEAN_GALLERY_CONFIRM'];
+					$user->lang['CLEAN_GALLERY_CONFIRM'] = $user->lang('CONFIRM_PRUNE', phpbb_gallery_cleanup::lang_prune_pattern($prune_pattern)) . '<br>' . $user->lang['CLEAN_GALLERY_CONFIRM'];
 				}
 				confirm_box(false, 'CLEAN_GALLERY', $s_hidden_fields);
 			}

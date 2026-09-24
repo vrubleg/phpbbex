@@ -361,9 +361,9 @@ class module
 		echo '<!DOCTYPE html>';
 		echo '<html dir="ltr">';
 		echo '<head>';
-		echo '<meta charset="utf-8" />';
+		echo '<meta charset="utf-8">';
 		echo '<title>' . $error_title . '</title>';
-		echo '<link href="' . PHPBB_ROOT_PATH . 'adm/style/admin.css" rel="stylesheet" media="screen" />';
+		echo '<link href="' . PHPBB_ROOT_PATH . 'adm/style/admin.css" rel="stylesheet" media="screen">';
 		echo '</head>';
 		echo '<body id="errorpage">';
 		echo '<div id="wrap">';
@@ -416,7 +416,7 @@ class module
 				$size = (int) $tpl_type[1];
 				$maxlength = (int) $tpl_type[2];
 
-				$tpl = '<input id="' . $name . '" type="' . $tpl_type[0] . '"' . (($size) ? ' size="' . $size . '"' : '') . ' maxlength="' . ($maxlength ?: 255) . '" name="' . $name . '" value="' . $value . '" />';
+				$tpl = '<input id="' . $name . '" type="' . $tpl_type[0] . '"' . (($size) ? ' size="' . $size . '"' : '') . ' maxlength="' . ($maxlength ?: 255) . '" name="' . $name . '" value="' . $value . '">';
 			break;
 
 			case 'textarea':
@@ -433,8 +433,8 @@ class module
 				$tpl_type_cond = explode('_', $tpl_type[1]);
 				$type_no = ($tpl_type_cond[0] != 'disabled' && $tpl_type_cond[0] != 'enabled');
 
-				$tpl_no = '<label><input type="radio" name="' . $name . '" value="0"' . $key_no . ' class="radio" /> ' . (($type_no) ? $user->lang['NO'] : $user->lang['DISABLED']) . '</label>';
-				$tpl_yes = '<label><input type="radio" name="' . $name . '" value="1"' . $key_yes . ' class="radio" /> ' . (($type_no) ? $user->lang['YES'] : $user->lang['ENABLED']) . '</label>';
+				$tpl_no = '<label><input type="radio" name="' . $name . '" value="0"' . $key_no . ' class="radio"> ' . (($type_no) ? $user->lang['NO'] : $user->lang['DISABLED']) . '</label>';
+				$tpl_yes = '<label><input type="radio" name="' . $name . '" value="1"' . $key_yes . ' class="radio"> ' . (($type_no) ? $user->lang['YES'] : $user->lang['ENABLED']) . '</label>';
 
 				$tpl = ($tpl_type_cond[0] == 'yes' || $tpl_type_cond[0] == 'enabled') ? $tpl_yes . '&nbsp;&nbsp;' . $tpl_no : $tpl_no . '&nbsp;&nbsp;' . $tpl_yes;
 			break;

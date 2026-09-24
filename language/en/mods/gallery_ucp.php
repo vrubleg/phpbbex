@@ -37,7 +37,7 @@ $lang = array_merge($lang, [
 	'NO_ALBUM_STEALING'             => 'You are not allowed to manage the Album of other users.',
 	'NO_FAVORITES'                  => 'You don’t have any favorites.',
 	'NO_PERSALBUM_ALLOWED'          => 'You don’t have the permissions create your personal album',
-	'NO_PERSONAL_ALBUM'             => 'You don’t have a personal album yet. You can create one here.<br />Only the owner can upload images to a personal album.',
+	'NO_PERSONAL_ALBUM'             => 'You don’t have a personal album yet. You can create one here.<br>Only the owner can upload images to a personal album.',
 	'NO_SUBSCRIPTIONS'              => 'You didn’t subscribe to any image.',
 
 	'PARSE_BBCODE'                  => 'Parse BBCode',

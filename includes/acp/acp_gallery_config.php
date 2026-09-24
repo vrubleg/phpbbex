@@ -117,7 +117,7 @@ class acp_gallery_config
 			'L_TITLE_EXPLAIN'   => $user->lang[$this->display_vars['title'] . '_EXPLAIN'],
 
 			'S_ERROR'           => (sizeof($error) > 0),
-			'ERROR_MSG'         => implode('<br />', $error),
+			'ERROR_MSG'         => implode('<br>', $error),
 
 			'U_ACTION'          => $this->u_action]
 		);
@@ -182,8 +182,8 @@ class acp_gallery_config
 
 		$tpl = '';
 
-		$tpl .= "<label><input type=\"radio\" name=\"config[{$key}]\" value=\"1\" disabled=\"disabled\" class=\"radio\" /> " . $user->lang['YES'] . '</label>';
-		$tpl .= "<label><input type=\"radio\" id=\"{$key}\" name=\"config[{$key}]\" value=\"0\" checked=\"checked\" disabled=\"disabled\"  class=\"radio\" /> " . $user->lang['NO'] . '</label>';
+		$tpl .= "<label><input type=\"radio\" name=\"config[{$key}]\" value=\"1\" disabled=\"disabled\" class=\"radio\"> " . $user->lang['YES'] . '</label>';
+		$tpl .= "<label><input type=\"radio\" id=\"{$key}\" name=\"config[{$key}]\" value=\"0\" checked=\"checked\" disabled=\"disabled\"  class=\"radio\"> " . $user->lang['NO'] . '</label>';
 
 		return $tpl;
 	}
@@ -294,10 +294,10 @@ class acp_gallery_config
 		{
 			$id = ($checkboxes) ? "{$key}_{$flag}" : $key;
 			$checked = ($value & $flag) ? ' checked="checked"' : '';
-			$checkboxes[] = "<label><input type='checkbox' class='radio' name='{$key}[]' id='{$id}' value='{$flag}'{$checked} /> " . $user->lang[$lang_key] . '</label>';
+			$checkboxes[] = "<label><input type='checkbox' class='radio' name='{$key}[]' id='{$id}' value='{$flag}'{$checked}> " . $user->lang[$lang_key] . '</label>';
 		}
 
-		return "<input type='hidden' name='config[{$key}]' value='{$value}' />" . implode('<br />', $checkboxes);
+		return "<input type='hidden' name='config[{$key}]' value='{$value}'>" . implode('<br>', $checkboxes);
 	}
 
 	var $display_vars = [

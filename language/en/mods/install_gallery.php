@@ -30,10 +30,10 @@ $lang = array_merge($lang, [
 	'CHECK_TABLES_EXPLAIN'      => 'The following tables need to exist, so they can be converted.',
 
 	'CONVERT_SMARTOR_INTRO'         => 'Convertor from “Album-MOD“ by smartor to “phpBB Gallery“',
-	'CONVERT_SMARTOR_INTRO_BODY'    => 'With this convertor, you can convert your albums, images, rates and comments from the <a href="http://www.phpbb.com/community/viewtopic.php?f=16&t=74772">Album-MOD</a> by Smartor (tested v2.0.56) and <a href="http://www.phpbbhacks.com/download/5028">Full Album Pack</a> (tested v1.4.1) to the phpBB Gallery.<br /><br /><strong>Note:</strong> The <strong>permissions</strong> will <strong>not be copied</strong>.',
+	'CONVERT_SMARTOR_INTRO_BODY'    => 'With this convertor, you can convert your albums, images, rates and comments from the <a href="http://www.phpbb.com/community/viewtopic.php?f=16&t=74772">Album-MOD</a> by Smartor (tested v2.0.56) and <a href="http://www.phpbbhacks.com/download/5028">Full Album Pack</a> (tested v1.4.1) to the phpBB Gallery.<br><br><strong>Note:</strong> The <strong>permissions</strong> will <strong>not be copied</strong>.',
 	'CONVERT_TS_INTRO'              => 'Convertor from “TS Gallery“ to “phpBB Gallery“',
-	'CONVERT_TS_INTRO_BODY'         => 'With this convertor, you can convert your albums, images, rates and comments from the <a href="http://www.phpbb.com/community/viewtopic.php?f=70&t=610509">TS Gallery</a> (tested v0.2.1) to the phpBB Gallery.<br /><br /><strong>Note:</strong> The <strong>permissions</strong> will <strong>not be copied</strong>.',
-	'CONVERT_COMPLETE_EXPLAIN'      => 'Conversion from your gallery to phpBB Gallery v%s was successful.<br />Please ensure that the settings were transferred correctly before enabling your board by deleting the install directory.<br /><br /><strong>Please note that the permissions were not copied.</strong><br /><br />You should also clean your database from old entries, where the images are missing. This can be done in “.MODs > phpBB Gallery > Cleanup gallery“.',
+	'CONVERT_TS_INTRO_BODY'         => 'With this convertor, you can convert your albums, images, rates and comments from the <a href="http://www.phpbb.com/community/viewtopic.php?f=70&t=610509">TS Gallery</a> (tested v0.2.1) to the phpBB Gallery.<br><br><strong>Note:</strong> The <strong>permissions</strong> will <strong>not be copied</strong>.',
+	'CONVERT_COMPLETE_EXPLAIN'      => 'Conversion from your gallery to phpBB Gallery v%s was successful.<br>Please ensure that the settings were transferred correctly before enabling your board by deleting the install directory.<br><br><strong>Please note that the permissions were not copied.</strong><br><br>You should also clean your database from old entries, where the images are missing. This can be done in “.MODs > phpBB Gallery > Cleanup gallery“.',
 
 	'CONVERTED_ALBUMS'          => 'The albums were successful copied.',
 	'CONVERTED_COMMENTS'        => 'The comments were successful copied.',
@@ -50,7 +50,7 @@ $lang = array_merge($lang, [
 	'FILE_STILL_EXISTS'             => 'File still exists',
 	'FILES_REQUIRED_EXPLAIN'        => '<strong>Required</strong> - In order to function correctly phpBB Gallery needs to be able to access or write to certain files or directories. If you see “Unwritable” you need to change the permissions on the file or directory to allow phpBB to write to it.',
 	'FILES_DELETE_OUTDATED'         => 'Delete outdated files',
-	'FILES_DELETE_OUTDATED_EXPLAIN' => 'When you click to delete the files, they are completly deleted and can not be restored!<br /><br />Please note:<br />If you have more styles and languages installed, you need to delete the files by hand.',
+	'FILES_DELETE_OUTDATED_EXPLAIN' => 'When you click to delete the files, they are completly deleted and can not be restored!<br><br>Please note:<br>If you have more styles and languages installed, you need to delete the files by hand.',
 	'FILES_OUTDATED'                => 'Outdated files',
 	'FILES_OUTDATED_EXPLAIN'        => '<strong>Outdated</strong> - In order to deny hacking attempts, please remove the following files.',
 	'FOUND_INSTALL'                 => 'Double Installation',
@@ -108,12 +108,12 @@ $lang = array_merge($lang, [
 	'TABLE_PREFIX_EXPLAIN'      => 'Prefix of phpBB2-installation',
 
 	'UNINSTALL_INTRO'                   => 'Welcome to Uninstall',
-	'UNINSTALL_INTRO_BODY'              => 'With this option, it is possible to uninstall phpBB Gallery from your board.<br /><br /><strong>WARNING: All albums, images and comments will be deleted unrecoverable!</strong>',
+	'UNINSTALL_INTRO_BODY'              => 'With this option, it is possible to uninstall phpBB Gallery from your board.<br><br><strong>WARNING: All albums, images and comments will be deleted unrecoverable!</strong>',
 	'UNINSTALL_REQUIREMENTS'            => 'Requirement',
 	'UNINSTALL_REQUIREMENTS_EXPLAIN'    => 'Before proceeding with the full uninstallation phpBB will carry out some tests to ensure that you are allowed to uninstall phpBB Gallery.',
 	'UNINSTALL_START'                   => 'Uninstall',
 	'UNINSTALL_FINISHED'                => 'Uninstall nearly finished',
-	'UNINSTALL_FINISHED_EXPLAIN'        => 'You uninstalled the phpBB Gallery successfully.<br/><br/><strong>Now you only need to undo the steps of the install.xml and delete the files of the gallery. Afterwards your board is completly free from the gallery.</strong>',
+	'UNINSTALL_FINISHED_EXPLAIN'        => 'You uninstalled the phpBB Gallery successfully.<br><br><strong>Now you only need to undo the steps of the install.xml and delete the files of the gallery. Afterwards your board is completly free from the gallery.</strong>',
 
 	'UPDATE_INSTALLATION_EXPLAIN'   => 'Here you can Update your phpBB Gallery-Version.',
 

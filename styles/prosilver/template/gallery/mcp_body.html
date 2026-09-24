@@ -62,23 +62,23 @@
 							<dt class="g-image-info">
 								<!-- IF DISP_FAKE_THUMB and image_row.THUMBNAIL --><span class="g-image-thumbnail" style="width: {FAKE_THUMB_SIZE}px;">{image_row.THUMBNAIL}</span><!-- ENDIF -->
 								<span class="g-image-details">
-									<a href="<!-- IF not S_REPORT -->{image_row.U_IMAGE_PAGE}<!-- ELSE -->{image_row.U_REPORT}<!-- ENDIF -->" class="topictitle">{image_row.IMAGE_NAME}</a><!-- IF image_row.S_REPORTED --> <a href="{image_row.U_REPORT}">{REPORTED_IMG}</a><!-- ENDIF --><!-- IF image_row.S_UNAPPROVED --> <a href="{image_row.U_QUEUE}">{UNAPPROVED_IMG}</a><!-- ENDIF --><br />
-									{L_POST_BY_AUTHOR} {image_row.UPLOADER}<br />
+									<a href="<!-- IF not S_REPORT -->{image_row.U_IMAGE_PAGE}<!-- ELSE -->{image_row.U_REPORT}<!-- ENDIF -->" class="topictitle">{image_row.IMAGE_NAME}</a><!-- IF image_row.S_REPORTED --> <a href="{image_row.U_REPORT}">{REPORTED_IMG}</a><!-- ENDIF --><!-- IF image_row.S_UNAPPROVED --> <a href="{image_row.U_QUEUE}">{UNAPPROVED_IMG}</a><!-- ENDIF --><br>
+									{L_POST_BY_AUTHOR} {image_row.UPLOADER}<br>
 									&raquo; {image_row.IMAGE_TIME}
-									<!-- IF image_row.REPORT_MOD --><br />{L_REPORT_MOD} {image_row.REPORT_MOD}<!-- ENDIF -->
+									<!-- IF image_row.REPORT_MOD --><br>{L_REPORT_MOD} {image_row.REPORT_MOD}<!-- ENDIF -->
 								</span>
 							</dt>
 							<!-- IF S_COMMENTS --><dd class="g-comments">{image_row.COMMENTS}</dd><!-- ENDIF -->
 							<!-- IF S_RATINGS --><dd class="g-rating">{image_row.RATING}</dd><!-- ENDIF -->
 							<!-- IF S_REPORTER -->
 								<dd class="moderation">
-									{L_REPORT_BY} {image_row.REPORTER}<br />
-									{image_row.REPORT_TIME}<br />
+									{L_REPORT_BY} {image_row.REPORTER}<br>
+									{image_row.REPORT_TIME}<br>
 									{L_ALBUM}: <a href="{U_VIEW_ALBUM}" style="font-weight: bold;">{ALBUM_NAME}</a>
 								</dd>
 							<!-- ENDIF -->
-							<!-- IF S_STATUS --><dd class="g-status">{image_row.STATUS}<!-- IF image_row.S_REPORTED --><br />{L_IMAGE_REPORTED}<!-- ENDIF --></dd><!-- ENDIF -->
-							<!-- IF S_MARK --><dd class="mark"><input type="checkbox" name="image_id_ary[]" value="<!-- IF not S_REPORT_LIST -->{image_row.IMAGE_ID}<!-- ELSE -->{image_row.REPORT_ID}<!-- ENDIF -->" /></dd><!-- ENDIF -->
+							<!-- IF S_STATUS --><dd class="g-status">{image_row.STATUS}<!-- IF image_row.S_REPORTED --><br>{L_IMAGE_REPORTED}<!-- ENDIF --></dd><!-- ENDIF -->
+							<!-- IF S_MARK --><dd class="mark"><input type="checkbox" name="image_id_ary[]" value="<!-- IF not S_REPORT_LIST -->{image_row.IMAGE_ID}<!-- ELSE -->{image_row.REPORT_ID}<!-- ENDIF -->"></dd><!-- ENDIF -->
 						</dl>
 					</li>
 				<!-- END image_row -->
@@ -110,7 +110,7 @@
 							<option<!-- IF S_SORT_DESC --> selected="selected"<!-- ENDIF --> value='DESC'>{L_SORT_DESCENDING}</option>
 							<option<!-- IF not S_SORT_DESC --> selected="selected"<!-- ENDIF --> value='ASC'>{L_SORT_ASCENDING}</option>
 						</select>
-					<input type="submit" name="sort" value="{L_GO}" class="button2" /></label>
+					<input type="submit" name="sort" value="{L_GO}" class="button2"></label>
 				</fieldset>
 			<!-- ELSE -->
 				<!-- IF NO_IMAGES_NOTE -->
@@ -121,7 +121,7 @@
 			<!-- ENDIF -->
 
 			<!-- IF PAGINATION or TOTAL_IMAGES -->
-				<hr />
+				<hr>
 				<ul class="linklist">
 					<li class="rightside pagination">
 						<!-- IF TOTAL_IMAGES --> {TOTAL_IMAGES}<!-- ENDIF -->
@@ -152,7 +152,7 @@
 					<option value="reports_delete">{L_REPORT_A_DELETE}</option>
 				<!-- ENDIF -->
 			</select>
-			<input class="button2" type="submit" value="{L_SUBMIT}" />
+			<input class="button2" type="submit" value="{L_SUBMIT}">
 			<div><a onclick="marklist('mcp', 'image_id_ary', true);">{L_MARK_ALL}</a> :: <a onclick="marklist('mcp', 'image_id_ary', false);">{L_UNMARK_ALL}</a></div>
 		</fieldset>
 		</form>
@@ -170,21 +170,21 @@
 				</ul>
 				<h3>{IMAGE_NAME}</h3>
 				<p class="author">
-					{L_POST_BY_AUTHOR} {UPLOADER}<br />
-					{IMAGE_TIME}<br />
-					{L_ALBUM}: <a href="{U_VIEW_ALBUM}" style="font-weight: bold;">{ALBUM_NAME}</a><!-- IF U_MOVE_IMAGE --> &raquo; <a href="{U_MOVE_IMAGE}" style="font-weight: bold;">{L_MOVE}</a><!-- ENDIF --><br />
+					{L_POST_BY_AUTHOR} {UPLOADER}<br>
+					{IMAGE_TIME}<br>
+					{L_ALBUM}: <a href="{U_VIEW_ALBUM}" style="font-weight: bold;">{ALBUM_NAME}</a><!-- IF U_MOVE_IMAGE --> &raquo; <a href="{U_MOVE_IMAGE}" style="font-weight: bold;">{L_MOVE}</a><!-- ENDIF --><br>
 					{L_STATUS}: <span style="font-weight: bold;">{STATUS}</span>
 				</p>
 
 				<div class="content">
 					<div style="text-align: center; padding: 20px;">
 						<!-- IF U_IMAGE_LINK --><a href="{U_IMAGE_LINK}" title="{IMAGE_NAME}"><!-- ENDIF -->
-						<img src="{U_IMAGE_SRC}" alt="{IMAGE_NAME}" title="{IMAGE_NAME}" style="width: auto; height: auto; max-width: 100%; max-width: min(100%, {IMAGE_RSZ_WIDTH}px); max-height: {IMAGE_RSZ_HEIGHT}px;" />
+						<img src="{U_IMAGE_SRC}" alt="{IMAGE_NAME}" title="{IMAGE_NAME}" style="width: auto; height: auto; max-width: 100%; max-width: min(100%, {IMAGE_RSZ_WIDTH}px); max-height: {IMAGE_RSZ_HEIGHT}px;">
 						<!-- IF U_IMAGE_LINK --></a><!-- ENDIF -->
 					</div>
 					<!-- IF IMAGE_DESC -->
-						<hr />
-						<span style="font-weight: bold;">{L_IMAGE_DESC}:</span><br />
+						<hr>
+						<span style="font-weight: bold;">{L_IMAGE_DESC}:</span><br>
 						{IMAGE_DESC}
 					<!-- ENDIF -->
 				</div>
@@ -231,8 +231,8 @@
 						<option value="reports_delete">{L_REPORT_A_DELETE}</option>
 					<!-- ENDIF -->
 				</select>
-				<input class="button2" type="submit" value="{L_SUBMIT}" />
-				<input type="hidden" value="{REPORT_ID}" name="image_id_ary[{REPORT_ID}]" />
+				<input class="button2" type="submit" value="{L_SUBMIT}">
+				<input type="hidden" value="{REPORT_ID}" name="image_id_ary[{REPORT_ID}]">
 			</fieldset>
 		</form>
 	<!-- ENDIF -->
@@ -264,8 +264,8 @@
 					<dt class="g-image-info">
 						<!-- IF DISP_FAKE_THUMB and queue_row.THUMBNAIL --><span class="g-image-thumbnail" style="width: {FAKE_THUMB_SIZE}px;">{queue_row.THUMBNAIL}</span><!-- ENDIF -->
 						<span class="g-image-details">
-							<a href="{queue_row.U_IMAGE_PAGE}" class="topictitle">{queue_row.IMAGE_NAME} {UNAPPROVED_IMG}</a><br />
-							{L_POST_BY_AUTHOR} {queue_row.UPLOADER}<br />
+							<a href="{queue_row.U_IMAGE_PAGE}" class="topictitle">{queue_row.IMAGE_NAME} {UNAPPROVED_IMG}</a><br>
+							{L_POST_BY_AUTHOR} {queue_row.UPLOADER}<br>
 							&raquo; {queue_row.IMAGE_TIME}
 						</span>
 					</dt>
@@ -293,14 +293,14 @@
 				<dt class="g-image-info">
 					<!-- IF DISP_FAKE_THUMB and report_row.THUMBNAIL --><span class="g-image-thumbnail" style="width: {FAKE_THUMB_SIZE}px;">{report_row.THUMBNAIL}</span><!-- ENDIF -->
 					<span class="g-image-details">
-						<a href="<!-- IF not S_REPORT -->{report_row.U_IMAGE_PAGE}<!-- ELSE -->{report_row.U_REPORT}<!-- ENDIF -->" class="topictitle">{report_row.IMAGE_NAME}</a><!-- IF report_row.S_REPORTED --> <a href="{report_row.U_REPORT}">{REPORTED_IMG}</a><!-- ENDIF --><!-- IF report_row.S_UNAPPROVED --> <a href="{report_row.U_QUEUE}">{UNAPPROVED_IMG}</a><!-- ENDIF --><br />
-						{L_POST_BY_AUTHOR} {report_row.UPLOADER}<br />
+						<a href="<!-- IF not S_REPORT -->{report_row.U_IMAGE_PAGE}<!-- ELSE -->{report_row.U_REPORT}<!-- ENDIF -->" class="topictitle">{report_row.IMAGE_NAME}</a><!-- IF report_row.S_REPORTED --> <a href="{report_row.U_REPORT}">{REPORTED_IMG}</a><!-- ENDIF --><!-- IF report_row.S_UNAPPROVED --> <a href="{report_row.U_QUEUE}">{UNAPPROVED_IMG}</a><!-- ENDIF --><br>
+						{L_POST_BY_AUTHOR} {report_row.UPLOADER}<br>
 						&raquo; {report_row.IMAGE_TIME}
-						<!-- IF report_row.REPORT_MOD --><br />{L_REPORT_MOD} {report_row.REPORT_MOD}<!-- ENDIF -->
+						<!-- IF report_row.REPORT_MOD --><br>{L_REPORT_MOD} {report_row.REPORT_MOD}<!-- ENDIF -->
 					</span>
 				</dt>
 				<dd class="moderation">
-					{L_REPORT_BY} {report_row.REPORTER}<br />
+					{L_REPORT_BY} {report_row.REPORTER}<br>
 					{report_row.REPORT_TIME}
 				</dd>
 			</dl>
@@ -327,7 +327,7 @@
 		<h2>{L_MOVE}</h2>
 		<p>
 			{L_MOVE_TO_ALBUM} &nbsp; {S_ALBUM_SELECT} &nbsp;
-			<input class="button2" type="submit" name="move" value="{L_MOVE}" />
+			<input class="button2" type="submit" name="move" value="{L_MOVE}">
 			{S_HIDDEN_FIELDS}{S_FORM_TOKEN}
 		</p>
 	</div>

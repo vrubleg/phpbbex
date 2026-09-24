@@ -309,7 +309,7 @@ class phpbb_gallery_cleanup
 					$value = ($value / 100);
 				break;
 			}
-			$lang_pattern .= (($lang_pattern) ? '<br />' : '') . $user->lang('PRUNE_PATTERN_' . strtoupper($field), $value);
+			$lang_pattern .= (($lang_pattern) ? '<br>' : '') . $user->lang('PRUNE_PATTERN_' . strtoupper($field), $value);
 		}
 
 		return $lang_pattern;

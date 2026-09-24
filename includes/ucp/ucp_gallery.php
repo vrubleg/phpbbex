@@ -112,7 +112,7 @@ class ucp_gallery
 			phpbb_gallery::$user->update_data($gallery_settings);
 
 			meta_refresh(3, $this->u_action);
-			trigger_error($user->lang['WATCH_CHANGED'] . '<br /><br />' . sprintf($user->lang['RETURN_UCP'], '<a href="' . $this->u_action . '">', '</a>'));
+			trigger_error($user->lang['WATCH_CHANGED'] . '<br><br>' . sprintf($user->lang['RETURN_UCP'], '<a href="' . $this->u_action . '">', '</a>'));
 		}
 
 
@@ -230,7 +230,7 @@ class ucp_gallery
 			$cache->destroy('sql', GALLERY_ALBUMS_TABLE);
 			$cache->destroy('_albums');
 
-			trigger_error($user->lang['EDITED_PERSONAL_ALBUM'] . '<br /><br />
+			trigger_error($user->lang['EDITED_PERSONAL_ALBUM'] . '<br><br>
 				<a href="' . (($redirect) ? phpbb_gallery_url::append_sid('album', "album_id={$album_id}") : $this->u_action) . '">' . $user->lang['BACK_TO_PREV'] . '</a>');
 		}
 	}
@@ -396,7 +396,7 @@ class ucp_gallery
 			$cache->destroy('_albums');
 			phpbb_gallery_auth::set_user_permissions('all', '');
 
-			trigger_error($user->lang['DELETED_ALBUMS'] . '<br /><br />
+			trigger_error($user->lang['DELETED_ALBUMS'] . '<br><br>
 				<a href="' . $this->u_action . '">' . $user->lang['BACK_TO_PREV'] . '</a>');
 		}
 		else
@@ -427,13 +427,13 @@ class ucp_gallery
 			$message = '';
 			if ($album_id_ary)
 			{
-				$message .= $user->lang['UNWATCHED_ALBUMS'] . '<br />';
+				$message .= $user->lang['UNWATCHED_ALBUMS'] . '<br>';
 			}
 			if ($image_id_ary)
 			{
-				$message .= $user->lang['UNWATCHED_IMAGES'] . '<br />';
+				$message .= $user->lang['UNWATCHED_IMAGES'] . '<br>';
 			}
-			$message .= '<br />' . sprintf($user->lang['RETURN_UCP'], '<a href="' . $this->u_action . '">', '</a>');
+			$message .= '<br>' . sprintf($user->lang['RETURN_UCP'], '<a href="' . $this->u_action . '">', '</a>');
 			trigger_error($message);
 		}
 
@@ -552,7 +552,7 @@ class ucp_gallery
 			phpbb_gallery_image_favorite::remove($image_id_ary);
 
 			meta_refresh(3, $this->u_action);
-			trigger_error($user->lang['UNFAVORITED_IMAGES'] . '<br /><br />' . sprintf($user->lang['RETURN_UCP'], '<a href="' . $this->u_action . '">', '</a>'));
+			trigger_error($user->lang['UNFAVORITED_IMAGES'] . '<br><br>' . sprintf($user->lang['RETURN_UCP'], '<a href="' . $this->u_action . '">', '</a>'));
 		}
 
 		$start              = request_var('start', 0);

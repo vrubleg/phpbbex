@@ -70,8 +70,8 @@
 	<div id="type_actions">
 		<dl>
 			<dt><label for="type_action">{L_DECIDE_MOVE_DELETE_CONTENT}:</label></dt>
-			<dd><label><input type="radio" class="radio" name="type_action" value="delete"<!-- IF not S_MOVE_ALBUM_OPTIONS --> checked="checked" id="type_action"<!-- ENDIF --> /> {L_DELETE_ALL_IMAGES}</label></dd>
-			<!-- IF S_MOVE_ALBUM_OPTIONS --><dd><label><input type="radio" class="radio" name="type_action" id="type_action" value="move" checked="checked" /> {L_MOVE_IMAGES_TO}</label> <select name="to_album_id">{S_MOVE_ALBUM_OPTIONS}</select></dd><!-- ENDIF -->
+			<dd><label><input type="radio" class="radio" name="type_action" value="delete"<!-- IF not S_MOVE_ALBUM_OPTIONS --> checked="checked" id="type_action"<!-- ENDIF -->> {L_DELETE_ALL_IMAGES}</label></dd>
+			<!-- IF S_MOVE_ALBUM_OPTIONS --><dd><label><input type="radio" class="radio" name="type_action" id="type_action" value="move" checked="checked"> {L_MOVE_IMAGES_TO}</label> <select name="to_album_id">{S_MOVE_ALBUM_OPTIONS}</select></dd><!-- ENDIF -->
 		</dl>
 	</div>
 	<!-- ENDIF -->
@@ -81,47 +81,47 @@
 		</dl>
 		<dl>
 			<dt><label for="album_name">{L_ALBUM_NAME}:</label></dt>
-			<dd><input class="text medium" type="text" id="album_name" name="album_name" value="{ALBUM_NAME}" maxlength="255" /></dd>
+			<dd><input class="text medium" type="text" id="album_name" name="album_name" value="{ALBUM_NAME}" maxlength="255"></dd>
 		</dl>
 		<dl>
-			<dt><label for="album_desc">{L_ALBUM_DESC}:</label><br /><span>{L_ALBUM_DESC_EXPLAIN}</span></dt>
+			<dt><label for="album_desc">{L_ALBUM_DESC}:</label><br><span>{L_ALBUM_DESC_EXPLAIN}</span></dt>
 			<dd><textarea id="album_desc" name="album_desc" rows="5" cols="45">{ALBUM_DESC}</textarea></dd>
-		<dd><label><input type="checkbox" class="radio" name="desc_parse_bbcode"<!-- IF S_DESC_BBCODE_CHECKED --> checked="checked"<!-- ENDIF --> /> {L_PARSE_BBCODE}</label>
-			<label><input type="checkbox" class="radio" name="desc_parse_smilies"<!-- IF S_DESC_SMILIES_CHECKED --> checked="checked"<!-- ENDIF --> /> {L_PARSE_SMILIES}</label>
-			<label><input type="checkbox" class="radio" name="desc_parse_urls"<!-- IF S_DESC_URLS_CHECKED --> checked="checked"<!-- ENDIF --> /> {L_PARSE_URLS}</label></dd>
+		<dd><label><input type="checkbox" class="radio" name="desc_parse_bbcode"<!-- IF S_DESC_BBCODE_CHECKED --> checked="checked"<!-- ENDIF -->> {L_PARSE_BBCODE}</label>
+			<label><input type="checkbox" class="radio" name="desc_parse_smilies"<!-- IF S_DESC_SMILIES_CHECKED --> checked="checked"<!-- ENDIF -->> {L_PARSE_SMILIES}</label>
+			<label><input type="checkbox" class="radio" name="desc_parse_urls"<!-- IF S_DESC_URLS_CHECKED --> checked="checked"<!-- ENDIF -->> {L_PARSE_URLS}</label></dd>
 		</dl>
 		<dl>
-			<dt><label for="album_image">{L_ALBUM_IMAGE}:</label><br /><span>{L_ALBUM_IMAGE_EXPLAIN}</span></dt>
-			<dd><input class="text medium" type="text" id="album_image" name="album_image" value="{ALBUM_IMAGE}" maxlength="255" /></dd>
+			<dt><label for="album_image">{L_ALBUM_IMAGE}:</label><br><span>{L_ALBUM_IMAGE_EXPLAIN}</span></dt>
+			<dd><input class="text medium" type="text" id="album_image" name="album_image" value="{ALBUM_IMAGE}" maxlength="255"></dd>
 		<!-- IF ALBUM_IMAGE_SRC -->
-			<dd><img src="{ALBUM_IMAGE_SRC}" alt="{L_ALBUM_IMAGE}" /></dd>
+			<dd><img src="{ALBUM_IMAGE_SRC}" alt="{L_ALBUM_IMAGE}"></dd>
 		<!-- ENDIF -->
 		</dl>
 		<!-- IF ALBUM_PASSWORD_OPTION_IS_INCLUDED -->
 		<dl>
-			<dt><label for="album_password">{L_ALBUM_PASSWORD}:</label><br /><span>{L_ALBUM_PASSWORD_EXPLAIN}</span></dt>
-			<dd><input type="password" id="album_password" name="album_password" value="<!-- IF S_ALBUM_PASSWORD_SET -->&#x20;&#x20;&#x20;&#x20;&#x20;&#x20;<!-- ENDIF -->" /></dd>
+			<dt><label for="album_password">{L_ALBUM_PASSWORD}:</label><br><span>{L_ALBUM_PASSWORD_EXPLAIN}</span></dt>
+			<dd><input type="password" id="album_password" name="album_password" value="<!-- IF S_ALBUM_PASSWORD_SET -->&#x20;&#x20;&#x20;&#x20;&#x20;&#x20;<!-- ENDIF -->"></dd>
 		</dl>
 		<dl>
-			<dt><label for="album_password_confirm">{L_ALBUM_PASSWORD_CONFIRM}:</label><br /><span>{L_ALBUM_PASSWORD_CONFIRM_EXPLAIN}</span></dt>
-			<dd><input type="password" id="album_password_confirm" name="album_password_confirm" value="<!-- IF S_ALBUM_PASSWORD_SET -->&#x20;&#x20;&#x20;&#x20;&#x20;&#x20;<!-- ENDIF -->" /></dd>
+			<dt><label for="album_password_confirm">{L_ALBUM_PASSWORD_CONFIRM}:</label><br><span>{L_ALBUM_PASSWORD_CONFIRM_EXPLAIN}</span></dt>
+			<dd><input type="password" id="album_password_confirm" name="album_password_confirm" value="<!-- IF S_ALBUM_PASSWORD_SET -->&#x20;&#x20;&#x20;&#x20;&#x20;&#x20;<!-- ENDIF -->"></dd>
 		</dl>
 		<!-- IF S_ALBUM_PASSWORD_SET -->
 		<dl>
-			<dt><label for="album_password_unset">{L_ALBUM_PASSWORD_UNSET}:</label><br /><span>{L_ALBUM_PASSWORD_UNSET_EXPLAIN}</span></dt>
-			<dd><input id="album_password_unset" name="album_password_unset" type="checkbox" /></dd>
+			<dt><label for="album_password_unset">{L_ALBUM_PASSWORD_UNSET}:</label><br><span>{L_ALBUM_PASSWORD_UNSET_EXPLAIN}</span></dt>
+			<dd><input id="album_password_unset" name="album_password_unset" type="checkbox"></dd>
 		</dl>
 		<!-- ENDIF -->
 		<!-- ENDIF -->
 		<dl>
-			<dt><label for="album_perm_from">{L_COPY_PERMISSIONS}:</label><br /><span>{L_COPY_PERMISSIONS_EXPLAIN}</span></dt>
+			<dt><label for="album_perm_from">{L_COPY_PERMISSIONS}:</label><br><span>{L_COPY_PERMISSIONS_EXPLAIN}</span></dt>
 			<dd><select id="album_perm_from" name="album_perm_from"><option value="0" selected="selected">{L_DONT_COPY_PERMISSIONS}</option>{S_ALBUM_OPTIONS}</select></dd>
 		</dl>
 		<!-- IF S_ADD_ACTION -->
 		<dl>
 			<dt><label>{L_ADD_ALBUM_ON_TOP}:</label></dt>
-			<dd><label><input type="radio" class="radio" name="add_on_top" value="1" /> {L_YES}</label>
-				<label><input type="radio" class="radio" name="add_on_top" value="0" id="add_on_top" checked="checked" /> {L_NO}</label></dd>
+			<dd><label><input type="radio" class="radio" name="add_on_top" value="1"> {L_YES}</label>
+				<label><input type="radio" class="radio" name="add_on_top" value="0" id="add_on_top" checked="checked"> {L_NO}</label></dd>
 		</dl>
 		<!-- ENDIF -->
 	</fieldset>
@@ -133,38 +133,38 @@
 			<dd><select id="album_status" name="album_status">{S_STATUS_OPTIONS}</select></dd>
 		</dl>
 		<dl>
-			<dt><label for="album_sort_key">{L_DEFAULT_SORT_METHOD}:</label><br /><span>{L_DEFAULT_SORT_EXPLAIN}</span></dt>
+			<dt><label for="album_sort_key">{L_DEFAULT_SORT_METHOD}:</label><br><span>{L_DEFAULT_SORT_EXPLAIN}</span></dt>
 			<dd><select name="album_sort_key" id="album_sort_key">{ALBUM_SORT_KEY_OPTIONS}</select></dd>
 		</dl>
 		<dl>
-			<dt><label for="album_sort_dir">{L_DEFAULT_SORT_ORDER}:</label><br /><span>{L_DEFAULT_SORT_EXPLAIN}</span></dt>
+			<dt><label for="album_sort_dir">{L_DEFAULT_SORT_ORDER}:</label><br><span>{L_DEFAULT_SORT_EXPLAIN}</span></dt>
 			<dd><select name="album_sort_dir" id="album_sort_dir">{ALBUM_SORT_DIR_OPTIONS}</select></dd>
 		</dl>
 		<dl>
 			<dt><label for="display_in_rrc">{L_DISPLAY_IN_RRC}:</label></dt>
-			<dd><label><input type="radio" class="radio" name="display_in_rrc" value="1"<!-- IF S_DISPLAY_IN_RRC --> id="display_in_rrc" checked="checked"<!-- ENDIF --> /> {L_YES}</label>
-				<label><input type="radio" class="radio" name="display_in_rrc" value="0"<!-- IF not S_DISPLAY_IN_RRC --> id="display_in_rrc" checked="checked"<!-- ENDIF --> /> {L_NO}</label></dd>
+			<dd><label><input type="radio" class="radio" name="display_in_rrc" value="1"<!-- IF S_DISPLAY_IN_RRC --> id="display_in_rrc" checked="checked"<!-- ENDIF -->> {L_YES}</label>
+				<label><input type="radio" class="radio" name="display_in_rrc" value="0"<!-- IF not S_DISPLAY_IN_RRC --> id="display_in_rrc" checked="checked"<!-- ENDIF -->> {L_NO}</label></dd>
 		</dl>
 		<dl>
 			<dt><label for="album_feed">{L_ALBUM_FEED}:</label></dt>
-			<dd><label><input type="radio" class="radio" name="album_feed" value="1"<!-- IF S_FEED_ENABLED --> id="album_feed" checked="checked"<!-- ENDIF --> /> {L_YES}</label>
-				<label><input type="radio" class="radio" name="album_feed" value="0"<!-- IF not S_FEED_ENABLED --> id="album_feed" checked="checked"<!-- ENDIF --> /> {L_NO}</label></dd>
+			<dd><label><input type="radio" class="radio" name="album_feed" value="1"<!-- IF S_FEED_ENABLED --> id="album_feed" checked="checked"<!-- ENDIF -->> {L_YES}</label>
+				<label><input type="radio" class="radio" name="album_feed" value="0"<!-- IF not S_FEED_ENABLED --> id="album_feed" checked="checked"<!-- ENDIF -->> {L_NO}</label></dd>
 		</dl>
 		<dl>
-			<dt><label for="display_subalbum_list">{L_LIST_SUBALBUMS}:</label><br /><span>{L_LIST_SUBALBUMS_EXPLAIN}</span></dt>
-			<dd><label><input type="radio" class="radio" name="display_subalbum_list" value="1"<!-- IF S_DISPLAY_SUBALBUM_LIST --> id="display_subalbum_list" checked="checked"<!-- ENDIF --> /> {L_YES}</label>
-				<label><input type="radio" class="radio" name="display_subalbum_list" value="0"<!-- IF not S_DISPLAY_SUBALBUM_LIST --> id="display_subalbum_list" checked="checked"<!-- ENDIF --> /> {L_NO}</label></dd>
+			<dt><label for="display_subalbum_list">{L_LIST_SUBALBUMS}:</label><br><span>{L_LIST_SUBALBUMS_EXPLAIN}</span></dt>
+			<dd><label><input type="radio" class="radio" name="display_subalbum_list" value="1"<!-- IF S_DISPLAY_SUBALBUM_LIST --> id="display_subalbum_list" checked="checked"<!-- ENDIF -->> {L_YES}</label>
+				<label><input type="radio" class="radio" name="display_subalbum_list" value="0"<!-- IF not S_DISPLAY_SUBALBUM_LIST --> id="display_subalbum_list" checked="checked"<!-- ENDIF -->> {L_NO}</label></dd>
 		</dl>
 		<dl>
-			<dt><label for="display_on_index">{L_LIST_INDEX}:</label><br /><span>{L_LIST_INDEX_EXPLAIN}</span></dt>
-			<dd><label><input type="radio" class="radio" name="display_on_index" value="1"<!-- IF S_DISPLAY_ON_INDEX --> id="display_on_index" checked="checked"<!-- ENDIF --> /> {L_YES}</label>
-				<label><input type="radio" class="radio" name="display_on_index" value="0"<!-- IF not S_DISPLAY_ON_INDEX --> id="display_on_index" checked="checked"<!-- ENDIF --> /> {L_NO}</label></dd>
+			<dt><label for="display_on_index">{L_LIST_INDEX}:</label><br><span>{L_LIST_INDEX_EXPLAIN}</span></dt>
+			<dd><label><input type="radio" class="radio" name="display_on_index" value="1"<!-- IF S_DISPLAY_ON_INDEX --> id="display_on_index" checked="checked"<!-- ENDIF -->> {L_YES}</label>
+				<label><input type="radio" class="radio" name="display_on_index" value="0"<!-- IF not S_DISPLAY_ON_INDEX --> id="display_on_index" checked="checked"<!-- ENDIF -->> {L_NO}</label></dd>
 		</dl>
 		</fieldset>
 	</div>
 	<fieldset class="submit-buttons">
 		<legend>{L_SUBMIT}</legend>
-		<input class="button1" type="submit" id="submit" name="update" value="{L_SUBMIT}" />
+		<input class="button1" type="submit" id="submit" name="update" value="{L_SUBMIT}">
 		{S_FORM_TOKEN}
 	</fieldset>
 </form>
@@ -195,24 +195,24 @@
 		<!-- IF S_ALBUM_POST -->
 			<dl>
 				<dt><label for="delete_action">{L_ACTION}:</label></dt>
-				<dd><label><input type="radio" class="radio" id="delete_action" name="action_images" value="delete" checked="checked" /> {L_DELETE_ALL_IMAGES}</label></dd>
+				<dd><label><input type="radio" class="radio" id="delete_action" name="action_images" value="delete" checked="checked"> {L_DELETE_ALL_IMAGES}</label></dd>
 				<!-- IF S_MOVE_ALBUM_OPTIONS -->
-					<dd><label><input type="radio" class="radio" name="action_images" value="move" /> {L_MOVE_IMAGES_TO}</label> <select name="images_to_id">{S_MOVE_ALBUM_OPTIONS}</select></dd>
+					<dd><label><input type="radio" class="radio" name="action_images" value="move"> {L_MOVE_IMAGES_TO}</label> <select name="images_to_id">{S_MOVE_ALBUM_OPTIONS}</select></dd>
 				<!-- ENDIF -->
 			</dl>
 		<!-- ENDIF -->
 		<!-- IF S_HAS_SUBALBUMS -->
 			<dl>
 				<dt><label for="sub_delete_action">{L_ACTION}:</label></dt>
-				<dd><label><input type="radio" class="radio" id="sub_delete_action" name="action_subalbums" value="delete" checked="checked" /> {L_DELETE_SUBALBUMS}</label></dd>
+				<dd><label><input type="radio" class="radio" id="sub_delete_action" name="action_subalbums" value="delete" checked="checked"> {L_DELETE_SUBALBUMS}</label></dd>
 				<!-- IF S_ALBUMS_LIST -->
-					<dd><label><input type="radio" class="radio" name="action_subalbums" value="move" /> {L_MOVE_SUBALBUMS_TO}</label> <select name="subalbums_to_id">{S_ALBUMS_LIST}</select></dd>
+					<dd><label><input type="radio" class="radio" name="action_subalbums" value="move"> {L_MOVE_SUBALBUMS_TO}</label> <select name="subalbums_to_id">{S_ALBUMS_LIST}</select></dd>
 				<!-- ENDIF -->
 			</dl>
 		<!-- ENDIF -->
 
 		<p class="quick">
-			<input class="button1" type="submit" name="update" value="{L_SUBMIT}" />
+			<input class="button1" type="submit" name="update" value="{L_SUBMIT}">
 		</p>
 		{S_FORM_TOKEN}
 		</fieldset>
@@ -240,16 +240,16 @@
 
 	<!-- IF .albums -->
 		<table cellspacing="1">
-			<col class="row1" /><col class="row1" /><col class="row2" />
+			<col class="row1"><col class="row1"><col class="row2">
 		<tbody>
 		<!-- BEGIN albums -->
 			<tr>
 				<td style="width: 5%; text-align: center;">{albums.FOLDER_IMAGE}</td>
 				<td>
-					<!-- IF albums.ALBUM_IMAGE_SRC --><div style="float: left; margin-right: 5px;"><img src="{albums.ALBUM_IMAGE_SRC}" alt="{albums.ALBUM_NAME}" /></div><!-- ENDIF -->
+					<!-- IF albums.ALBUM_IMAGE_SRC --><div style="float: left; margin-right: 5px;"><img src="{albums.ALBUM_IMAGE_SRC}" alt="{albums.ALBUM_NAME}"></div><!-- ENDIF -->
 					<strong><a href="{albums.U_ALBUM}">{albums.ALBUM_NAME}</a></strong>
-					<!-- IF albums.ALBUM_DESCRIPTION --><br /><span>{albums.ALBUM_DESCRIPTION}</span><!-- ENDIF -->
-					<!-- IF albums.ALBUM_SUBALBUMS or albums.S_ALBUM_POST --><br /><span><!-- IF albums.ALBUM_SUBALBUMS -->{L_SUBALBUMS}: <strong>{albums.ALBUM_SUBALBUMS}</strong><!-- IF albums.S_ALBUM_POST --> / <!-- ENDIF --><!-- ENDIF --><!-- IF albums.S_ALBUM_POST -->{L_IMAGES}: <strong>{albums.ALBUM_IMAGES}</strong><!-- ENDIF --></span><!-- ENDIF -->
+					<!-- IF albums.ALBUM_DESCRIPTION --><br><span>{albums.ALBUM_DESCRIPTION}</span><!-- ENDIF -->
+					<!-- IF albums.ALBUM_SUBALBUMS or albums.S_ALBUM_POST --><br><span><!-- IF albums.ALBUM_SUBALBUMS -->{L_SUBALBUMS}: <strong>{albums.ALBUM_SUBALBUMS}</strong><!-- IF albums.S_ALBUM_POST --> / <!-- ENDIF --><!-- ENDIF --><!-- IF albums.S_ALBUM_POST -->{L_IMAGES}: <strong>{albums.ALBUM_IMAGES}</strong><!-- ENDIF --></span><!-- ENDIF -->
 				</td>
 				<td style="width: 100px; text-align: center; white-space: nowrap;">
 					<!-- IF albums.S_FIRST_ROW && not albums.S_LAST_ROW -->
@@ -279,7 +279,7 @@
 	<fieldset class="quick">
 		{L_SELECT_ALBUM}: <select name="parent_id" onchange="if(this.options[this.selectedIndex].value != -1){ this.form.submit(); }">{ALBUM_BOX}</select>
 
-		<input class="button2" type="submit" value="{L_GO}" />
+		<input class="button2" type="submit" value="{L_GO}">
 		{S_FORM_TOKEN}
 	</fieldset>
 	</form>
@@ -287,10 +287,10 @@
 	<form id="albums" method="post" action="{U_ACTION}">
 
 	<fieldset class="quick">
-		<input type="hidden" name="action" value="add" />
+		<input type="hidden" name="action" value="add">
 
-		<input type="text" name="album_name" value="" maxlength="255" />
-		<input class="button2" name="addalbum" type="submit" value="{L_CREATE_ALBUM}" />
+		<input type="text" name="album_name" value="" maxlength="255">
+		<input class="button2" name="addalbum" type="submit" value="{L_CREATE_ALBUM}">
 		{S_FORM_TOKEN}
 	</fieldset>
 	</form>

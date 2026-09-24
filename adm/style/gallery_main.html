@@ -7,7 +7,7 @@
 
 <!-- IF S_GALLERY_OVERVIEW -->
 	<table cellspacing="1">
-		<col class="col1" /><col class="col2" /><col class="col1" /><col class="col2" />
+		<col class="col1"><col class="col2"><col class="col1"><col class="col2">
 	<thead>
 	<tr>
 		<th width="20%">{L_STATISTIC}</th>
@@ -42,8 +42,8 @@
 		<form id="action_resync_form" method="post" action="{U_ACTION}">
 			<dl>
 				<dt><label for="action_resync">{L_RESYNC_GALLERY_STATS}</label>
-					<br /><span>{L_RESYNC_GALLERY_STATS_EXPLAIN}</span></dt>
-				<dd><input type="hidden" name="action" value="resync" /><input class="button2" type="submit" id="action_resync" name="action_resync" value="{L_RUN}" /></dd>
+					<br><span>{L_RESYNC_GALLERY_STATS_EXPLAIN}</span></dt>
+				<dd><input type="hidden" name="action" value="resync"><input class="button2" type="submit" id="action_resync" name="action_resync" value="{L_RUN}"></dd>
 			</dl>
 		</form>
 
@@ -51,8 +51,8 @@
 		<form id="action_purge_cache_form" method="post" action="{U_ACTION}">
 			<dl>
 				<dt><label for="action_purge_cache">{L_PURGE_IMAGE_CACHE}</label>
-					<br /><span>{L_PURGE_IMAGE_CACHE_EXPLAIN}</span></dt>
-				<dd><input type="hidden" name="action" value="purge_cache" /><input class="button2" type="submit" id="action_purge_cache" name="action_purge_cache" value="{L_RUN}" /></dd>
+					<br><span>{L_PURGE_IMAGE_CACHE_EXPLAIN}</span></dt>
+				<dd><input type="hidden" name="action" value="purge_cache"><input class="button2" type="submit" id="action_purge_cache" name="action_purge_cache" value="{L_RUN}"></dd>
 			</dl>
 		</form>
 		<!-- ENDIF -->
@@ -66,7 +66,7 @@
 		<legend>{L_MANAGE_CRASHED_IMAGES}</legend>
 		<dl>
 			<dt><label<!-- IF .sourcerow --> for="source"<!-- ENDIF -->>{L_MISSING_SOURCE}:</label>
-				<br /><span><a href="{CHECK_SOURCE}">{L_CHECK}</a></span></dt>
+				<br><span><a href="{CHECK_SOURCE}">{L_CHECK}</a></span></dt>
 			<dd><!-- IF not .sourcerow -->
 				{L_CHECK_SOURCE_EXPLAIN}
 			<!-- ELSE -->
@@ -77,7 +77,7 @@
 		</dl>
 		<dl>
 			<dt><label<!-- IF .entryrow --> for="entry"<!-- ENDIF -->>{L_MISSING_ENTRY}:</label>
-				<br /><span><a href="{CHECK_ENTRY}">{L_CHECK}</a></span></dt>
+				<br><span><a href="{CHECK_ENTRY}">{L_CHECK}</a></span></dt>
 			<dd><!-- IF not .entryrow -->
 				{L_CHECK_ENTRY_EXPLAIN}
 			<!-- ELSE -->
@@ -89,7 +89,7 @@
 
 		<!-- IF .entryrow or .sourcerow -->
 		<p class="submit-buttons">
-			<input class="button1" type="submit" name="delete" value="{L_DELETE}" />
+			<input class="button1" type="submit" name="delete" value="{L_DELETE}">
 		</p>
 		<!-- ENDIF -->
 	</fieldset>
@@ -119,8 +119,8 @@
 
 		<!-- IF .commentrow or .authorrow -->
 		<p class="submit-buttons">
-			<input class="button1" type="submit" name="submit" value="{L_CHANGE_AUTHOR_TO_GUEST}" />
-			<input class="button1" type="submit" name="delete" value="{L_DELETE}" />
+			<input class="button1" type="submit" name="submit" value="{L_CHANGE_AUTHOR_TO_GUEST}">
+			<input class="button1" type="submit" name="delete" value="{L_DELETE}">
 		</p>
 		<!-- ENDIF -->
 	</fieldset>
@@ -129,7 +129,7 @@
 		<legend>{L_MANAGE_PERSONALS}</legend>
 		<dl>
 			<dt><label<!-- IF .personalrow --> for="personal_missing"<!-- ENDIF -->>{L_MISSING_OWNER}:</label>
-				<br /><span>{L_MISSING_OWNER_EXP}</span></dt>
+				<br><span>{L_MISSING_OWNER_EXP}</span></dt>
 			<dd><!-- IF not .personalrow -->
 				{L_CHECK_PERSONALS_EXPLAIN}
 			<!-- ELSE -->
@@ -140,7 +140,7 @@
 		</dl>
 		<dl>
 			<dt><label<!-- IF .personal_bad_row --> for="personal_bad"<!-- ENDIF -->>{L_PERSONAL_ALBUMS}:</label>
-				<br /><span>{L_MISSING_OWNER_EXP}</span></dt>
+				<br><span>{L_MISSING_OWNER_EXP}</span></dt>
 			<dd><!-- IF not .personal_bad_row -->
 				{L_CHECK_PERSONALS_BAD_EXPLAIN}
 			<!-- ELSE -->
@@ -152,7 +152,7 @@
 
 		<!-- IF .personalrow or .personal_bad_row -->
 		<p class="submit-buttons">
-			<input class="button1" type="submit" name="delete" value="{L_DELETE}" />
+			<input class="button1" type="submit" name="delete" value="{L_DELETE}">
 		</p>
 		<!-- ENDIF -->
 	</fieldset>
@@ -166,36 +166,36 @@
 		</dl>
 		<dl>
 			<dt><label for="prune_username_check">{L_PRUNE_USERNAME}:</label>
-				<br /><span>{L_PRUNE_USERNAME_EXP}</span></dt>
-			<dd><input class="radio" type="checkbox" id="prune_username_check" name="prune_username_check" value="1" /> <label for="prune_username_check">{L_PRUNE_CHECK_OPTION}</label></dd>
+				<br><span>{L_PRUNE_USERNAME_EXP}</span></dt>
+			<dd><input class="radio" type="checkbox" id="prune_username_check" name="prune_username_check" value="1"> <label for="prune_username_check">{L_PRUNE_CHECK_OPTION}</label></dd>
 			<dd><textarea id="prune_usernames" name="prune_usernames" rows="5" cols="5"></textarea></dd>
-			<dd><div style="float: right;">[ <a href="{U_FIND_USERNAME}" onclick="find_username(this.href); return false;">{L_FIND_USERNAME}</a> ]</div><label><input type="checkbox" class="radio" id="anonymous" name="prune_anonymous" value="{ANONYMOUS_USER_ID}" /> {L_SELECT_ANONYMOUS}</label></dd>
+			<dd><div style="float: right;">[ <a href="{U_FIND_USERNAME}" onclick="find_username(this.href); return false;">{L_FIND_USERNAME}</a> ]</div><label><input type="checkbox" class="radio" id="anonymous" name="prune_anonymous" value="{ANONYMOUS_USER_ID}"> {L_SELECT_ANONYMOUS}</label></dd>
 		</dl>
 		<dl>
 			<dt><label for="prune_time_check">{L_PRUNE_TIME}:</label>
-				<br /><span>{L_PRUNE_TIME_EXP}</span></dt>
-			<dd><input class="radio" type="checkbox" id="prune_time_check" name="prune_time_check" value="1" /> <label for="prune_time_check">{L_PRUNE_CHECK_OPTION}</label></dd>
-			<dd><input class="inputbox autowidth" type="text" name="prune_time" size="15" value="" /></dd>
+				<br><span>{L_PRUNE_TIME_EXP}</span></dt>
+			<dd><input class="radio" type="checkbox" id="prune_time_check" name="prune_time_check" value="1"> <label for="prune_time_check">{L_PRUNE_CHECK_OPTION}</label></dd>
+			<dd><input class="inputbox autowidth" type="text" name="prune_time" size="15" value=""></dd>
 		</dl>
 		<dl>
 			<dt><label for="prune_comments_check">{L_PRUNE_COMMENTS}:</label></dt>
-			<dd><input class="radio" type="checkbox" id="prune_comments_check" name="prune_comments_check" value="1" /> <label for="prune_comments_check">{L_PRUNE_CHECK_OPTION}</label></dd>
-			<dd><input class="inputbox autowidth" type="text" name="prune_comments" size="15" value="" /></dd>
+			<dd><input class="radio" type="checkbox" id="prune_comments_check" name="prune_comments_check" value="1"> <label for="prune_comments_check">{L_PRUNE_CHECK_OPTION}</label></dd>
+			<dd><input class="inputbox autowidth" type="text" name="prune_comments" size="15" value=""></dd>
 		</dl>
 		<dl>
 			<dt><label for="prune_ratings_check">{L_PRUNE_RATINGS}:</label></dt>
-			<dd><input class="radio" type="checkbox" id="prune_ratings_check" name="prune_ratings_check" value="1" /> <label for="prune_ratings_check">{L_PRUNE_CHECK_OPTION}</label></dd>
-			<dd><input class="inputbox autowidth" type="text" name="prune_ratings" size="15" value="" /></dd>
+			<dd><input class="radio" type="checkbox" id="prune_ratings_check" name="prune_ratings_check" value="1"> <label for="prune_ratings_check">{L_PRUNE_CHECK_OPTION}</label></dd>
+			<dd><input class="inputbox autowidth" type="text" name="prune_ratings" size="15" value=""></dd>
 		</dl>
 		<dl>
 			<dt><label for="prune_rating_avg_check">{L_PRUNE_RATING_AVG}:</label>
-				<br /><span>{L_PRUNE_RATING_AVG_EXP}</span></dt>
-			<dd><input class="radio" type="checkbox" id="prune_rating_avg_check" name="prune_rating_avg_check" value="1" /> <label for="prune_rating_avg_check">{L_PRUNE_CHECK_OPTION}</label></dd>
-			<dd><input class="inputbox autowidth" type="text" name="prune_rating_avg" size="15" value="" /></dd>
+				<br><span>{L_PRUNE_RATING_AVG_EXP}</span></dt>
+			<dd><input class="radio" type="checkbox" id="prune_rating_avg_check" name="prune_rating_avg_check" value="1"> <label for="prune_rating_avg_check">{L_PRUNE_CHECK_OPTION}</label></dd>
+			<dd><input class="inputbox autowidth" type="text" name="prune_rating_avg" size="15" value=""></dd>
 		</dl>
 
 		<p class="submit-buttons">
-			<input class="button1" type="submit" name="prune" value="{L_PRUNE}" />
+			<input class="button1" type="submit" name="prune" value="{L_PRUNE}">
 		</p>
 	</fieldset>
 	<!-- ENDIF -->

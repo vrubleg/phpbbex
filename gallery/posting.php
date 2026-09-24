@@ -158,8 +158,8 @@ if ($mode == 'report')
 			phpbb_gallery_report::add($data);
 
 			$message = $user->lang['IMAGES_REPORTED_SUCCESSFULLY'];
-			$message .= '<br /><br />' . sprintf($user->lang['CLICK_RETURN_IMAGE'], '<a href="' . $image_backlink . '">', '</a>');
-			$message .= '<br /><br />' . sprintf($user->lang['CLICK_RETURN_ALBUM'], '<a href="' . $album_backlink . '">', '</a>');
+			$message .= '<br><br>' . sprintf($user->lang['CLICK_RETURN_IMAGE'], '<a href="' . $image_backlink . '">', '</a>');
+			$message .= '<br><br>' . sprintf($user->lang['CLICK_RETURN_ALBUM'], '<a href="' . $album_backlink . '">', '</a>');
 
 			meta_refresh(3, $image_backlink);
 			trigger_error($message);
@@ -192,8 +192,8 @@ else if ($mode == 'delete')
 		phpbb_gallery_image::delete_images([$image_id], [$image_id => $image_data['image_filename']]);
 		phpbb_gallery_album::update_info($album_id);
 
-		$message = $user->lang['DELETED_IMAGE'] . '<br />';
-		$message .= '<br />' . sprintf($user->lang['CLICK_RETURN_ALBUM'], '<a href="' . $album_backlink . '">', '</a>');
+		$message = $user->lang['DELETED_IMAGE'] . '<br>';
+		$message .= '<br>' . sprintf($user->lang['CLICK_RETURN_ALBUM'], '<a href="' . $album_backlink . '">', '</a>');
 
 		if ($user->data['user_id'] != $image_data['image_user_id'])
 		{
@@ -207,8 +207,8 @@ else if ($mode == 'delete')
 	{
 		if (isset($_POST['cancel']))
 		{
-			$message = $user->lang['DELETED_IMAGE_NOT'] . '<br />';
-			$message .= '<br />' . sprintf($user->lang['CLICK_RETURN_IMAGE'], '<a href="' . $image_backlink . '">', '</a>');
+			$message = $user->lang['DELETED_IMAGE_NOT'] . '<br>';
+			$message .= '<br>' . sprintf($user->lang['CLICK_RETURN_IMAGE'], '<a href="' . $image_backlink . '">', '</a>');
 			meta_refresh(3, $image_backlink);
 			trigger_error($message);
 		}
@@ -309,7 +309,7 @@ else
 				$submit = false;
 			}
 
-			$error = implode('<br />', $process->errors);
+			$error = implode('<br>', $process->errors);
 
 			if (phpbb_gallery_misc::display_captcha('upload'))
 			{
@@ -435,7 +435,7 @@ else
 			}
 
 			$message = '';
-			$error = implode('<br />', $process->errors);
+			$error = implode('<br>', $process->errors);
 			if (phpbb_gallery::$auth->acl_check('i_approve', $album_id, $album_data['album_user_id']))
 			{
 				$message .= (!$error) ? $user->lang['ALBUM_UPLOAD_SUCCESSFUL'] : $user->lang('ALBUM_UPLOAD_SUCCESSFUL_ERROR', $error);
@@ -446,7 +446,7 @@ else
 				$message .= (!$error) ? $user->lang['ALBUM_UPLOAD_NEED_APPROVAL'] : $user->lang('ALBUM_UPLOAD_NEED_APPROVAL_ERROR', $error);
 				$meta_refresh_time = 20;
 			}
-			$message .= '<br /><br />' . sprintf($user->lang['CLICK_RETURN_ALBUM'], '<a href="' . $album_backlink . '">', '</a>');
+			$message .= '<br><br>' . sprintf($user->lang['CLICK_RETURN_ALBUM'], '<a href="' . $album_backlink . '">', '</a>');
 
 			phpbb_gallery_notification::send_notification('album', $album_id, $image_names[0]);
 			phpbb_gallery_image::handle_counter($process->images, true);
@@ -619,7 +619,7 @@ else
 				@unlink(phpbb_gallery_url::path('medium') . $image_data['image_filename']);
 			}
 
-			$error = implode('<br />', $errors);
+			$error = implode('<br>', $errors);
 
 			if (!$error)
 			{

@@ -193,7 +193,7 @@ class acp_gallery_albums
 						$acl_url = '&amp;mode=manage&amp;action=v_mask&amp;album_id[]=' . $album_data['album_id'];
 
 						$message = ($action == 'add') ? $user->lang['ALBUM_CREATED'] : $user->lang['ALBUM_UPDATED'];
-						$message .= '<br /><br />' . sprintf($user->lang['REDIRECT_ACL'], '<a href="' . phpbb_gallery_url::append_sid('admin' , 'index', 'i=gallery_permissions' . $acl_url) . '">', '</a>');
+						$message .= '<br><br>' . sprintf($user->lang['REDIRECT_ACL'], '<a href="' . phpbb_gallery_url::append_sid('admin' , 'index', 'i=gallery_permissions' . $acl_url) . '">', '</a>');
 
 						// Redirect directly to permission settings screen
 						if ($action == 'add' && !$album_perm_from)
@@ -418,7 +418,7 @@ class acp_gallery_albums
 
 					'L_COPY_PERMISSIONS_EXPLAIN'    => $user->lang['COPY_PERMISSIONS_' . strtoupper($action) . '_EXPLAIN'],
 					'L_TITLE'                       => $user->lang[$this->page_title],
-					'ERROR_MSG'                     => (sizeof($errors)) ? implode('<br />', $errors) : '',
+					'ERROR_MSG'                     => (sizeof($errors)) ? implode('<br>', $errors) : '',
 
 					'ALBUM_NAME'                => $album_data['album_name'],
 					'ALBUM_IMAGE'               => $album_data['album_image'],
@@ -504,7 +504,7 @@ class acp_gallery_albums
 					'S_ALBUMS_LIST'         => $albums_list,
 
 					'S_ERROR'               => (sizeof($errors) > 0),
-					'ERROR_MSG'             => (sizeof($errors)) ? implode('<br />', $errors) : '',
+					'ERROR_MSG'             => (sizeof($errors)) ? implode('<br>', $errors) : '',
 				]);
 
 				return;
@@ -558,18 +558,18 @@ class acp_gallery_albums
 
 				if ($row['album_status'] == phpbb_gallery_album::STATUS_LOCKED)
 				{
-					$folder_image = '<img src="images/icon_folder_lock.png" alt="' . $user->lang['LOCKED'] . '" />';
+					$folder_image = '<img src="images/icon_folder_lock.png" alt="' . $user->lang['LOCKED'] . '">';
 				}
 				else
 				{
-					$folder_image = '<img src="images/icon_folder.png" alt="' . $user->lang['FOLDER'] . '" />';
+					$folder_image = '<img src="images/icon_folder.png" alt="' . $user->lang['FOLDER'] . '">';
 				}
 
 				$url = $this->u_action . "&amp;parent_id={$this->parent_id}&amp;a={$row['album_id']}";
 
 				$template->assign_block_vars('albums', [
 					'FOLDER_IMAGE'      => $folder_image,
-					'ALBUM_IMAGE'       => ($row['album_image']) ? '<img src="' . phpbb_gallery_url::path('phpbb') . $row['album_image'] . '" alt="" />' : '',
+					'ALBUM_IMAGE'       => ($row['album_image']) ? '<img src="' . phpbb_gallery_url::path('phpbb') . $row['album_image'] . '" alt="">' : '',
 					'ALBUM_IMAGE_SRC'   => ($row['album_image']) ? phpbb_gallery_url::path('phpbb') . $row['album_image'] : '',
 					'ALBUM_NAME'        => $row['album_name'],
 					'ALBUM_DESCRIPTION' => generate_text_for_display($row['album_desc'], $row['album_desc_uid'], $row['album_desc_bitfield'], $row['album_desc_options']),
@@ -600,7 +600,7 @@ class acp_gallery_albums
 		}
 
 		$template->assign_vars([
-			'ERROR_MSG'     => (sizeof($errors)) ? implode('<br />', $errors) : '',
+			'ERROR_MSG'     => (sizeof($errors)) ? implode('<br>', $errors) : '',
 			'NAVIGATION'    => $navigation,
 			'ALBUM_BOX'     => $album_box,
 			'U_SEL_ACTION'  => $this->u_action,

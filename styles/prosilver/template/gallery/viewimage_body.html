@@ -20,7 +20,7 @@
 		<!-- ENDIF -->
 		<div class="g-current-image">
 			<!-- IF U_IMAGE_LINK --><a href="{U_IMAGE_LINK}" title="{IMAGE_NAME}"><!-- ENDIF -->
-			<img src="{U_IMAGE_SRC}" alt="{IMAGE_NAME}" title="{IMAGE_NAME}" style="width: auto; height: auto; max-width: 100%; max-width: min(100%, {IMAGE_RSZ_WIDTH}px); max-height: {IMAGE_RSZ_HEIGHT}px;" />
+			<img src="{U_IMAGE_SRC}" alt="{IMAGE_NAME}" title="{IMAGE_NAME}" style="width: auto; height: auto; max-width: 100%; max-width: min(100%, {IMAGE_RSZ_WIDTH}px); max-height: {IMAGE_RSZ_HEIGHT}px;">
 			<!-- IF U_IMAGE_LINK --></a><!-- ENDIF -->
 		</div>
 		<!-- IF S_IMAGE_REPORTED --><div class="center"><a href="{U_IMAGE_REPORTED}"><span class="error">{L_IMAGE_REPORTED}</span></a></div><!-- ENDIF -->
@@ -38,7 +38,7 @@
 			</ul>
 			<!-- ENDIF -->
 			<h3>{IMAGE_NAME}</h3>
-			<hr />
+			<hr>
 
 			<fieldset class="fields1 anti-postbody">
 				<dl class="column2">
@@ -48,7 +48,7 @@
 				<!-- IF IMAGE_URL -->
 				<dl class="column1">
 					<dt><label>{L_IMAGE_URL}:</label></dt>
-					<dd><input type="text" size="28" value="{IMAGE_URL}" class="inputbox autowidth-gallery" onclick="this.focus();this.select();" /></dd>
+					<dd><input type="text" size="28" value="{IMAGE_URL}" class="inputbox autowidth-gallery" onclick="this.focus();this.select();"></dd>
 				</dl>
 				<!-- ENDIF -->
 				<dl class="column2">
@@ -58,7 +58,7 @@
 				<!-- IF IMAGE_IMGURL_BBCODE -->
 				<dl class="column1">
 					<dt><label>{L_IMAGE_BBCODE}:</label></dt>
-					<dd><input type="text" size="28" value="{IMAGE_IMGURL_BBCODE}" class="inputbox autowidth-gallery" onclick="this.focus();this.select();" /></dd>
+					<dd><input type="text" size="28" value="{IMAGE_IMGURL_BBCODE}" class="inputbox autowidth-gallery" onclick="this.focus();this.select();"></dd>
 				</dl>
 				<!-- ENDIF -->
 				<!-- IF S_VIEW_RATE -->
@@ -85,12 +85,12 @@
 		<dl class="postprofile" id="profile_poster">
 			<dt>
 				<!-- IF POSTER_AVATAR -->
-					<!-- IF U_POSTER --><a href="{U_POSTER}">{POSTER_AVATAR}</a><!-- ELSE -->{POSTER_AVATAR}<!-- ENDIF --><br />
+					<!-- IF U_POSTER --><a href="{U_POSTER}">{POSTER_AVATAR}</a><!-- ELSE -->{POSTER_AVATAR}<!-- ENDIF --><br>
 				<!-- ENDIF -->
 				<!-- IF not U_POSTER --><strong>{POSTER_FULL}</strong><!-- ELSE -->{POSTER_FULL}<!-- ENDIF -->
 			</dt>
 
-			<!-- IF POSTER_RANK_TITLE or POSTER_RANK_IMG --><dd>{POSTER_RANK_TITLE}<!-- IF POSTER_RANK_TITLE and POSTER_RANK_IMG --><br /><!-- ENDIF -->{POSTER_RANK_IMG}</dd><!-- ENDIF -->
+			<!-- IF POSTER_RANK_TITLE or POSTER_RANK_IMG --><dd>{POSTER_RANK_TITLE}<!-- IF POSTER_RANK_TITLE and POSTER_RANK_IMG --><br><!-- ENDIF -->{POSTER_RANK_IMG}</dd><!-- ENDIF -->
 
 			<dd>&nbsp;</dd>
 
@@ -142,7 +142,7 @@
 			<!-- IF S_QM_DELETE --><option value="images_delete">{L_QUEUE_A_DELETE}</option><!-- ENDIF -->
 			<!-- IF S_QM_REPORT and S_IMAGE_REPORTED --><option value="report_details">{L_READ_REPORT}</option><!-- ENDIF -->
 		</select>
-		<input type="submit" value="{L_GO}" class="button2" />
+		<input type="submit" value="{L_GO}" class="button2">
 		{S_FORM_TOKEN}
 	</fieldset>
 	</form>
@@ -176,7 +176,7 @@
 							<!-- END rate_scale -->
 							</select>
 							<!-- IF not S_ALLOWED_TO_COMMENT and .rate_scale -->
-								<input type="submit" name="submit" value="{L_SUBMIT}" class="button1" />
+								<input type="submit" name="submit" value="{L_SUBMIT}" class="button1">
 							<!-- ENDIF -->
 						<!-- ENDIF -->
 					</dd>
@@ -186,7 +186,7 @@
 				<!-- IF not S_USER_LOGGED_IN -->
 					<dl>
 						<dt><label>{L_USERNAME}:</label></dt>
-						<dd><input class="inputbox autowidth" type="text" name="username" maxlength="32" /></dd>
+						<dd><input class="inputbox autowidth" type="text" name="username" maxlength="32"></dd>
 					</dl>
 				<!-- ENDIF -->
 				<!-- IF CAPTCHA_TEMPLATE -->
@@ -196,20 +196,20 @@
 				<div id="smiley-box">
 					<!-- IF S_SMILIES_ALLOWED and .smiley -->
 						<!-- BEGIN smiley -->
-							<a onclick="insert_text('{smiley.A_SMILEY_CODE}', true); return false;"><img src="{smiley.SMILEY_IMG}" width="{smiley.SMILEY_WIDTH}" height="{smiley.SMILEY_HEIGHT}" alt="{smiley.SMILEY_CODE}" title="{smiley.SMILEY_DESC}" loading="lazy" /></a>
+							<a onclick="insert_text('{smiley.A_SMILEY_CODE}', true); return false;"><img src="{smiley.SMILEY_IMG}" width="{smiley.SMILEY_WIDTH}" height="{smiley.SMILEY_HEIGHT}" alt="{smiley.SMILEY_CODE}" title="{smiley.SMILEY_DESC}" loading="lazy"></a>
 						<!-- END smiley -->
 					<!-- ENDIF -->
 					<!-- IF S_SHOW_SMILEY_LINK and S_SMILIES_ALLOWED-->
 						<a href="{U_MORE_SMILIES}" onclick="popup(this.href, 300, 350, '_phpbbsmilies'); return false;">{L_MORE_SMILIES}</a>
 					<!-- ENDIF -->
 
-					<!-- IF S_SMILIES_ALLOWED and .smiley --><hr /><!-- ENDIF -->
-					<div><label for="attach_sig"><input type="checkbox" name="attach_sig" id="attach_sig"{S_SIGNATURE_CHECKED} /> {L_ATTACH_SIG}</label></div>
+					<!-- IF S_SMILIES_ALLOWED and .smiley --><hr><!-- ENDIF -->
+					<div><label for="attach_sig"><input type="checkbox" name="attach_sig" id="attach_sig"{S_SIGNATURE_CHECKED}> {L_ATTACH_SIG}</label></div>
 				</div>
 				<div id="message-box">
 					<textarea name="message" id="message" rows="7" cols="76" tabindex="3" class="inputbox"></textarea>
 				</div>
-				<div style="text-align: center;"><input style=" padding-bottom: 3px; padding-top: 3px; vertical-align: middle;"type="submit" name="submit" value="{L_SUBMIT}" class="button1" /></div>
+				<div style="text-align: center;"><input style=" padding-bottom: 3px; padding-top: 3px; vertical-align: middle;"type="submit" name="submit" value="{L_SUBMIT}" class="button1"></div>
 			</fieldset>
 		<!-- ENDIF -->
 		{S_FORM_TOKEN}
@@ -257,7 +257,7 @@
 					<!-- IF commentrow.S_ONLINE --><span class="online"> {L_ONLINE}</span><!-- ENDIF -->
 				</dt>
 
-				<!-- IF commentrow.RANK_TITLE or commentrow.RANK_IMG --><dd>{commentrow.RANK_TITLE}<!-- IF commentrow.RANK_TITLE and commentrow.RANK_IMG --><br /><!-- ENDIF -->{commentrow.RANK_IMG}</dd><!-- ENDIF -->
+				<!-- IF commentrow.RANK_TITLE or commentrow.RANK_IMG --><dd>{commentrow.RANK_TITLE}<!-- IF commentrow.RANK_TITLE and commentrow.RANK_IMG --><br><!-- ENDIF -->{commentrow.RANK_IMG}</dd><!-- ENDIF -->
 
 				<!-- IF commentrow.POSTER_AVATAR -->
 					<dd class="avatar"><!-- IF commentrow.U_POST_AUTHOR --><a href="{commentrow.U_POST_AUTHOR}">{commentrow.POSTER_AVATAR}</a><!-- ELSE -->{commentrow.POSTER_AVATAR}<!-- ENDIF --></dd>
@@ -300,10 +300,10 @@
 
 	<form action="{S_ALBUM_ACTION}" method="post">
 	<fieldset class="display-options" style="margin-top: 0; ">
-		<label>{L_ORDER}: <select name="sort_order"><option value="ASC"<!-- IF SORT_ASC --> selected="selected"<!-- ENDIF -->>{L_SORT_ASCENDING}</option><option value="DESC"<!-- IF not SORT_ASC --> selected="selected"<!-- ENDIF -->>{L_SORT_DESCENDING}</option></select>&nbsp;<input type="submit" name="submit" value="{L_GO}" class="button2" /></label>
+		<label>{L_ORDER}: <select name="sort_order"><option value="ASC"<!-- IF SORT_ASC --> selected="selected"<!-- ENDIF -->>{L_SORT_ASCENDING}</option><option value="DESC"<!-- IF not SORT_ASC --> selected="selected"<!-- ENDIF -->>{L_SORT_DESCENDING}</option></select>&nbsp;<input type="submit" name="submit" value="{L_GO}" class="button2"></label>
 	</fieldset>
 	</form>
-	<hr />
+	<hr>
 
 	<div class="topic-actions">
 		<div class="pagination">

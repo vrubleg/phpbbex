@@ -165,7 +165,7 @@ if (phpbb_gallery_config::get('allow_rates') && ($mode != 'edit'))
 			$rating->submit_rating();
 			$s_user_rated = true;
 
-			$message .= $user->lang['RATING_SUCCESSFUL'] . '<br />';
+			$message .= $user->lang['RATING_SUCCESSFUL'] . '<br>';
 		}
 		$template->assign_vars([
 			'S_ALLOWED_TO_RATE'         => $rating->is_allowed(),
@@ -200,7 +200,7 @@ if ($mode == 'add')
 			$captcha_error = $captcha->validate();
 			if ($captcha_error)
 			{
-				$error .= (($error) ? '<br />' : '') . $captcha_error;
+				$error .= (($error) ? '<br>' : '') . $captcha_error;
 			}
 		}
 
@@ -211,22 +211,22 @@ if ($mode == 'add')
 		{
 			if ($comment_username == '')
 			{
-				$error .= (($error) ? '<br />' : '') . $user->lang['MISSING_USERNAME'];
+				$error .= (($error) ? '<br>' : '') . $user->lang['MISSING_USERNAME'];
 			}
 			if ($result = validate_username($comment_username))
 			{
 				$user->add_lang('ucp');
-				$error .= (($error) ? '<br />' : '') . $user->lang[$result . '_USERNAME'];
+				$error .= (($error) ? '<br>' : '') . $user->lang[$result . '_USERNAME'];
 				$submit = false;
 			}
 		}
 		if (($comment_plain == '') && !$s_user_rated)
 		{
-			$error .= (($error) ? '<br />' : '') . $user->lang['MISSING_COMMENT'];
+			$error .= (($error) ? '<br>' : '') . $user->lang['MISSING_COMMENT'];
 		}
 		if ((int) $config['max_post_chars'] > 0 && utf8_strlen($comment_plain) > (int) $config['max_post_chars'])
 		{
-			$error .= (($error) ? '<br />' : '') . $user->lang['COMMENT_TOO_LONG'];
+			$error .= (($error) ? '<br>' : '') . $user->lang['COMMENT_TOO_LONG'];
 		}
 
 		$message_parser             = new parse_message();
@@ -306,12 +306,12 @@ else if ($mode == 'edit')
 			$comment_username = request_var('username', '');
 			if ($comment_username == '')
 			{
-				$error .= (($error) ? '<br />' : '') . $user->lang['MISSING_USERNAME'];
+				$error .= (($error) ? '<br>' : '') . $user->lang['MISSING_USERNAME'];
 			}
 
 			if (validate_username($comment_username))
 			{
-				$error .= (($error) ? '<br />' : '') . $user->lang['INVALID_USERNAME'];
+				$error .= (($error) ? '<br>' : '') . $user->lang['INVALID_USERNAME'];
 				$comment_username = '';
 			}
 
@@ -322,11 +322,11 @@ else if ($mode == 'edit')
 
 		if ($comment_plain == '')
 		{
-			$error .= (($error) ? '<br />' : '') . $user->lang['MISSING_COMMENT'];
+			$error .= (($error) ? '<br>' : '') . $user->lang['MISSING_COMMENT'];
 		}
 		if ((int) $config['max_post_chars'] > 0 && utf8_strlen($comment_plain) > (int) $config['max_post_chars'])
 		{
-			$error .= (($error) ? '<br />' : '') . $user->lang['COMMENT_TOO_LONG'];
+			$error .= (($error) ? '<br>' : '') . $user->lang['COMMENT_TOO_LONG'];
 		}
 
 		$message_parser             = new parse_message();
@@ -379,14 +379,14 @@ else if ($mode == 'delete')
 			add_log('gallery', $image_data['image_album_id'], $image_data['image_id'], 'LOG_GALLERY_COMMENT_DELETED', $image_data['image_name']);
 		}
 
-		$message = $user->lang['DELETED_COMMENT'] . '<br />';
+		$message = $user->lang['DELETED_COMMENT'] . '<br>';
 		$submit = true;
 	}
 	else
 	{
 		if (isset($_POST['cancel']))
 		{
-			$message = $user->lang['DELETED_COMMENT_NOT'] . '<br />';
+			$message = $user->lang['DELETED_COMMENT_NOT'] . '<br>';
 			$submit = true;
 		}
 		else
@@ -418,8 +418,8 @@ if ($submit && !$error)
 		redirect($image_backlink);
 	}
 
-	$message .= '<br />' . sprintf($user->lang['CLICK_RETURN_IMAGE'], '<a href="' . $image_backlink . '">', '</a>');
-	$message .= '<br />' . sprintf($user->lang['CLICK_RETURN_ALBUM'], '<a href="' . $album_backlink . '">', '</a>');
+	$message .= '<br>' . sprintf($user->lang['CLICK_RETURN_IMAGE'], '<a href="' . $image_backlink . '">', '</a>');
+	$message .= '<br>' . sprintf($user->lang['CLICK_RETURN_ALBUM'], '<a href="' . $album_backlink . '">', '</a>');
 
 	meta_refresh(3, $image_backlink);
 	trigger_error($message);

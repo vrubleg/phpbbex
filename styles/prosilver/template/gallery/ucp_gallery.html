@@ -9,22 +9,22 @@
 		<dl>
 			<dt><label for="watch_own1">{L_WATCH_OWN}:</label></dt>
 			<dd>
-				<label for="watch_own1"><input type="radio" name="watch_own" id="watch_own1" value="1"<!-- IF S_WATCH_OWN --> checked="checked"<!-- ENDIF --> /> {L_YES}</label>
-				<label for="watch_own0"><input type="radio" name="watch_own" id="watch_own0" value="0"<!-- IF not S_WATCH_OWN --> checked="checked"<!-- ENDIF --> /> {L_NO}</label>
+				<label for="watch_own1"><input type="radio" name="watch_own" id="watch_own1" value="1"<!-- IF S_WATCH_OWN --> checked="checked"<!-- ENDIF -->> {L_YES}</label>
+				<label for="watch_own0"><input type="radio" name="watch_own" id="watch_own0" value="0"<!-- IF not S_WATCH_OWN --> checked="checked"<!-- ENDIF -->> {L_NO}</label>
 			</dd>
 		</dl>
 		<dl>
 			<dt><label for="watch_com1">{L_WATCH_COM}:</label></dt>
 			<dd>
-				<label for="watch_com1"><input type="radio" name="watch_com" id="watch_com1" value="1"<!-- IF S_WATCH_COM --> checked="checked"<!-- ENDIF --> /> {L_YES}</label>
-				<label for="watch_com0"><input type="radio" name="watch_com" id="watch_com0" value="0"<!-- IF not S_WATCH_COM --> checked="checked"<!-- ENDIF --> /> {L_NO}</label>
+				<label for="watch_com1"><input type="radio" name="watch_com" id="watch_com1" value="1"<!-- IF S_WATCH_COM --> checked="checked"<!-- ENDIF -->> {L_YES}</label>
+				<label for="watch_com0"><input type="radio" name="watch_com" id="watch_com0" value="0"<!-- IF not S_WATCH_COM --> checked="checked"<!-- ENDIF -->> {L_NO}</label>
 			</dd>
 		</dl>
 		</fieldset>
 	</div>
 </div>
 	<fieldset class="submit-buttons">
-		<input class="button1" type="submit" id="submit" name="submit" value="{L_SUBMIT}" />
+		<input class="button1" type="submit" id="submit" name="submit" value="{L_SUBMIT}">
 		{S_FORM_TOKEN}
 	</fieldset>
 </form>
@@ -38,7 +38,7 @@
 	<form id="ucp" method="post" action="{S_UCP_ACTION}"{S_FORM_ENCTYPE}>
 		<fieldset class="submit-buttons">
 			{S_HIDDEN_FIELDS}
-			<input type="submit" name="submit" value="{L_CREATE_PERSONAL_ALBUM}" class="button1" />
+			<input type="submit" name="submit" value="{L_CREATE_PERSONAL_ALBUM}" class="button1">
 			{S_FORM_TOKEN}
 		</fieldset>
 	</form>
@@ -56,15 +56,15 @@
 			<dl>
 				<dt><label for="album_desc">{L_ALBUM_DESC}:</label></dt>
 				<dd><textarea class="inputbox" id="album_desc" name="album_desc" rows="5" cols="45">{ALBUM_DESC}</textarea></dd>
-				<dd><label><input type="checkbox" class="radio" name="desc_parse_bbcode"<!-- IF S_DESC_BBCODE_CHECKED --> checked="checked"<!-- ENDIF --> /> {L_PARSE_BBCODE}</label>
-					<label><input type="checkbox" class="radio" name="desc_parse_smilies"<!-- IF S_DESC_SMILIES_CHECKED --> checked="checked"<!-- ENDIF --> /> {L_PARSE_SMILIES}</label>
-					<label><input type="checkbox" class="radio" name="desc_parse_urls"<!-- IF S_DESC_URLS_CHECKED --> checked="checked"<!-- ENDIF --> /> {L_PARSE_URLS}</label></dd>
+				<dd><label><input type="checkbox" class="radio" name="desc_parse_bbcode"<!-- IF S_DESC_BBCODE_CHECKED --> checked="checked"<!-- ENDIF -->> {L_PARSE_BBCODE}</label>
+					<label><input type="checkbox" class="radio" name="desc_parse_smilies"<!-- IF S_DESC_SMILIES_CHECKED --> checked="checked"<!-- ENDIF -->> {L_PARSE_SMILIES}</label>
+					<label><input type="checkbox" class="radio" name="desc_parse_urls"<!-- IF S_DESC_URLS_CHECKED --> checked="checked"<!-- ENDIF -->> {L_PARSE_URLS}</label></dd>
 			</dl>
 			</fieldset>
 		</div>
 	</div>
 	<fieldset class="submit-buttons">
-		<input class="button1" type="submit" id="submit" name="submit" value="{L_SUBMIT}" />
+		<input class="button1" type="submit" id="submit" name="submit" value="{L_SUBMIT}">
 		{S_FORM_TOKEN}
 	</fieldset>
 </form>
@@ -93,7 +93,7 @@
 						<li class="row<!-- IF album_row.S_ROW_COUNT is odd --> bg1<!-- ELSE --> bg2<!-- ENDIF --><!-- IF album_row.S_REPORTED --> reported<!-- ENDIF -->">
 							<dl>
 								<dt>
-									<a href="{album_row.U_VIEW_ALBUM}" class="topictitle">{album_row.ALBUM_NAME}</a><br />
+									<a href="{album_row.U_VIEW_ALBUM}" class="topictitle">{album_row.ALBUM_NAME}</a><br>
 									<span>{album_row.ALBUM_DESC}</span>
 								</dt>
 								<dd class="g-lastimage">
@@ -101,17 +101,17 @@
 										<!-- IF album_row.UC_FAKE_THUMBNAIL --><span class="g-image-thumbnail" style="width: {FAKE_THUMB_SIZE}px;">{album_row.UC_FAKE_THUMBNAIL}</span><!-- ENDIF -->
 										<span class="g-image-details">
 											<dfn>{L_LAST_IMAGE}</dfn> <a class="g-lastimage-title" href="{album_row.U_LAST_IMAGE}" title="{album_row.LAST_IMAGE_NAME}">{album_row.LAST_IMAGE_NAME}</a>
-											{L_POST_BY_AUTHOR} {album_row.UPLOADER}<br />
+											{L_POST_BY_AUTHOR} {album_row.UPLOADER}<br>
 											{album_row.LAST_IMAGE_TIME}
 										</span>
 									<!-- ELSE -->{L_NO_IMAGES}<!-- ENDIF -->
 								</dd>
-								<dd class="mark"><input type="checkbox" name="album_id_ary[]" value="{album_row.ALBUM_ID}" /></dd>
+								<dd class="mark"><input type="checkbox" name="album_id_ary[]" value="{album_row.ALBUM_ID}"></dd>
 							</dl>
 						</li>
 					<!-- END album_row -->
 					</ul>
-					<div><a onclick="marklist('ucp_gallery', 'album_id_ary', true);">{L_MARK_ALL}</a> :: <a onclick="marklist('ucp_gallery', 'album_id_ary', false);">{L_UNMARK_ALL}</a><br /></div>
+					<div><a onclick="marklist('ucp_gallery', 'album_id_ary', true);">{L_MARK_ALL}</a> :: <a onclick="marklist('ucp_gallery', 'album_id_ary', false);">{L_UNMARK_ALL}</a><br></div>
 				<!-- ENDIF -->
 			<!-- ENDIF -->
 
@@ -133,19 +133,19 @@
 							<dt class="g-image-info">
 								<!-- IF image_row.UC_FAKE_THUMBNAIL --><span class="g-image-thumbnail" style="width: {FAKE_THUMB_SIZE}px;">{image_row.UC_FAKE_THUMBNAIL}</span><!-- ENDIF -->
 								<span class="g-image-details">
-									<dfn>{L_LAST_IMAGE}</dfn> {image_row.UC_IMAGE_NAME}<br />
-									{L_UPLOADED_BY_USER} {image_row.UPLOADER}<br />
-									{image_row.IMAGE_TIME}<br />
+									<dfn>{L_LAST_IMAGE}</dfn> {image_row.UC_IMAGE_NAME}<br>
+									{L_UPLOADED_BY_USER} {image_row.UPLOADER}<br>
+									{image_row.IMAGE_TIME}<br>
 									{L_ALBUM}: <a href="{image_row.U_VIEW_ALBUM}" style="font-weight: bold;">{image_row.ALBUM_NAME}</a>
 								</span>
 							</dt>
 							<!-- IF not S_MANAGE_FAVORITES and image_row.COMMENT -->
 								<dd class="moderation">
-									{L_POST_BY_AUTHOR} {image_row.LAST_COMMENT_BY}<br />
+									{L_POST_BY_AUTHOR} {image_row.LAST_COMMENT_BY}<br>
 									{image_row.LAST_COMMENT_TIME}
 								</dd>
 							<!-- ENDIF -->
-							<dd class="mark"><input type="checkbox" name="image_id_ary[]" value="{image_row.IMAGE_ID}" /></dd>
+							<dd class="mark"><input type="checkbox" name="image_id_ary[]" value="{image_row.IMAGE_ID}"></dd>
 						</dl>
 					</li>
 				<!-- END image_row -->
@@ -175,7 +175,7 @@
 					<option value="unsubscribe">{L_UNSUBSCRIBE}</option>
 				<!-- ENDIF -->
 			</select>
-			<input class="button2" type="submit" value="{L_SUBMIT}" />
+			<input class="button2" type="submit" value="{L_SUBMIT}">
 		</fieldset>
 	</form>
 	</div>

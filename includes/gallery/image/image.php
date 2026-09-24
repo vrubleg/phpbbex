@@ -306,11 +306,11 @@ class phpbb_gallery_image
 				$content = '<span style="font-weight: bold;">' . $image_name . '</span>';
 			break;
 			case 'thumbnail':
-				$content = '<img src="{U_THUMBNAIL}" alt="{IMAGE_NAME}" title="{IMAGE_NAME}" />';
+				$content = '<img src="{U_THUMBNAIL}" alt="{IMAGE_NAME}" title="{IMAGE_NAME}">';
 				$content = str_replace(['{U_THUMBNAIL}', '{IMAGE_NAME}'], [$thumb_url, $image_name], $content);
 			break;
 			case 'fake_thumbnail':
-				$content = '<img src="{U_THUMBNAIL}" alt="{IMAGE_NAME}" title="{IMAGE_NAME}" style="max-width: {FAKE_THUMB_SIZE}px; max-height: {FAKE_THUMB_SIZE}px;" />';
+				$content = '<img src="{U_THUMBNAIL}" alt="{IMAGE_NAME}" title="{IMAGE_NAME}" style="max-width: {FAKE_THUMB_SIZE}px; max-height: {FAKE_THUMB_SIZE}px;">';
 				$content = str_replace(['{U_THUMBNAIL}', '{IMAGE_NAME}', '{FAKE_THUMB_SIZE}'], [$thumb_url, $image_name, phpbb_gallery_config::get('mini_thumbnail_size')], $content);
 			break;
 			case 'lastimage_icon':

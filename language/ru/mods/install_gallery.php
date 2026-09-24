@@ -30,10 +30,10 @@ $lang = array_merge($lang, [
 	'CHECK_TABLES_EXPLAIN'      => 'Следующие таблицы должны существовать, чтобы была возможность конвертирования.',
 
 	'CONVERT_SMARTOR_INTRO'         => 'Конвертер из «Smartor’s Album MOD» в «phpBB Gallery»',
-	'CONVERT_SMARTOR_INTRO_BODY'    => 'Можно ковертировать альбомы, фотографии, оценки и комментарии из <a href="http://www.phpbb.com/community/viewtopic.php?f=16&t=74772">Smartor’s Album MOD</a> (тестировано на версии 2.0.56) и <a href="http://www.phpbbhacks.com/download/5028">Full Album Pack</a> (тестировано на версии 1.4.1) в phpBB Gallery.<br /><br /><strong>Примечание:</strong> <strong>права доступа</strong> <strong>не будут скопированы</strong>.',
+	'CONVERT_SMARTOR_INTRO_BODY'    => 'Можно ковертировать альбомы, фотографии, оценки и комментарии из <a href="http://www.phpbb.com/community/viewtopic.php?f=16&t=74772">Smartor’s Album MOD</a> (тестировано на версии 2.0.56) и <a href="http://www.phpbbhacks.com/download/5028">Full Album Pack</a> (тестировано на версии 1.4.1) в phpBB Gallery.<br><br><strong>Примечание:</strong> <strong>права доступа</strong> <strong>не будут скопированы</strong>.',
 	'CONVERT_TS_INTRO'              => 'Конвертер из «TS Gallery» в «phpBB Gallery»',
-	'CONVERT_TS_INTRO_BODY'         => 'Можно ковертировать альбомы, фотографии, оценки и комментарии из <a href="http://www.phpbb.com/community/viewtopic.php?f=70&t=610509">TS Gallery</a> (тестировано на версии 0.2.1) в phpBB Gallery.<br /><br /><strong>Примечание:</strong> <strong>права доступа</strong> <strong>не будут скопированы</strong>.',
-	'CONVERT_COMPLETE_EXPLAIN'      => 'Конвертация из вашей галереи в phpBB Gallery v%s прошла успешно.<br />Удостоверьтесь, что все параметры перенеслись правильно. Не забудьте удалить папку <em>install</em>.<br /><br /><strong>Не забудьте также, что права доступа не копировались и вам придётся задать их заново.</strong><br /><br />Очистить базу данных от пустых записей, для которых фотографии отсутствуют, можно в администраторском разделе: Модули → Галерея → Очистка галереи.',
+	'CONVERT_TS_INTRO_BODY'         => 'Можно ковертировать альбомы, фотографии, оценки и комментарии из <a href="http://www.phpbb.com/community/viewtopic.php?f=70&t=610509">TS Gallery</a> (тестировано на версии 0.2.1) в phpBB Gallery.<br><br><strong>Примечание:</strong> <strong>права доступа</strong> <strong>не будут скопированы</strong>.',
+	'CONVERT_COMPLETE_EXPLAIN'      => 'Конвертация из вашей галереи в phpBB Gallery v%s прошла успешно.<br>Удостоверьтесь, что все параметры перенеслись правильно. Не забудьте удалить папку <em>install</em>.<br><br><strong>Не забудьте также, что права доступа не копировались и вам придётся задать их заново.</strong><br><br>Очистить базу данных от пустых записей, для которых фотографии отсутствуют, можно в администраторском разделе: Модули → Галерея → Очистка галереи.',
 
 	'CONVERTED_ALBUMS'          => 'Альбомы скопированы.',
 	'CONVERTED_COMMENTS'        => 'Комментарии скопированы.',
@@ -50,7 +50,7 @@ $lang = array_merge($lang, [
 	'FILE_STILL_EXISTS'             => 'Файл всё ещё существует.',
 	'FILES_REQUIRED_EXPLAIN'        => 'Для корректного функционирования галерее нужен доступ на запись к некоторым файлам и папкам. Если вы видите надпись «Недоступно», то должны изменить права доступа для файла или папки так, чтоб phpBB мог записывать в них.',
 	'FILES_DELETE_OUTDATED'         => 'Удалить устаревшие файлы',
-	'FILES_DELETE_OUTDATED_EXPLAIN' => 'Действие необратимо, файлы удаляются полностью и не могут быть восстановлены.<br /><br />Примечание:<br />если у вас несколько стилей и языков, вам придётся удалить файлы вручную.',
+	'FILES_DELETE_OUTDATED_EXPLAIN' => 'Действие необратимо, файлы удаляются полностью и не могут быть восстановлены.<br><br>Примечание:<br>если у вас несколько стилей и языков, вам придётся удалить файлы вручную.',
 	'FILES_OUTDATED'                => 'Устаревшие файлы',
 	'FILES_OUTDATED_EXPLAIN'        => '<strong>Устаревшие</strong>: для предотвращения хакерского доступа удалите эти файлы.',
 	'FOUND_INSTALL'                 => 'Повторная установка',
@@ -108,12 +108,12 @@ $lang = array_merge($lang, [
 	'TABLE_PREFIX_EXPLAIN'      => 'Префикс таблиц БД phpBB2',
 
 	'UNINSTALL_INTRO'                   => 'Удаление галереи',
-	'UNINSTALL_INTRO_BODY'              => 'Удаление phpBB Gallery с вашей конференции.<br /><br /><strong>Будьте осторожны: все альбомы, фотографии и комментарии будут удалены без возможности восстановления.</strong>',
+	'UNINSTALL_INTRO_BODY'              => 'Удаление phpBB Gallery с вашей конференции.<br><br><strong>Будьте осторожны: все альбомы, фотографии и комментарии будут удалены без возможности восстановления.</strong>',
 	'UNINSTALL_REQUIREMENTS'            => 'Требования',
 	'UNINSTALL_REQUIREMENTS_EXPLAIN'    => 'Перед удалением галереи будут проведены некоторые тесты, чтобы убедиться, есть ли у вас право удалять галерею.',
 	'UNINSTALL_START'                   => 'Удаление',
 	'UNINSTALL_FINISHED'                => 'Удаление почти закончено',
-	'UNINSTALL_FINISHED_EXPLAIN'        => 'Вы успешно удалили phpBB Gallery.<br/><br/><strong>Теперь вам осталось откатить изменения в файлах конференции, описанные в <em>install.xml</em>, и удалить файлы галереи. После этого ваша конференция будет полностью очищена от галереи.</strong>',
+	'UNINSTALL_FINISHED_EXPLAIN'        => 'Вы успешно удалили phpBB Gallery.<br><br><strong>Теперь вам осталось откатить изменения в файлах конференции, описанные в <em>install.xml</em>, и удалить файлы галереи. После этого ваша конференция будет полностью очищена от галереи.</strong>',
 
 	'UPDATE_INSTALLATION_EXPLAIN'   => 'Обновление phpBB Gallery.',
 

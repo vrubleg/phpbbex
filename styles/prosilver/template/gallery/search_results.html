@@ -36,9 +36,9 @@ function toggleElement(oElement)
 	<!-- IF SEARCH_MATCHES -->
 		<div class="search-box">
 			<!-- IF SEARCH_IN_RESULTS -->
-				<label for="add_keywords">{L_SEARCH_IN_RESULTS}: <input type="text" name="add_keywords" id="add_keywords" value="" class="inputbox narrow" /></label>
-				<input type="hidden" name="show_results" value="posts" />
-				<input class="button2" type="submit" name="submit" value="{L_SEARCH}" />
+				<label for="add_keywords">{L_SEARCH_IN_RESULTS}: <input type="text" name="add_keywords" id="add_keywords" value="" class="inputbox narrow"></label>
+				<input type="hidden" name="show_results" value="posts">
+				<input class="button2" type="submit" name="submit" value="{L_SEARCH}">
 			<!-- ENDIF -->
 		</div>
 	<!-- ENDIF -->
@@ -76,7 +76,7 @@ function toggleElement(oElement)
 			<dl class="postprofile" id="profile{commentrow.COMMENT_ID}">
 				<dd>{L_COMMENT_ON}:</dd>
 				<dd>{commentrow.UC_IMAGE_NAME}</dd>
-				<dt>{commentrow.UC_THUMBNAIL}</dt><br />
+				<dt>{commentrow.UC_THUMBNAIL}</dt><br>
 
 				<dd>{L_UPLOADED_BY_USER} {commentrow.IMAGE_AUTHOR}</dd>
 				<dd>{commentrow.IMAGE_TIME}</dd>
@@ -92,12 +92,12 @@ function toggleElement(oElement)
 
 	<fieldset class="display-options">
 		<label>{L_SORT_BY} {S_SELECT_SORT_KEY}</label>
-		<label>{S_SELECT_SORT_DIR} <input type="submit" name="sort" value="{L_GO}" class="button2" /></label>
+		<label>{S_SELECT_SORT_DIR} <input type="submit" name="sort" value="{L_GO}" class="button2"></label>
 	</fieldset>
 
 	</form>
 
-	<hr />
+	<hr>
 <!-- ENDIF -->
 
 <!-- IF PAGINATION or .imagerow or PAGE_NUMBER -->

@@ -11,8 +11,8 @@
 
 <!-- IF ALBUM_DESC or MODERATORS -->
 <p>
-	<!-- IF ALBUM_DESC --><strong>{L_FORUM_DESC}:</strong> {ALBUM_DESC}<br /><!-- ENDIF -->
-	<!-- IF MODERATORS --><strong>{L_MODERATORS}:</strong> {MODERATORS}<br /><!-- ENDIF -->
+	<!-- IF ALBUM_DESC --><strong>{L_FORUM_DESC}:</strong> {ALBUM_DESC}<br><!-- ENDIF -->
+	<!-- IF MODERATORS --><strong>{L_MODERATORS}:</strong> {MODERATORS}<br><!-- ENDIF -->
 </p>
 <!-- ENDIF -->
 
@@ -33,9 +33,9 @@
 		<div class="search-box">
 			<form method="post" id="album-search" action="{S_SEARCHBOX_ACTION}">
 			<fieldset>
-				<input class="inputbox search tiny" type="text" name="keywords" id="search_keywords" size="20" value="" placeholder="{L_SEARCH_ALBUM}" />
-				<input class="button2" type="submit" value="{L_SEARCH}" />
-				<input type="hidden" value="{ALBUM_ID}" name="aid[]" />
+				<input class="inputbox search tiny" type="text" name="keywords" id="search_keywords" size="20" value="" placeholder="{L_SEARCH_ALBUM}">
+				<input class="button2" type="submit" value="{L_SEARCH}">
+				<input type="hidden" value="{ALBUM_ID}" name="aid[]">
 			</fieldset>
 			</form>
 		</div>
@@ -66,10 +66,10 @@
 	<form action="{S_ALBUM_ACTION}" method="post">
 	<fieldset class="display-options">
 		<label>{L_SORT_BY} {S_SELECT_SORT_KEY}</label>
-		<label>{S_SELECT_SORT_DIR} <input type="submit" name="sort" value="{L_GO}" class="button2" /></label>
+		<label>{S_SELECT_SORT_DIR} <input type="submit" name="sort" value="{L_GO}" class="button2"></label>
 	</fieldset>
 	</form>
-	<hr />
+	<hr>
 	<!-- IF .imagerow -->
 	<div class="topic-actions">
 		<!-- IF U_UPLOAD_IMAGE -->
@@ -81,13 +81,13 @@
 			{TOTAL_IMAGES}<!-- IF PAGINATION --> &bull; <a onclick="jumpto();" title="{L_JUMP_TO_PAGE}">{PAGE_NUMBER}</a> &bull; <span>{PAGINATION}</span><!-- ENDIF -->
 		</div>
 	</div>
-	<br />
+	<br>
 	<!-- ENDIF -->
 <!-- ENDIF -->
 
 <!-- IF S_IS_POSTABLE -->
 	<h3>{L_ALBUM_PERMISSIONS}</h3>
-	<p><!-- BEGIN rules -->{rules.RULE}<br /><!-- END rules --></p>
+	<p><!-- BEGIN rules -->{rules.RULE}<br><!-- END rules --></p>
 <!-- ENDIF -->
 
 <!-- INCLUDE overall_footer.html -->

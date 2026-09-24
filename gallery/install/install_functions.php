@@ -77,7 +77,7 @@ function module_select($module_class, $default_id, $default_langname)
 function adm_back_link($u_action)
 {
 	global $user;
-	return '<br /><br /><a href="' . $u_action . '">&laquo; ' . $user->lang['BACK_TO_PREV'] . '</a>';
+	return '<br><br><a href="' . $u_action . '">&laquo; ' . $user->lang['BACK_TO_PREV'] . '</a>';
 }
 
 /**

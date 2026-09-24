@@ -49,7 +49,7 @@ class phpbb_gallery_album_manage
 	static public function back_link($u_action)
 	{
 		global $user;
-		return '<br /><br /><a href="' . $u_action . '">&laquo; ' . $user->lang['BACK_TO_PREV'] . '</a>';
+		return '<br><br><a href="' . $u_action . '">&laquo; ' . $user->lang['BACK_TO_PREV'] . '</a>';
 	}
 
 	/**

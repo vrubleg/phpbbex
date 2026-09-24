@@ -170,7 +170,7 @@ class phpbb_gallery_upload
 			global $user;
 
 			$this->file->remove();
-			$this->new_error($user->lang('UPLOAD_ERROR', $this->file->uploadname, implode('<br />&raquo; ', $this->file->error)));
+			$this->new_error($user->lang('UPLOAD_ERROR', $this->file->uploadname, implode('<br>&raquo; ', $this->file->error)));
 			return false;
 		}
 		@chmod($this->file->destination_file, 0777);
