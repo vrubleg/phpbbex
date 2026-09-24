@@ -3398,7 +3398,6 @@ function page_header($page_title = '', $display_online_list = true)
 		'U_UCP_BOOKMARKS'       => append_sid(PHPBB_ROOT_PATH . 'ucp.php', 'i=main&amp;mode=bookmarks'),
 		'U_UCP_SUBSCRIBED'      => append_sid(PHPBB_ROOT_PATH . 'ucp.php', 'i=main&amp;mode=subscribed'),
 		'U_UCP_DRAFTS'          => append_sid(PHPBB_ROOT_PATH . 'ucp.php', 'i=main&amp;mode=drafts'),
-		'U_UCP_ATTACHMENTS'     => append_sid(PHPBB_ROOT_PATH . 'ucp.php', 'i=attachments&amp;mode=attachments'),
 		'U_UCP_USERGROUPS'      => append_sid(PHPBB_ROOT_PATH . 'ucp.php', 'i=groups&amp;mode=membership'),
 		'U_UCP_FRIENDS'         => append_sid(PHPBB_ROOT_PATH . 'ucp.php', 'i=zebra&amp;mode=friends'),
 		'U_UCP_PROFILE_INFO'    => append_sid(PHPBB_ROOT_PATH . 'ucp.php', 'i=profile&amp;mode=profile_info'),

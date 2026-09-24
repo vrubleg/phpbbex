@@ -727,6 +727,7 @@ if (version_compare($config['phpbbex_version'], '1.10.0', '<='))
 	remove_module('acp', 'quick_reply', 'quick_reply');
 	remove_module('ucp', 'pm', 'popup');
 	remove_module('ucp', 'pm', 'options');
+	remove_module('ucp', 'attachments', 'attachments');
 	remove_module('acp', 'database', 'backup');
 	remove_module('acp', 'database', 'restore');
 	remove_module('acp', 'search', 'index');
