@@ -156,7 +156,6 @@ $lang = array_merge($lang, [
 	'POST_APPROVAL_NOTIFY'      => 'You will be notified when your post has been approved.',
 	'POST_DELETED'              => 'This message has been deleted successfully.',
 	'POST_EDITED_MOD'           => 'This message has been edited successfully, but it will need to be approved by a moderator before it is publicly viewable.',
-	'POST_GLOBAL'               => 'Global',
 	'POST_ICON'                 => 'Post icon',
 	'POST_NORMAL'               => 'Normal',
 	'POST_REVIEW'               => 'Post review',

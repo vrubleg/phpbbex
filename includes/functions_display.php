@@ -703,12 +703,6 @@ function topic_status(&$topic_row, $replies, $unread_topic, &$folder_img, &$fold
 
 	switch ($topic_row['topic_type'])
 	{
-		case POST_GLOBAL:
-			$topic_type = $user->lang['VIEW_TOPIC_GLOBAL'];
-			$folder = 'announce_read';
-			$folder_new = 'announce_unread';
-		break;
-
 		case POST_ANNOUNCE:
 			$topic_type = $user->lang['VIEW_TOPIC_ANNOUNCEMENT'];
 			$folder = 'announce_read';
@@ -794,7 +788,6 @@ function display_topic_rows($tpl_loopname, $topic_ids)
 		$row = $topic_rows[$topic_id];
 		$forum_id = $row['forum_id'];
 
-		$s_type_switch_test = ($row['topic_type'] == POST_ANNOUNCE || $row['topic_type'] == POST_GLOBAL) ? 1 : 0;
 		$replies = ($auth->acl_get('m_approve', $forum_id)) ? $row['topic_replies_real'] : $row['topic_replies'];
 		$unread_topic = (isset($topic_tracking_info[$topic_id]) && $row['topic_last_post_time'] > $topic_tracking_info[$topic_id]);
 
@@ -806,8 +799,6 @@ function display_topic_rows($tpl_loopname, $topic_ids)
 		$topic_unapproved = (!$row['topic_approved'] && $auth->acl_get('m_approve', $forum_id));
 		$posts_unapproved = ($row['topic_approved'] && $row['topic_replies'] < $row['topic_replies_real'] && $auth->acl_get('m_approve', $forum_id));
 		$u_mcp_queue = ($topic_unapproved || $posts_unapproved) ? append_sid(PHPBB_ROOT_PATH . 'mcp.php', 'i=queue&amp;mode=' . (($topic_unapproved) ? 'approve_details' : 'unapproved_posts') . "&amp;t={$topic_id}") : '';
-		$s_type_switch = ($row['topic_type'] == POST_ANNOUNCE || $row['topic_type'] == POST_GLOBAL) ? 1 : 0;
-
 		$template->assign_block_vars($tpl_loopname, [
 			'FORUM_ID'                  => $forum_id,
 			'TOPIC_ID'                  => $topic_id,
@@ -847,10 +838,8 @@ function display_topic_rows($tpl_loopname, $topic_ids)
 			'S_POSTS_UNAPPROVED'    => $posts_unapproved,
 			'S_HAS_POLL'            => (bool) $row['poll_start'],
 			'S_POST_ANNOUNCE'       => ($row['topic_type'] == POST_ANNOUNCE),
-			'S_POST_GLOBAL'         => ($row['topic_type'] == POST_GLOBAL),
 			'S_POST_STICKY'         => ($row['topic_type'] == POST_STICKY),
 			'S_TOPIC_LOCKED'        => ($row['topic_status'] == ITEM_LOCKED),
-			'S_TOPIC_TYPE_SWITCH'   => ($s_type_switch == $s_type_switch_test) ? -1 : $s_type_switch_test,
 
 			'U_NEWEST_POST'         => $view_topic_url . '&amp;view=unread#unread',
 			'U_LAST_POST'           => $view_topic_url . '&amp;p=' . $row['topic_last_post_id'] . '#p' . $row['topic_last_post_id'],
@@ -928,11 +917,13 @@ function display_active_topics($tpl_loopname, $total_limit)
 	}
 
 	// Get the allowed topics
+	$sql_exclude_announcements = !empty($config['announce_index']) ? 'AND topic_type <> ' . POST_ANNOUNCE : '';
+
 	$sql = 'SELECT forum_id, topic_id, topic_type
 		FROM ' . TOPICS_TABLE . '
 		WHERE ' . $db->sql_in_set('topic_id', $excluded_topic_ids, true) . '
 			AND ' . $db->sql_in_set('forum_id', $forum_ids) . '
-			AND topic_type <> ' . POST_GLOBAL . '
+			' . $sql_exclude_announcements . '
 			AND (' . $db->sql_in_set('forum_id', $m_approve_ids, false, true) . '
 				OR topic_approved = 1)
 		ORDER BY topic_last_post_time DESC';
@@ -949,9 +940,9 @@ function display_active_topics($tpl_loopname, $total_limit)
 }
 
 /**
-* Display global announcements
+* Display announcements
 */
-function display_global_announcements($tpl_loopname)
+function display_announcements($tpl_loopname)
 {
 	global $auth, $cache, $config, $db, $template, $user;
 
@@ -963,16 +954,21 @@ function display_global_announcements($tpl_loopname)
 		return;
 	}
 
-	$sql = 'SELECT t.forum_id, t.topic_id
+	$sql = 'SELECT t.forum_id, t.topic_id, t.topic_approved
 		FROM ' . TOPICS_TABLE . ' t
 		WHERE ' . $db->sql_in_set('t.forum_id', $forum_ary) . "
-			AND t.topic_type = " . POST_GLOBAL . '
+			AND t.topic_type = " . POST_ANNOUNCE . '
 		ORDER BY t.topic_priority DESC, t.topic_time DESC';
 	$result = $db->sql_query($sql);
 
 	$topic_ids = [];
 	while ($row = $db->sql_fetchrow($result))
 	{
+		if (!$row['topic_approved'] && !$auth->acl_get('m_approve', $row['forum_id']))
+		{
+			continue;
+		}
+
 		$topic_ids[] = $row['topic_id'];
 	}
 	$db->sql_freeresult($result);

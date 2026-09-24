@@ -61,7 +61,6 @@ class mcp_main
 
 			case 'make_announce':
 			case 'make_sticky':
-			case 'make_global':
 			case 'make_normal':
 
 				$topic_ids = (!$quickmod) ? request_var('topic_id_list', [0]) : [request_var('t', 0)];
@@ -288,12 +287,6 @@ function change_topic_type($action, $topic_ids)
 			$l_new_type = (sizeof($topic_ids) == 1) ? 'MCP_MAKE_ANNOUNCEMENT' : 'MCP_MAKE_ANNOUNCEMENTS';
 		break;
 
-		case 'make_global':
-			$new_topic_type = POST_GLOBAL;
-			$check_acl = 'f_announce';
-			$l_new_type = (sizeof($topic_ids) == 1) ? 'MCP_MAKE_GLOBAL' : 'MCP_MAKE_GLOBALS';
-		break;
-
 		case 'make_sticky':
 			$new_topic_type = POST_STICKY;
 			$check_acl = 'f_sticky';
@@ -443,13 +436,13 @@ function mcp_move_topic($topic_ids)
 		// Posts (topic replies + topic post if approved) added to target forum
 		$topic_posts_added = 0;
 
-		// Posts (topic replies + topic post if approved and not global announcement) removed from source forum
+		// Posts (topic replies + topic post if approved) removed from source forum
 		$topic_posts_removed = 0;
 
-		// Real topics removed from source forum (all topics without global announcements)
+		// Real topics removed from source forum
 		$topics_removed = 0;
 
-		// Approved topics removed from source forum (except global announcements)
+		// Approved topics removed from source forum
 		$topics_authed_removed = 0;
 
 		foreach ($topic_data as $topic_id => $topic_info)

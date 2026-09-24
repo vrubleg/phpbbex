@@ -28,8 +28,6 @@ $lang = array_merge($lang, [
 	'USER_TOPICS'               => 'Topics by ',
 	'USER_POSTS'                => 'Posts by ',
 
-	'GLOBAL'                => 'Global announcement',
-
 	'IGNORED_TERMS'         => 'ignored',
 	'IGNORED_TERMS_EXPLAIN' => 'The following words in your search query were ignored because they are too common words: <strong>%s</strong>.',
 

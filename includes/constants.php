@@ -96,7 +96,6 @@ define('OPTION_FLAG_LINKS', 4);
 define('POST_NORMAL', 0);
 define('POST_STICKY', 1);
 define('POST_ANNOUNCE', 2);
-define('POST_GLOBAL', 3);
 
 // Lastread types
 define('TRACK_NORMAL', 0);

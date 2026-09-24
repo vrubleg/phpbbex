@@ -1531,6 +1531,9 @@ if (version_compare($config['phpbbex_version'], '1.10.0', '<='))
 	// Use zero as the marker for votes converted from phpBB 2.
 	$db->sql_query('UPDATE ' . POLL_VOTES_TABLE . ' SET poll_option_id = 0 WHERE poll_option_id = 127');
 
+	// Merge global announcements into announcements.
+	$db->sql_query('UPDATE ' . TOPICS_TABLE . ' SET topic_type = ' . POST_ANNOUNCE . ' WHERE topic_type = 3');
+
 	// Clear cache and reset bots.
 
 	$purge_default = 'all';

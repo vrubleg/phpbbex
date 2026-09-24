@@ -122,7 +122,6 @@ if (!$auth->acl_getf_global('m_'))
 		'lock'          => 'f_user_lock',
 		'make_sticky'   => 'f_sticky',
 		'make_announce' => 'f_announce',
-		'make_global'   => 'f_announce',
 		'make_normal'   => ['f_announce', 'f_sticky']
 	];
 
@@ -168,7 +167,6 @@ if ($quickmod)
 		case 'unlock_post':
 		case 'make_sticky':
 		case 'make_announce':
-		case 'make_global':
 		case 'make_normal':
 		case 'fork':
 		case 'move':
@@ -610,12 +608,11 @@ function mcp_sorting($mode, &$sort_days, &$sort_key, &$sort_dir, &$sort_by_sql, 
 			$sql = 'SELECT COUNT(topic_id) AS total
 				FROM ' . TOPICS_TABLE . "
 				{$where_sql} forum_id = {$forum_id}
-					AND topic_type NOT IN (" . POST_ANNOUNCE . ', ' . POST_GLOBAL . ")
 					AND topic_last_post_time >= {$min_time}";
 
 			if (!$auth->acl_get('m_approve', $forum_id))
 			{
-				$sql .= 'AND topic_approved = 1';
+				$sql .= ' AND topic_approved = 1';
 			}
 		break;
 
