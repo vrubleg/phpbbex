@@ -474,9 +474,9 @@ class module
 		echo '<!DOCTYPE html>';
 		echo '<html dir="ltr">';
 		echo '<head>';
-		echo '<meta charset="utf-8" />';
+		echo '<meta charset="utf-8">';
 		echo '<title>' . $lang['INST_ERR_FATAL'] . '</title>';
-		echo '<link href="../adm/style/admin.css" rel="stylesheet" media="screen" />';
+		echo '<link href="../adm/style/admin.css" rel="stylesheet" media="screen">';
 		echo '</head>';
 		echo '<body id="errorpage">';
 		echo '<div id="wrap">';
@@ -524,7 +524,7 @@ class module
 
 			$template->assign_block_vars('checks', [
 				'TITLE'     => basename($file) . ' [ ' . $line . ' ]',
-				'RESULT'    => '<b style="color:red">' . $error . '</b><br />&#187; SQL:' . $sql,
+				'RESULT'    => '<b style="color:red">' . $error . '</b><br>&#187; SQL:' . $sql,
 			]);
 
 			return;
@@ -567,7 +567,7 @@ class module
 				$maxlength = (int) $tpl_type[2];
 				$autocomplete = (isset($options['autocomplete']) && $options['autocomplete'] == 'off') ? ' autocomplete="off"' : '';
 
-				$tpl = '<input id="' . $name . '" type="' . $tpl_type[0] . '"' . (($size) ? ' size="' . $size . '"' : '') . ' maxlength="' . ($maxlength ?: 255) . '" name="' . $name . '"' . $autocomplete . ' value="' . $value . '" />';
+				$tpl = '<input id="' . $name . '" type="' . $tpl_type[0] . '"' . (($size) ? ' size="' . $size . '"' : '') . ' maxlength="' . ($maxlength ?: 255) . '" name="' . $name . '"' . $autocomplete . ' value="' . $value . '">';
 			break;
 
 			case 'textarea':
@@ -584,8 +584,8 @@ class module
 				$tpl_type_cond = explode('_', $tpl_type[1]);
 				$type_no = ($tpl_type_cond[0] != 'disabled' && $tpl_type_cond[0] != 'enabled');
 
-				$tpl_no = '<label><input type="radio" name="' . $name . '" value="0"' . $key_no . ' class="radio" /> ' . (($type_no) ? $lang['NO'] : $lang['DISABLED']) . '</label>';
-				$tpl_yes = '<label><input type="radio" name="' . $name . '" value="1"' . $key_yes . ' class="radio" /> ' . (($type_no) ? $lang['YES'] : $lang['ENABLED']) . '</label>';
+				$tpl_no = '<label><input type="radio" name="' . $name . '" value="0"' . $key_no . ' class="radio"> ' . (($type_no) ? $lang['NO'] : $lang['DISABLED']) . '</label>';
+				$tpl_yes = '<label><input type="radio" name="' . $name . '" value="1"' . $key_yes . ' class="radio"> ' . (($type_no) ? $lang['YES'] : $lang['ENABLED']) . '</label>';
 
 				$tpl = ($tpl_type_cond[0] == 'yes' || $tpl_type_cond[0] == 'enabled') ? $tpl_yes . '&nbsp;&nbsp;' . $tpl_no : $tpl_no . '&nbsp;&nbsp;' . $tpl_yes;
 			break;

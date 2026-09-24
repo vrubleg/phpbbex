@@ -493,7 +493,7 @@ class acp_groups
 					'S_SPECIAL_GROUP'   => ($group_type == GROUP_SPECIAL),
 					'S_USER_FOUNDER'    => ($user->data['user_type'] == USER_FOUNDER),
 
-					'ERROR_MSG'             => (sizeof($error)) ? implode('<br />', $error) : '',
+					'ERROR_MSG'             => (sizeof($error)) ? implode('<br>', $error) : '',
 					'GROUP_NAME'            => ($group_type == GROUP_SPECIAL) ? $user->lang['G_' . $group_name] : $group_name,
 					'GROUP_INTERNAL_NAME'   => $group_name,
 					'GROUP_DESC'            => $group_desc_data['text'],

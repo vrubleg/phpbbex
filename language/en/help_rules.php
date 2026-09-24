@@ -37,7 +37,7 @@ $help = [
 	],
 	[
 		0 => '2.2. Topic Subject',
-		1 => 'The rule: the topic subject should reflect its essence as clearly as possible.<br />Do not:<ol><li>use senseless expressions such as "Help!", "It’s urgent!", etc. as a topic subject;</li><li>write the whole subject or some part of it in capital letters, e.g.: "WHAT SHOULD BE DONE???";</li><li>use a large amount of grouped punctuation marks, e.g.: "The computer hangs at boot!!! What should I do???";</li><li>use the embellishment symbols, e.g.: "..:: Topic ::..";</li><li>use the name of the topic that is not connected logically with your message.</li></ol>Recommended to express the essence of the topic as briefly as possible: "The results of Quake III Championship".',
+		1 => 'The rule: the topic subject should reflect its essence as clearly as possible.<br>Do not:<ol><li>use senseless expressions such as "Help!", "It’s urgent!", etc. as a topic subject;</li><li>write the whole subject or some part of it in capital letters, e.g.: "WHAT SHOULD BE DONE???";</li><li>use a large amount of grouped punctuation marks, e.g.: "The computer hangs at boot!!! What should I do???";</li><li>use the embellishment symbols, e.g.: "..:: Topic ::..";</li><li>use the name of the topic that is not connected logically with your message.</li></ol>Recommended to express the essence of the topic as briefly as possible: "The results of Quake III Championship".',
 	],
 	[
 		0 => '2.3. Messages',

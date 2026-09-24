@@ -355,7 +355,7 @@ class acp_modules
 				{
 					$template->assign_vars([
 						'S_ERROR'   => true,
-						'ERROR_MSG' => implode('<br />', $errors)]
+						'ERROR_MSG' => implode('<br>', $errors)]
 					);
 				}
 
@@ -369,7 +369,7 @@ class acp_modules
 		{
 			$template->assign_vars([
 				'S_ERROR'   => true,
-				'ERROR_MSG' => implode('<br />', $errors)]
+				'ERROR_MSG' => implode('<br>', $errors)]
 			);
 		}
 
@@ -424,7 +424,7 @@ class acp_modules
 					$icon = ($row['module_enabled']) ? 'icon_page.png' : 'icon_page_locked.png';
 				}
 				$icon_alt = (!$row['module_enabled']) ? $user->lang['DEACTIVATED_MODULE'] : $user->lang[($is_category) ? 'CATEGORY' : 'MODULE'];
-				$module_image = '<img src="images/' . $icon . '" alt="' . $icon_alt . '" />';
+				$module_image = '<img src="images/' . $icon . '" alt="' . $icon_alt . '">';
 
 				$url = $this->u_action . '&amp;parent_id=' . $this->parent_id . '&amp;m=' . $row['module_id'];
 

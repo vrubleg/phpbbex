@@ -23,7 +23,7 @@
 <fieldset class="permissions" id="perm{p_mask.S_ROW_COUNT}{p_mask.f_mask.S_ROW_COUNT}">
 	<legend id="legend{p_mask.S_ROW_COUNT}{p_mask.f_mask.S_ROW_COUNT}">
 		<!-- IF not p_mask.S_VIEW -->
-			<input type="checkbox" style="display: none;" class="permissions-checkbox" name="inherit[{p_mask.f_mask.UG_ID}][{p_mask.f_mask.FORUM_ID}]" id="checkbox{p_mask.S_ROW_COUNT}{p_mask.f_mask.S_ROW_COUNT}" value="1" onclick="toggle_opacity('{p_mask.S_ROW_COUNT}{p_mask.f_mask.S_ROW_COUNT}')" />
+			<input type="checkbox" style="display: none;" class="permissions-checkbox" name="inherit[{p_mask.f_mask.UG_ID}][{p_mask.f_mask.FORUM_ID}]" id="checkbox{p_mask.S_ROW_COUNT}{p_mask.f_mask.S_ROW_COUNT}" value="1" onclick="toggle_opacity('{p_mask.S_ROW_COUNT}{p_mask.f_mask.S_ROW_COUNT}')">
 		<!-- ELSE -->
 		<!-- ENDIF -->
 		<!-- IF p_mask.f_mask.PADDING --><span class="padding">{p_mask.f_mask.PADDING}{p_mask.f_mask.PADDING}</span><!-- ENDIF -->{p_mask.f_mask.NAME}
@@ -77,11 +77,11 @@
 			<div class="tablewrap">
 				<table id="table{p_mask.S_ROW_COUNT}{p_mask.f_mask.S_ROW_COUNT}{p_mask.f_mask.category.S_ROW_COUNT}" cellspacing="1">
 				<colgroup>
-					<col class="permissions-name" />
-					<col class="permissions-yes" />
-					<col class="permissions-no" />
+					<col class="permissions-name">
+					<col class="permissions-yes">
+					<col class="permissions-no">
 					<!-- IF not p_mask.S_VIEW -->
-						<col class="permissions-never" />
+						<col class="permissions-never">
 					<!-- ENDIF -->
 				</colgroup>
 				<thead>
@@ -100,14 +100,14 @@
 				<tbody>
 				<!-- BEGIN mask -->
 					<!-- IF p_mask.f_mask.category.mask.S_ROW_COUNT is even --><tr class="row4"><!-- ELSE --><tr class="row3"><!-- ENDIF -->
-					<th class="permissions-name<!-- IF p_mask.f_mask.category.mask.S_ROW_COUNT is even --> row4<!-- ELSE --> row3<!-- ENDIF -->"><!-- IF p_mask.f_mask.category.mask.U_TRACE --><a href="{p_mask.f_mask.category.mask.U_TRACE}" class="trace" onclick="popup(this.href, 750, 515, '_trace'); return false;" title="{L_TRACE_SETTING}"><img src="images/icon_trace.gif" alt="{L_TRACE_SETTING}" /></a> <!-- ENDIF -->{p_mask.f_mask.category.mask.PERMISSION}</th>
+					<th class="permissions-name<!-- IF p_mask.f_mask.category.mask.S_ROW_COUNT is even --> row4<!-- ELSE --> row3<!-- ENDIF -->"><!-- IF p_mask.f_mask.category.mask.U_TRACE --><a href="{p_mask.f_mask.category.mask.U_TRACE}" class="trace" onclick="popup(this.href, 750, 515, '_trace'); return false;" title="{L_TRACE_SETTING}"><img src="images/icon_trace.gif" alt="{L_TRACE_SETTING}"></a> <!-- ENDIF -->{p_mask.f_mask.category.mask.PERMISSION}</th>
 					<!-- IF p_mask.S_VIEW -->
 						<td<!-- IF p_mask.f_mask.category.mask.S_YES --> class="yes"<!-- ENDIF -->>&nbsp;</td>
 						<td<!-- IF p_mask.f_mask.category.mask.S_NEVER --> class="never"<!-- ENDIF -->></td>
 					<!-- ELSE -->
-						<td class="permissions-yes"><label for="{p_mask.f_mask.category.mask.S_FIELD_NAME}_y"><input onclick="reset_role('role{p_mask.S_ROW_COUNT}{p_mask.f_mask.S_ROW_COUNT}'); set_colours('{p_mask.S_ROW_COUNT}{p_mask.f_mask.S_ROW_COUNT}{p_mask.f_mask.category.S_ROW_COUNT}', false)" id="{p_mask.f_mask.category.mask.S_FIELD_NAME}_y" name="{p_mask.f_mask.category.mask.S_FIELD_NAME}" class="radio" type="radio"<!-- IF p_mask.f_mask.category.mask.S_YES --> checked="checked"<!-- ENDIF --> value="1" /></label></td>
-						<td class="permissions-no"><label for="{p_mask.f_mask.category.mask.S_FIELD_NAME}_u"><input onclick="reset_role('role{p_mask.S_ROW_COUNT}{p_mask.f_mask.S_ROW_COUNT}'); set_colours('{p_mask.S_ROW_COUNT}{p_mask.f_mask.S_ROW_COUNT}{p_mask.f_mask.category.S_ROW_COUNT}', false)" id="{p_mask.f_mask.category.mask.S_FIELD_NAME}_u" name="{p_mask.f_mask.category.mask.S_FIELD_NAME}" class="radio" type="radio"<!-- IF p_mask.f_mask.category.mask.S_NO --> checked="checked"<!-- ENDIF --> value="-1" /></label></td>
-						<td class="permissions-never"><label for="{p_mask.f_mask.category.mask.S_FIELD_NAME}_n"><input onclick="reset_role('role{p_mask.S_ROW_COUNT}{p_mask.f_mask.S_ROW_COUNT}'); set_colours('{p_mask.S_ROW_COUNT}{p_mask.f_mask.S_ROW_COUNT}{p_mask.f_mask.category.S_ROW_COUNT}', false)" id="{p_mask.f_mask.category.mask.S_FIELD_NAME}_n" name="{p_mask.f_mask.category.mask.S_FIELD_NAME}" class="radio" type="radio"<!-- IF p_mask.f_mask.category.mask.S_NEVER --> checked="checked"<!-- ENDIF --> value="0" /></label></td>
+						<td class="permissions-yes"><label for="{p_mask.f_mask.category.mask.S_FIELD_NAME}_y"><input onclick="reset_role('role{p_mask.S_ROW_COUNT}{p_mask.f_mask.S_ROW_COUNT}'); set_colours('{p_mask.S_ROW_COUNT}{p_mask.f_mask.S_ROW_COUNT}{p_mask.f_mask.category.S_ROW_COUNT}', false)" id="{p_mask.f_mask.category.mask.S_FIELD_NAME}_y" name="{p_mask.f_mask.category.mask.S_FIELD_NAME}" class="radio" type="radio"<!-- IF p_mask.f_mask.category.mask.S_YES --> checked="checked"<!-- ENDIF --> value="1"></label></td>
+						<td class="permissions-no"><label for="{p_mask.f_mask.category.mask.S_FIELD_NAME}_u"><input onclick="reset_role('role{p_mask.S_ROW_COUNT}{p_mask.f_mask.S_ROW_COUNT}'); set_colours('{p_mask.S_ROW_COUNT}{p_mask.f_mask.S_ROW_COUNT}{p_mask.f_mask.category.S_ROW_COUNT}', false)" id="{p_mask.f_mask.category.mask.S_FIELD_NAME}_u" name="{p_mask.f_mask.category.mask.S_FIELD_NAME}" class="radio" type="radio"<!-- IF p_mask.f_mask.category.mask.S_NO --> checked="checked"<!-- ENDIF --> value="-1"></label></td>
+						<td class="permissions-never"><label for="{p_mask.f_mask.category.mask.S_FIELD_NAME}_n"><input onclick="reset_role('role{p_mask.S_ROW_COUNT}{p_mask.f_mask.S_ROW_COUNT}'); set_colours('{p_mask.S_ROW_COUNT}{p_mask.f_mask.S_ROW_COUNT}{p_mask.f_mask.category.S_ROW_COUNT}', false)" id="{p_mask.f_mask.category.mask.S_FIELD_NAME}_n" name="{p_mask.f_mask.category.mask.S_FIELD_NAME}" class="radio" type="radio"<!-- IF p_mask.f_mask.category.mask.S_NEVER --> checked="checked"<!-- ENDIF --> value="0"></label></td>
 					<!-- ENDIF -->
 				</tr>
 				<!-- END mask -->
@@ -118,7 +118,7 @@
 			<!-- IF not p_mask.S_VIEW -->
 			<fieldset class="quick" style="margin-right: 11px;">
 				<p class="small">{L_APPLY_PERMISSIONS_EXPLAIN}</p>
-				<input class="button1" type="submit" name="psubmit[{p_mask.f_mask.UG_ID}][{p_mask.f_mask.FORUM_ID}]" value="{L_APPLY_PERMISSIONS}" />
+				<input class="button1" type="submit" name="psubmit[{p_mask.f_mask.UG_ID}][{p_mask.f_mask.FORUM_ID}]" value="{L_APPLY_PERMISSIONS}">
 				<!-- IF .p_mask.f_mask gt 1 or .p_mask gt 1 -->
 					<p class="small"><a onclick="reset_opacity(0, '{p_mask.S_ROW_COUNT}{p_mask.f_mask.S_ROW_COUNT}');">{L_MARK_ALL}</a> &bull; <a onclick="reset_opacity(1, '{p_mask.S_ROW_COUNT}{p_mask.f_mask.S_ROW_COUNT}');">{L_UNMARK_ALL}</a></p>
 				<!-- ENDIF -->

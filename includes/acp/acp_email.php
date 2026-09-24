@@ -256,7 +256,7 @@ class acp_email
 
 		$template->assign_vars([
 			'S_WARNING'             => (sizeof($error) > 0),
-			'WARNING_MSG'           => (sizeof($error)) ? implode('<br />', $error) : '',
+			'WARNING_MSG'           => (sizeof($error)) ? implode('<br>', $error) : '',
 			'U_ACTION'              => $this->u_action,
 			'S_GROUP_OPTIONS'       => $select_list,
 			'USERNAMES'             => $usernames,

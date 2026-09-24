@@ -99,18 +99,18 @@
 	<!-- BEGIN items -->
 		<!-- IF items.S_ROW_COUNT is even --><tr class="row1"><!-- ELSE --><tr class="row2"><!-- ENDIF -->
 
-		<td style="text-align: center;"><img src="{items.IMG_SRC}" /><input type="hidden" name="image[{items.IMG}]" value="1" /></td>
+		<td style="text-align: center;"><img src="{items.IMG_SRC}"><input type="hidden" name="image[{items.IMG}]" value="1"></td>
 		<td style="vertical-align: top;">[{items.IMG}]</td>
 		<!-- IF S_SMILIES -->
-			<td><input class="text post" type="text" name="code[{items.IMG}]" value="{items.CODE}" size="10" maxlength="50" /></td>
-			<td><input class="text post" type="text" name="emotion[{items.IMG}]" value="{items.EMOTION}" size="10" maxlength="50" /></td>
+			<td><input class="text post" type="text" name="code[{items.IMG}]" value="{items.CODE}" size="10" maxlength="50"></td>
+			<td><input class="text post" type="text" name="emotion[{items.IMG}]" value="{items.EMOTION}" size="10" maxlength="50"></td>
 		<!-- ENDIF -->
-		<td><input class="text post" type="text" size="3" name="width[{items.IMG}]" value="{items.WIDTH}" /></td>
-		<td><input class="text post" type="text" size="3" name="height[{items.IMG}]" value="{items.HEIGHT}" /></td>
+		<td><input class="text post" type="text" size="3" name="width[{items.IMG}]" value="{items.WIDTH}"></td>
+		<td><input class="text post" type="text" size="3" name="height[{items.IMG}]" value="{items.HEIGHT}"></td>
 		<td>
-			<input type="checkbox" class="radio" name="display_on_posting[{items.IMG}]"{items.POSTING_CHECKED} onclick="toggle_select('{items.A_IMG}', this.checked, '{items.S_ROW_COUNT}');"/>
+			<input type="checkbox" class="radio" name="display_on_posting[{items.IMG}]"{items.POSTING_CHECKED} onclick="toggle_select('{items.A_IMG}', this.checked, '{items.S_ROW_COUNT}');">
 			<!-- IF items.S_ID -->
-				<input type="hidden" name="id[{items.IMG}]" value="{items.ID}" />
+				<input type="hidden" name="id[{items.IMG}]" value="{items.ID}">
 			<!-- ENDIF -->
 		</td>
 		<!-- IF ID or S_ADD -->
@@ -120,7 +120,7 @@
 			</select></td>
 		<!-- ENDIF -->
 		<!-- IF S_ADD -->
-			<td><input type="checkbox" class="radio" name="add_img[{items.IMG}]" value="1" /></td>
+			<td><input type="checkbox" class="radio" name="add_img[{items.IMG}]" value="1"></td>
 		<!-- ENDIF -->
 		</tr>
 	<!-- END items -->
@@ -130,17 +130,17 @@
 	</tr>
 	<tr class="row1">
 		<td style="text-align: center;"><select name="add_image" id="add_image" onchange="update_image(this.options[selectedIndex].value);">{S_IMG_OPTIONS}</select></td>
-		<td style="vertical-align: top;"><img src="{IMG_SRC}" id="add_image_src" /></td>
-		<td><input class="text post" type="text" name="add_code" id="add_code" value="{CODE}" size="10" maxlength="50" /></td>
-		<td><input class="text post" type="text" name="add_emotion" id="add_emotion" value="{EMOTION}" size="10" maxlength="50" /></td>
-		<td><input class="text post" type="text" size="3" name="add_width" id="add_width" value="{WIDTH}" /></td>
-		<td><input class="text post" type="text" size="3" name="add_height" id="add_height" value="{HEIGHT}" /></td>
-		<td><input type="checkbox" class="radio" name="add_display_on_posting" checked="checked" onclick="toggle_select('add', this.checked, 'add_order');"/></td>
+		<td style="vertical-align: top;"><img src="{IMG_SRC}" id="add_image_src"></td>
+		<td><input class="text post" type="text" name="add_code" id="add_code" value="{CODE}" size="10" maxlength="50"></td>
+		<td><input class="text post" type="text" name="add_emotion" id="add_emotion" value="{EMOTION}" size="10" maxlength="50"></td>
+		<td><input class="text post" type="text" size="3" name="add_width" id="add_width" value="{WIDTH}"></td>
+		<td><input class="text post" type="text" size="3" name="add_height" id="add_height" value="{HEIGHT}"></td>
+		<td><input type="checkbox" class="radio" name="add_display_on_posting" checked="checked" onclick="toggle_select('add', this.checked, 'add_order');"></td>
 		<td><select id="order_add_order" name="add_order">
 				<optgroup id="order_disp_add_order" label="{L_DISPLAY_POSTING}">{S_ADD_ORDER_LIST_DISPLAY}</optgroup>
 				<optgroup id="order_no_disp_add_order" label="{L_DISPLAY_POSTING_NO}" disabled="disabled" class="disabled-options" >{S_ADD_ORDER_LIST_UNDISPLAY}</optgroup>
 		</select></td>
-		<td><input type="checkbox" class="radio" name="add_additional_code" value="1" /></td>
+		<td><input type="checkbox" class="radio" name="add_additional_code" value="1"></td>
 	</tr>
 	<!-- ENDIF -->
 	<!-- ELSE -->
@@ -152,7 +152,7 @@
 	</table>
 
 	<p class="submit-buttons">
-		<input class="button1" type="submit" id="submit" name="submit" value="{L_SUBMIT}" />
+		<input class="button1" type="submit" id="submit" name="submit" value="{L_SUBMIT}">
 	</p>
 	{S_FORM_TOKEN}
 	</fieldset>
@@ -179,14 +179,14 @@
 			<dt><label for="pak">{L_SELECT_PACKAGE}</label></dt>
 			<dd><select id="pak" name="pak">{S_PAK_OPTIONS}</select></dd>
 		</dl>
-			<dt><label for="current">{L_CURRENT}</label><br /><span>{L_CURRENT_EXPLAIN}</span></dt>
-			<dd><label><input type="radio" class="radio" id="current" name="current" value="keep" checked="checked" /> {L_KEEP_ALL}</label>
-				<label><input type="radio" class="radio" name="current" value="replace" /> {L_REPLACE_MATCHES}</label>
-				<label><input type="radio" class="radio" name="current" value="delete" /> {L_DELETE_ALL}</label></dd>
+			<dt><label for="current">{L_CURRENT}</label><br><span>{L_CURRENT_EXPLAIN}</span></dt>
+			<dd><label><input type="radio" class="radio" id="current" name="current" value="keep" checked="checked"> {L_KEEP_ALL}</label>
+				<label><input type="radio" class="radio" name="current" value="replace"> {L_REPLACE_MATCHES}</label>
+				<label><input type="radio" class="radio" name="current" value="delete"> {L_DELETE_ALL}</label></dd>
 		</dl>
 
 	<p class="quick">
-		<input class="button1" type="submit" id="import" name="import" value="{L_IMPORT_SUBMIT}" />
+		<input class="button1" type="submit" id="import" name="import" value="{L_IMPORT_SUBMIT}">
 	</p>
 	<!-- ENDIF -->
 	{S_FORM_TOKEN}
@@ -233,7 +233,7 @@
 			</tr>
 		<!-- ENDIF -->
 		<!-- IF items.S_ROW_COUNT is even --><tr class="row1"><!-- ELSE --><tr class="row2"><!-- ENDIF -->
-			<td style="width: 85%; text-align: center;"><img src="{items.IMG_SRC}" width="{items.WIDTH}" height="{items.HEIGHT}" alt="{items.ALT_TEXT}" title="{items.ALT_TEXT}" /></td>
+			<td style="width: 85%; text-align: center;"><img src="{items.IMG_SRC}" width="{items.WIDTH}" height="{items.HEIGHT}" alt="{items.ALT_TEXT}" title="{items.ALT_TEXT}"></td>
 			<!-- IF S_SMILIES -->
 				<td style="text-align: center;">{items.CODE}</td>
 				<td style="text-align: center;">{items.EMOTION}</td>
@@ -253,7 +253,7 @@
 	</table>
 	<div>{PAGINATION}</div>
 	<p class="quick">
-		<input class="button2" name="add" type="submit" value="{L_ICON_ADD}" />&nbsp; &nbsp;<input class="button2" type="submit" name="edit" value="{L_ICON_EDIT}" />
+		<input class="button2" name="add" type="submit" value="{L_ICON_ADD}">&nbsp; &nbsp;<input class="button2" type="submit" name="edit" value="{L_ICON_EDIT}">
 	</p>
 	{S_FORM_TOKEN}
 	</fieldset>

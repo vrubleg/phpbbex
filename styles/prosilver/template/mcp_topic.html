@@ -42,12 +42,12 @@ jQuery(function($)
 
 	<fieldset id="display-panel" class="fields2">
 	<dl>
-		<dt><label for="posts_per_page">{L_POSTS_PER_PAGE}:</label><br /><span>{L_POSTS_PER_PAGE_EXPLAIN}</span></dt>
-		<dd><input class="inputbox autowidth" type="text" name="posts_per_page" id="posts_per_page" size="6" value="{POSTS_PER_PAGE}" /></dd>
+		<dt><label for="posts_per_page">{L_POSTS_PER_PAGE}:</label><br><span>{L_POSTS_PER_PAGE_EXPLAIN}</span></dt>
+		<dd><input class="inputbox autowidth" type="text" name="posts_per_page" id="posts_per_page" size="6" value="{POSTS_PER_PAGE}"></dd>
 	</dl>
 	<dl>
 		<dt><label>{L_DISPLAY_POSTS}:</label></dt>
-		<dd>{S_SELECT_SORT_DAYS}&nbsp;&nbsp;<label>{L_SORT_BY} {S_SELECT_SORT_KEY}</label><label>{S_SELECT_SORT_DIR}</label> <input type="submit" name="sort" value="{L_GO}" class="button2" /></dd>
+		<dd>{S_SELECT_SORT_DAYS}&nbsp;&nbsp;<label>{L_SORT_BY} {S_SELECT_SORT_KEY}</label><label>{S_SELECT_SORT_DIR}</label> <input type="submit" name="sort" value="{L_GO}" class="button2"></dd>
 	</dl>
 	</fieldset>
 
@@ -58,14 +58,14 @@ jQuery(function($)
 	<!-- IF S_SHOW_TOPIC_ICONS -->
 		<dl>
 			<dt><label for="icon">{L_TOPIC_ICON}:</label></dt>
-			<dd><label for="icon"><input type="radio" name="icon" id="icon" value="0" checked="checked" /> {L_NO_TOPIC_ICON}</label>
-			<!-- BEGIN topic_icon --><label for="icon-{topic_icon.ICON_ID}"><input type="radio" name="icon" id="icon-{topic_icon.ICON_ID}" value="{topic_icon.ICON_ID}" {topic_icon.S_ICON_CHECKED} /><img src="{topic_icon.ICON_IMG}" width="{topic_icon.ICON_WIDTH}" height="{topic_icon.ICON_HEIGHT}" loading="lazy" /></label> <!-- END topic_icon --></dd>
+			<dd><label for="icon"><input type="radio" name="icon" id="icon" value="0" checked="checked"> {L_NO_TOPIC_ICON}</label>
+			<!-- BEGIN topic_icon --><label for="icon-{topic_icon.ICON_ID}"><input type="radio" name="icon" id="icon-{topic_icon.ICON_ID}" value="{topic_icon.ICON_ID}" {topic_icon.S_ICON_CHECKED}><img src="{topic_icon.ICON_IMG}" width="{topic_icon.ICON_WIDTH}" height="{topic_icon.ICON_HEIGHT}" loading="lazy"></label> <!-- END topic_icon --></dd>
 		</dl>
 	<!-- ENDIF -->
 
 	<dl>
 		<dt><label for="subject">{L_SPLIT_SUBJECT}:</label></dt>
-		<dd><input type="text" name="subject" id="subject" size="45" maxlength="90" tabindex="2" value="{SPLIT_SUBJECT}" title="{L_SPLIT_SUBJECT}" class="inputbox" /></dd>
+		<dd><input type="text" name="subject" id="subject" size="45" maxlength="90" tabindex="2" value="{SPLIT_SUBJECT}" title="{L_SPLIT_SUBJECT}" class="inputbox"></dd>
 	</dl>
 	<dl>
 		<dt><label>{L_SPLIT_FORUM}:</label></dt>
@@ -80,7 +80,7 @@ jQuery(function($)
 	<dl>
 		<dt><label for="to_topic_id">{L_MERGE_TOPIC_ID}:</label></dt>
 		<dd>
-			<input class="inputbox autowidth" type="text" size="6" name="to_topic_id" id="to_topic_id" value="{TO_TOPIC_ID}" />
+			<input class="inputbox autowidth" type="text" size="6" name="to_topic_id" id="to_topic_id" value="{TO_TOPIC_ID}">
 			<a href="{U_SELECT_TOPIC}" >{L_SELECT_TOPIC}</a>
 		</dd>
 		<!-- IF TO_TOPIC_INFO --><dd>{TO_TOPIC_INFO}</dd><!-- ENDIF -->
@@ -105,14 +105,14 @@ jQuery(function($)
 			<div class="inner">
 
 			<div class="postbody" id="pr{postrow.POST_ID}">
-				<ul class="profile-icons"><li class="info-icon"><a href="{postrow.U_POST_DETAILS}" title="{L_POST_DETAILS}"><span>{L_POST_DETAILS}</span></a></li><li><label for="post_id_list_select_{postrow.POST_ID}">{L_SELECT}: <input type="checkbox" id="post_id_list_select_{postrow.POST_ID}" name="post_id_list[]" value="{postrow.POST_ID}"<!-- IF postrow.S_CHECKED --> checked="checked"<!-- ENDIF --> /></label></li></ul>
+				<ul class="profile-icons"><li class="info-icon"><a href="{postrow.U_POST_DETAILS}" title="{L_POST_DETAILS}"><span>{L_POST_DETAILS}</span></a></li><li><label for="post_id_list_select_{postrow.POST_ID}">{L_SELECT}: <input type="checkbox" id="post_id_list_select_{postrow.POST_ID}" name="post_id_list[]" value="{postrow.POST_ID}"<!-- IF postrow.S_CHECKED --> checked="checked"<!-- ENDIF -->></label></li></ul>
 
 				<h3><a href="{postrow.U_POST_DETAILS}">{postrow.POST_SUBJECT}</a></h3>
 				<p class="author"><a href="#pr{postrow.POST_ID}">{postrow.MINI_POST_IMG}</a> {L_POSTED} {postrow.POST_DATE} {L_POST_BY_AUTHOR} <strong>{postrow.POST_AUTHOR_FULL}</strong><!-- IF postrow.U_MCP_DETAILS --> [ <a href="{postrow.U_MCP_DETAILS}">{L_POST_DETAILS}</a> ]<!-- ENDIF --></p>
 
 				<!-- IF postrow.S_POST_UNAPPROVED or postrow.S_POST_REPORTED -->
 				<p class="rules">
-					<!-- IF postrow.S_POST_UNAPPROVED -->{UNAPPROVED_IMG} <a href="{postrow.U_MCP_APPROVE}"><strong>{L_POST_UNAPPROVED}</strong></a><br /><!-- ENDIF -->
+					<!-- IF postrow.S_POST_UNAPPROVED -->{UNAPPROVED_IMG} <a href="{postrow.U_MCP_APPROVE}"><strong>{L_POST_UNAPPROVED}</strong></a><br><!-- ENDIF -->
 					<!-- IF postrow.S_POST_REPORTED -->{REPORTED_IMG} <a href="{postrow.U_MCP_REPORT}"><strong>{L_POST_REPORTED}</strong></a><!-- ENDIF -->
 				</p>
 				<!-- ENDIF -->
@@ -135,7 +135,7 @@ jQuery(function($)
 		<!-- END postrow -->
 	</div>
 
-	<hr />
+	<hr>
 
 	<!-- IF PAGINATION or TOTAL_POSTS -->
 	<ul class="linklist">
@@ -158,7 +158,7 @@ jQuery(function($)
 		<!-- IF S_CAN_MERGE --><option value="merge_posts"<!-- IF S_MERGE_VIEW --> selected="selected"<!-- ENDIF -->>{L_MERGE_POSTS}</option><!-- ENDIF -->
 		<!-- IF S_CAN_SPLIT --><option value="split_all"<!-- IF S_SPLIT_VIEW --> selected="selected"<!-- ENDIF -->>{L_SPLIT_POSTS}</option><option value="split_beyond">{L_SPLIT_AFTER}</option><!-- ENDIF -->
 	</select>&nbsp;
-	<input class="button1 default-submit-action" type="submit" name="mcp_topic_submit" value="{L_SUBMIT}" />
+	<input class="button1 default-submit-action" type="submit" name="mcp_topic_submit" value="{L_SUBMIT}">
 	<div><a onclick="marklist('mcp', 'post', true);">{L_MARK_ALL}</a> :: <a onclick="marklist('mcp', 'post', false);">{L_UNMARK_ALL}</a></div>
 {S_HIDDEN_FIELDS}
 {S_FORM_TOKEN}

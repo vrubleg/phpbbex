@@ -198,7 +198,7 @@ class acp_prune
 			do
 			{
 				$forum_list .= (($forum_list != '') ? ', ' : '') . '<b>' . $row['forum_name'] . '</b>';
-				$s_hidden_fields .= '<input type="hidden" name="f[]" value="' . $row['forum_id'] . '" />';
+				$s_hidden_fields .= '<input type="hidden" name="f[]" value="' . $row['forum_id'] . '">';
 			}
 			while ($row = $db->sql_fetchrow($result));
 

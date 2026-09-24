@@ -40,15 +40,15 @@
 					<a href="{topicrow.U_VIEW_TOPIC}" class="topictitle">{topicrow.TOPIC_TITLE}</a>
 					<!-- IF topicrow.S_TOPIC_UNAPPROVED or topicrow.S_POSTS_UNAPPROVED --><a href="{topicrow.U_MCP_QUEUE}">{topicrow.UNAPPROVED_IMG}</a> <!-- ENDIF -->
 					<!-- IF topicrow.S_TOPIC_REPORTED --><a href="{topicrow.U_MCP_REPORT}">{REPORTED_IMG}</a><!-- ENDIF -->
-					<br />
+					<br>
 					<!-- IF topicrow.PAGINATION --><strong class="pagination"><span>{topicrow.PAGINATION}</span></strong><!-- ENDIF -->
 					{L_POST_BY_AUTHOR} {topicrow.TOPIC_AUTHOR_FULL} &raquo; {topicrow.FIRST_POST_TIME} </dt>
 				<dd class="posts">{topicrow.REPLIES} <dfn>{L_REPLIES}</dfn></dd>
-				<dd class="lastpost"><dfn>{L_LAST_POST} </dfn>{L_POST_BY_AUTHOR} {topicrow.LAST_POST_AUTHOR_FULL}<br />{topicrow.LAST_POST_TIME}
+				<dd class="lastpost"><dfn>{L_LAST_POST} </dfn>{L_POST_BY_AUTHOR} {topicrow.LAST_POST_AUTHOR_FULL}<br>{topicrow.LAST_POST_TIME}
 				</dd>
 				<!-- IF not S_MERGE_SELECT -->
 				<dd class="mark">
-					<input type="checkbox" name="topic_id_list[]" value="{topicrow.TOPIC_ID}"<!-- IF topicrow.S_TOPIC_CHECKED --> checked="checked"<!-- ENDIF --> />
+					<input type="checkbox" name="topic_id_list[]" value="{topicrow.TOPIC_ID}"<!-- IF topicrow.S_TOPIC_CHECKED --> checked="checked"<!-- ENDIF -->>
 				</dd>
 				<!-- ENDIF -->
 			</dl>
@@ -66,10 +66,10 @@
 		<!-- IF PREVIOUS_PAGE --><a href="{PREVIOUS_PAGE}" class="left-box nav-to-left">{L_PREVIOUS}</a><!-- ENDIF -->
 		<label>{L_DISPLAY_TOPICS}: {S_SELECT_SORT_DAYS}</label>
 		<label>{L_SORT_BY} {S_SELECT_SORT_KEY}</label>
-		<label>{S_SELECT_SORT_DIR} <input type="submit" name="sort" value="{L_GO}" class="button2" /></label>
+		<label>{S_SELECT_SORT_DIR} <input type="submit" name="sort" value="{L_GO}" class="button2"></label>
 	</fieldset>
 
-	<hr />
+	<hr>
 
 	<!-- IF PAGINATION or TOTAL_TOPICS -->
 		<ul class="linklist">
@@ -96,7 +96,7 @@
 		<!-- IF S_CAN_MAKE_STICKY --><option value="make_sticky">{L_MAKE_STICKY}</option><!-- ENDIF -->
 		<!-- IF S_CAN_MAKE_ANNOUNCE --><option value="make_announce">{L_MAKE_ANNOUNCE}</option><!-- ENDIF -->
 	</select>
-	<input class="button2 default-submit-action" type="submit" value="{L_SUBMIT}" />
+	<input class="button2 default-submit-action" type="submit" value="{L_SUBMIT}">
 	<div><a onclick="marklist('mcp', 'topic_id_list', true);">{L_MARK_ALL}</a> :: <a onclick="marklist('mcp', 'topic_id_list', false);">{L_UNMARK_ALL}</a></div>
 	<!-- ENDIF -->
 	{S_FORM_TOKEN}

@@ -538,7 +538,7 @@ class dbal_mysql extends dbal
 						// get the last profile
 						if ($result = @mysqli_query($this->db_connect_id, 'SHOW PROFILE ALL;'))
 						{
-							$this->html_hold .= '<br />';
+							$this->html_hold .= '<br>';
 							while ($row = @mysqli_fetch_assoc($result))
 							{
 								// make <unknown> HTML safe

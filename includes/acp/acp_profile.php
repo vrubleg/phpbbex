@@ -282,7 +282,7 @@ class acp_profile
 					}
 					$db->sql_freeresult($result);
 
-					$s_hidden_fields = '<input type="hidden" name="field_id" value="' . $field_id . '" />';
+					$s_hidden_fields = '<input type="hidden" name="field_id" value="' . $field_id . '">';
 				}
 				else
 				{
@@ -310,7 +310,7 @@ class acp_profile
 						'lang_default_value'=> '']
 					);
 
-					$s_hidden_fields = '<input type="hidden" name="field_type" value="' . $field_type . '" />';
+					$s_hidden_fields = '<input type="hidden" name="field_type" value="' . $field_type . '">';
 				}
 
 				// $exclude contains the data we gather in each step
@@ -674,7 +674,7 @@ class acp_profile
 				$template->assign_vars([
 					'S_EDIT'            => true,
 					'S_EDIT_MODE'       => ($action == 'edit'),
-					'ERROR_MSG'         => (sizeof($error)) ? implode('<br />', $error) : '',
+					'ERROR_MSG'         => (sizeof($error)) ? implode('<br>', $error) : '',
 
 					'L_TITLE'           => $user->lang['STEP_' . $step . '_TITLE_' . strtoupper($action)],
 					'L_EXPLAIN'         => $user->lang['STEP_' . $step . '_EXPLAIN_' . strtoupper($action)],
@@ -911,7 +911,7 @@ class acp_profile
 			$lang_options[1]['lang_code'] = $this->lang_defs['code'][$default_lang_code];
 			$lang_options[1]['fields'][$field] = [
 				'TITLE'     => $user->lang['CP_' . strtoupper($field)],
-				'FIELD'     => '<dd>' . ((is_array($cp->vars[$field])) ? implode('<br />', $cp->vars[$field]) : bbcode_nl2br($cp->vars[$field])) . '</dd>'
+				'FIELD'     => '<dd>' . ((is_array($cp->vars[$field])) ? implode('<br>', $cp->vars[$field]) : bbcode_nl2br($cp->vars[$field])) . '</dd>'
 			];
 
 			if (isset($user->lang['CP_' . strtoupper($field) . '_EXPLAIN']))
@@ -937,8 +937,8 @@ class acp_profile
 							$lang_options[$lang_code]['fields'][$field] = [
 								'TITLE'     => $user->lang['CP_' . strtoupper($field)],
 								'FIELD'     => '
-											<dd><input class="medium" name="l_' . $field . '[' . $lang_code . '][]" value="' . ($value[$lang_code][0] ?? $var[0]) . '" /> ' . $user->lang['FIRST_OPTION'] . '</dd>
-											<dd><input class="medium" name="l_' . $field . '[' . $lang_code . '][]" value="' . ($value[$lang_code][1] ?? $var[1]) . '" /> ' . $user->lang['SECOND_OPTION'] . '</dd>'
+											<dd><input class="medium" name="l_' . $field . '[' . $lang_code . '][]" value="' . ($value[$lang_code][0] ?? $var[0]) . '"> ' . $user->lang['FIRST_OPTION'] . '</dd>
+											<dd><input class="medium" name="l_' . $field . '[' . $lang_code . '][]" value="' . ($value[$lang_code][1] ?? $var[1]) . '"> ' . $user->lang['SECOND_OPTION'] . '</dd>'
 							];
 						break;
 
@@ -962,7 +962,7 @@ class acp_profile
 
 					$lang_options[$lang_code]['fields'][$field] = [
 						'TITLE'     => $user->lang['CP_' . strtoupper($field)],
-						'FIELD'     => ($field_type == 'string') ? '<dd><input class="medium" type="text" name="l_' . $field . '[' . $lang_code . ']" value="' . ($value[$lang_code] ?? $var) . '" /></dd>' : '<dd><textarea name="l_' . $field . '[' . $lang_code . ']" rows="3" cols="80">' . ($value[$lang_code] ?? $var) . '</textarea></dd>'
+						'FIELD'     => ($field_type == 'string') ? '<dd><input class="medium" type="text" name="l_' . $field . '[' . $lang_code . ']" value="' . ($value[$lang_code] ?? $var) . '"></dd>' : '<dd><textarea name="l_' . $field . '[' . $lang_code . ']" rows="3" cols="80">' . ($value[$lang_code] ?? $var) . '</textarea></dd>'
 					];
 
 					if (isset($user->lang['CP_' . strtoupper($field) . '_EXPLAIN']))

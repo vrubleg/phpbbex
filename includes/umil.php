@@ -165,7 +165,7 @@ class phpbb_umil
 			}
 			else
 			{
-				$this->result .= '<br /><br />SQL ERROR ' . $this->db->sql_error_returned['message'];
+				$this->result .= '<br><br>SQL ERROR ' . $this->db->sql_error_returned['message'];
 			}
 
 			//$this->db->sql_transaction('rollback');
@@ -177,7 +177,7 @@ class phpbb_umil
 
 		$this->db->sql_return_on_error($this->prev_return_on_error);
 
-		return '<strong>' . $this->command . '</strong><br />' . $this->result;
+		return '<strong>' . $this->command . '</strong><br>' . $this->result;
 	}
 
 	/**
@@ -412,7 +412,7 @@ class phpbb_umil
 					$this->command = $this->get_output_text('UNKNOWN');
 				}
 
-				$return .= $this->umil_end() . '<br />';
+				$return .= $this->umil_end() . '<br>';
 			}
 		}
 
@@ -793,7 +793,7 @@ class phpbb_umil
 					];
 
 					// Run the "manual" way with the data we've collected.
-					$result .= ($data['spacer'] ?? '<br />') . $this->module_add($class, $parent, $new_module);
+					$result .= ($data['spacer'] ?? '<br>') . $this->module_add($class, $parent, $new_module);
 				}
 			}
 
@@ -970,7 +970,7 @@ class phpbb_umil
 			{
 				if (!isset($module['modes']) || in_array($mode, $module['modes']))
 				{
-					$result .= $this->module_remove($class, $parent, $info['title']) . '<br />';
+					$result .= $this->module_remove($class, $parent, $info['title']) . '<br>';
 				}
 			}
 			return $result;
@@ -1059,11 +1059,11 @@ class phpbb_umil
 				{
 					if ($this->result == ($user->lang['SUCCESS'] ?? 'SUCCESS'))
 					{
-						$this->result = implode('<br />', $result);
+						$this->result = implode('<br>', $result);
 					}
 					else
 					{
-						$this->result .= '<br />' . implode('<br />', $result);
+						$this->result .= '<br>' . implode('<br>', $result);
 					}
 				}
 			}

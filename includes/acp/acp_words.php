@@ -57,7 +57,7 @@ class acp_words
 				$word_info = $db->sql_fetchrow($result);
 				$db->sql_freeresult($result);
 
-				$s_hidden_fields .= '<input type="hidden" name="id" value="' . $word_id . '" />';
+				$s_hidden_fields .= '<input type="hidden" name="id" value="' . $word_id . '">';
 
 			case 'add':
 

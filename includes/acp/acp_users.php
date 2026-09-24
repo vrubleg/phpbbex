@@ -1678,7 +1678,7 @@ class acp_users
 				}
 
 				// Generate users avatar
-				$avatar_img = ($user_row['user_avatar']) ? get_user_avatar($user_row['user_avatar'], $user_row['user_avatar_type'], $user_row['user_avatar_width'], $user_row['user_avatar_height'], true) : '<img src="' . PHPBB_ROOT_PATH . 'images/avatars/noavatar.png" width="100" height="100" loading="lazy" />';
+				$avatar_img = ($user_row['user_avatar']) ? get_user_avatar($user_row['user_avatar'], $user_row['user_avatar_type'], $user_row['user_avatar_width'], $user_row['user_avatar_height'], true) : '<img src="' . PHPBB_ROOT_PATH . 'images/avatars/noavatar.png" width="100" height="100" loading="lazy">';
 
 				$display_gallery = isset($_POST['display_gallery']);
 				$avatar_select = basename(request_var('avatar_select', ''));
@@ -1792,7 +1792,7 @@ class acp_users
 
 					if (sizeof($message_parser->warn_msg))
 					{
-						$error[] = implode('<br />', $message_parser->warn_msg);
+						$error[] = implode('<br>', $message_parser->warn_msg);
 					}
 
 					if (!check_form_key($form_name))
@@ -2299,7 +2299,7 @@ class acp_users
 		// Assign general variables
 		$template->assign_vars([
 			'S_ERROR'           => (sizeof($error) > 0),
-			'ERROR_MSG'         => (sizeof($error)) ? implode('<br />', $error) : '']
+			'ERROR_MSG'         => (sizeof($error)) ? implode('<br>', $error) : '']
 		);
 	}
 

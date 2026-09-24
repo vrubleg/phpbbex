@@ -22,29 +22,29 @@
 	<dd><select id="group" name="g">{S_GROUP_OPTIONS}</select></dd>
 </dl>
 <dl>
-	<dt><label for="usernames">{L_SEND_TO_USERS}:</label><br /><span>{L_SEND_TO_USERS_EXPLAIN}</span></dt>
+	<dt><label for="usernames">{L_SEND_TO_USERS}:</label><br><span>{L_SEND_TO_USERS_EXPLAIN}</span></dt>
 	<dd><textarea name="usernames" id="usernames" rows="5" cols="40" spellcheck="false">{USERNAMES}</textarea></dd>
 	<dd>[ <a href="{U_FIND_USERNAME}" onclick="find_username(this.href); return false;">{L_FIND_USERNAME}</a> ]</dd>
 </dl>
 <dl>
 	<dt><label for="subject">{L_SUBJECT}:</label></dt>
-	<dd><input name="subject" type="text" id="subject" value="{SUBJECT}" /></dd>
+	<dd><input name="subject" type="text" id="subject" value="{SUBJECT}"></dd>
 </dl>
 <dl>
-	<dt><label for="message">{L_MASS_MESSAGE}:</label><br /><span>{L_MASS_MESSAGE_EXPLAIN}</span></dt>
+	<dt><label for="message">{L_MASS_MESSAGE}:</label><br><span>{L_MASS_MESSAGE_EXPLAIN}</span></dt>
 	<dd><textarea id="message" name="message" rows="10" cols="60">{MESSAGE}</textarea></dd>
 </dl>
 <dl>
-	<dt><label for="banned">{L_MAIL_BANNED}:</label><br /><span>{L_MAIL_BANNED_EXPLAIN}</span></dt>
-	<dd><input id="banned" name="mail_banned_flag" type="checkbox" class="radio" /></dd>
+	<dt><label for="banned">{L_MAIL_BANNED}:</label><br><span>{L_MAIL_BANNED_EXPLAIN}</span></dt>
+	<dd><input id="banned" name="mail_banned_flag" type="checkbox" class="radio"></dd>
 </dl>
 <dl>
 	<dt><label for="send">{L_SEND_IMMEDIATELY}:</label></dt>
-	<dd><input id="send" type="checkbox" class="radio" name="send_immediately" checked="checked" /></dd>
+	<dd><input id="send" type="checkbox" class="radio" name="send_immediately" checked="checked"></dd>
 </dl>
 
 <p class="submit-buttons">
-	<input class="button1" type="submit" id="submit" name="submit" value="{L_SEND_EMAIL}" />
+	<input class="button1" type="submit" id="submit" name="submit" value="{L_SEND_EMAIL}">
 </p>
 {S_FORM_TOKEN}
 </fieldset>

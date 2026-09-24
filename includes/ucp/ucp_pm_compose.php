@@ -335,7 +335,7 @@ function compose_pm($id, $mode, $action)
 			$message = $user->lang['MESSAGE_DELETED'];
 
 			meta_refresh(3, $meta_info);
-			$message .= '<br /><br />' . sprintf($user->lang['RETURN_FOLDER'], '<a href="' . $meta_info . '">', '</a>');
+			$message .= '<br><br>' . sprintf($user->lang['RETURN_FOLDER'], '<a href="' . $meta_info . '">', '</a>');
 			trigger_error($message);
 		}
 		else
@@ -486,7 +486,7 @@ function compose_pm($id, $mode, $action)
 				$redirect_url = append_sid(PHPBB_ROOT_PATH . 'ucp.php', "i=pm&amp;mode={$mode}");
 
 				meta_refresh(3, $redirect_url);
-				$message = $user->lang['DRAFT_SAVED'] . '<br /><br />' . sprintf($user->lang['RETURN_UCP'], '<a href="' . $redirect_url . '">', '</a>');
+				$message = $user->lang['DRAFT_SAVED'] . '<br><br>' . sprintf($user->lang['RETURN_UCP'], '<a href="' . $redirect_url . '">', '</a>');
 
 				trigger_error($message);
 			}
@@ -584,7 +584,7 @@ function compose_pm($id, $mode, $action)
 
 		if (sizeof($message_parser->warn_msg) && !($remove_u || $add_to))
 		{
-			$error[] = implode('<br />', $message_parser->warn_msg);
+			$error[] = implode('<br>', $message_parser->warn_msg);
 			$message_parser->warn_msg = [];
 		}
 
@@ -594,7 +594,7 @@ function compose_pm($id, $mode, $action)
 		// On a refresh we do not care about message parsing errors
 		if (sizeof($message_parser->warn_msg) && !$refresh)
 		{
-			$error[] = implode('<br />', $message_parser->warn_msg);
+			$error[] = implode('<br>', $message_parser->warn_msg);
 		}
 
 		if ($action != 'edit' && !$preview && !$refresh && $config['flood_interval'] && !$auth->acl_get('u_ignoreflood'))
@@ -660,9 +660,9 @@ function compose_pm($id, $mode, $action)
 
 
 			$save_message = ($action === 'edit') ? $user->lang['MESSAGE_EDITED'] : $user->lang['MESSAGE_STORED'];
-			$message = $save_message . '<br /><br />' . $user->lang('VIEW_PRIVATE_MESSAGE', '<a href="' . $return_message_url . '">', '</a>');
+			$message = $save_message . '<br><br>' . $user->lang('VIEW_PRIVATE_MESSAGE', '<a href="' . $return_message_url . '">', '</a>');
 
-			$message .= '<br /><br />' . sprintf($user->lang['CLICK_RETURN_FOLDER'], '<a href="' . $return_box_url . '">', '</a>', $user->lang[$return_box_lang]);
+			$message .= '<br><br>' . sprintf($user->lang['CLICK_RETURN_FOLDER'], '<a href="' . $return_box_url . '">', '</a>', $user->lang[$return_box_lang]);
 
 			meta_refresh(3, $return_message_url);
 			trigger_error($message);
@@ -852,8 +852,8 @@ function compose_pm($id, $mode, $action)
 		break;
 	}
 
-	$s_hidden_fields = (isset($check_value)) ? '<input type="hidden" name="status_switch" value="' . $check_value . '" />' : '';
-	$s_hidden_fields .= ($load_draft_id || $loaded_draft_id) ? '<input type="hidden" name="loaded_draft_id" value="' . (($loaded_draft_id) ? $loaded_draft_id : $load_draft_id) . '" />' : '';
+	$s_hidden_fields = (isset($check_value)) ? '<input type="hidden" name="status_switch" value="' . $check_value . '">' : '';
+	$s_hidden_fields .= ($load_draft_id || $loaded_draft_id) ? '<input type="hidden" name="loaded_draft_id" value="' . (($loaded_draft_id) ? $loaded_draft_id : $load_draft_id) . '">' : '';
 
 	$form_enctype = (!PHP_FILE_UPLOADS || !$config['allow_pm_attach'] || !$auth->acl_get('u_pm_attach')) ? '' : ' enctype="multipart/form-data"';
 
@@ -875,7 +875,7 @@ function compose_pm($id, $mode, $action)
 		'MIN_FONT_SIZE'         => (int) $config['min_post_font_size'],
 		'MAX_FONT_SIZE'         => (int) $config['max_post_font_size'],
 		'MINI_POST_IMG'         => $user->img('icon_post_target', 'PM'),
-		'ERROR'                 => (sizeof($error)) ? implode('<br />', $error) : '',
+		'ERROR'                 => (sizeof($error)) ? implode('<br>', $error) : '',
 		'MAX_RECIPIENTS'        => $max_recipients,
 		'NUM_RECIPIENTS'        => sizeof($address_list),
 
@@ -1057,7 +1057,7 @@ function build_address_field($address_list)
 	$s_hidden_address_field = '';
 	foreach ($address_list as $id)
 	{
-		$s_hidden_address_field .= '<input type="hidden" name="address_list[]" value="' . (int) $id . '" />';
+		$s_hidden_address_field .= '<input type="hidden" name="address_list[]" value="' . (int) $id . '">';
 	}
 	return $s_hidden_address_field;
 }

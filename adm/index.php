@@ -98,16 +98,16 @@ function adm_page_header($page_title)
 
 		'T_IMAGES_PATH'         => PHPBB_ROOT_PATH . 'images/',
 
-		'ICON_MOVE_UP'              => '<img src="' . PHPBB_ADMIN_PATH . 'images/icon_up.gif" alt="' . $user->lang['MOVE_UP'] . '" title="' . $user->lang['MOVE_UP'] . '" />',
-		'ICON_MOVE_UP_DISABLED'     => '<img src="' . PHPBB_ADMIN_PATH . 'images/icon_up_disabled.gif" alt="' . $user->lang['MOVE_UP'] . '" title="' . $user->lang['MOVE_UP'] . '" />',
-		'ICON_MOVE_DOWN'            => '<img src="' . PHPBB_ADMIN_PATH . 'images/icon_down.gif" alt="' . $user->lang['MOVE_DOWN'] . '" title="' . $user->lang['MOVE_DOWN'] . '" />',
-		'ICON_MOVE_DOWN_DISABLED'   => '<img src="' . PHPBB_ADMIN_PATH . 'images/icon_down_disabled.gif" alt="' . $user->lang['MOVE_DOWN'] . '" title="' . $user->lang['MOVE_DOWN'] . '" />',
-		'ICON_EDIT'                 => '<img src="' . PHPBB_ADMIN_PATH . 'images/icon_edit.gif" alt="' . $user->lang['EDIT'] . '" title="' . $user->lang['EDIT'] . '" />',
-		'ICON_EDIT_DISABLED'        => '<img src="' . PHPBB_ADMIN_PATH . 'images/icon_edit_disabled.gif" alt="' . $user->lang['EDIT'] . '" title="' . $user->lang['EDIT'] . '" />',
-		'ICON_DELETE'               => '<img src="' . PHPBB_ADMIN_PATH . 'images/icon_delete.gif" alt="' . $user->lang['DELETE'] . '" title="' . $user->lang['DELETE'] . '" />',
-		'ICON_DELETE_DISABLED'      => '<img src="' . PHPBB_ADMIN_PATH . 'images/icon_delete_disabled.gif" alt="' . $user->lang['DELETE'] . '" title="' . $user->lang['DELETE'] . '" />',
-		'ICON_SYNC'                 => '<img src="' . PHPBB_ADMIN_PATH . 'images/icon_sync.gif" alt="' . $user->lang['RESYNC'] . '" title="' . $user->lang['RESYNC'] . '" />',
-		'ICON_SYNC_DISABLED'        => '<img src="' . PHPBB_ADMIN_PATH . 'images/icon_sync_disabled.gif" alt="' . $user->lang['RESYNC'] . '" title="' . $user->lang['RESYNC'] . '" />',
+		'ICON_MOVE_UP'              => '<img src="' . PHPBB_ADMIN_PATH . 'images/icon_up.gif" alt="' . $user->lang['MOVE_UP'] . '" title="' . $user->lang['MOVE_UP'] . '">',
+		'ICON_MOVE_UP_DISABLED'     => '<img src="' . PHPBB_ADMIN_PATH . 'images/icon_up_disabled.gif" alt="' . $user->lang['MOVE_UP'] . '" title="' . $user->lang['MOVE_UP'] . '">',
+		'ICON_MOVE_DOWN'            => '<img src="' . PHPBB_ADMIN_PATH . 'images/icon_down.gif" alt="' . $user->lang['MOVE_DOWN'] . '" title="' . $user->lang['MOVE_DOWN'] . '">',
+		'ICON_MOVE_DOWN_DISABLED'   => '<img src="' . PHPBB_ADMIN_PATH . 'images/icon_down_disabled.gif" alt="' . $user->lang['MOVE_DOWN'] . '" title="' . $user->lang['MOVE_DOWN'] . '">',
+		'ICON_EDIT'                 => '<img src="' . PHPBB_ADMIN_PATH . 'images/icon_edit.gif" alt="' . $user->lang['EDIT'] . '" title="' . $user->lang['EDIT'] . '">',
+		'ICON_EDIT_DISABLED'        => '<img src="' . PHPBB_ADMIN_PATH . 'images/icon_edit_disabled.gif" alt="' . $user->lang['EDIT'] . '" title="' . $user->lang['EDIT'] . '">',
+		'ICON_DELETE'               => '<img src="' . PHPBB_ADMIN_PATH . 'images/icon_delete.gif" alt="' . $user->lang['DELETE'] . '" title="' . $user->lang['DELETE'] . '">',
+		'ICON_DELETE_DISABLED'      => '<img src="' . PHPBB_ADMIN_PATH . 'images/icon_delete_disabled.gif" alt="' . $user->lang['DELETE'] . '" title="' . $user->lang['DELETE'] . '">',
+		'ICON_SYNC'                 => '<img src="' . PHPBB_ADMIN_PATH . 'images/icon_sync.gif" alt="' . $user->lang['RESYNC'] . '" title="' . $user->lang['RESYNC'] . '">',
+		'ICON_SYNC_DISABLED'        => '<img src="' . PHPBB_ADMIN_PATH . 'images/icon_sync_disabled.gif" alt="' . $user->lang['RESYNC'] . '" title="' . $user->lang['RESYNC'] . '">',
 
 		'S_USER_LANG'           => $user->lang['HTML_LANG_CODE'],
 	]);
@@ -160,7 +160,7 @@ function adm_page_footer($copyright_html = true)
 function adm_back_link($u_action)
 {
 	global $user;
-	return '<br /><br /><a href="' . $u_action . '">&laquo; ' . $user->lang['BACK_TO_PREV'] . '</a>';
+	return '<br><br><a href="' . $u_action . '">&laquo; ' . $user->lang['BACK_TO_PREV'] . '</a>';
 }
 
 /**
@@ -192,7 +192,7 @@ function h_radio($name, $input_ary, $input_default = false, $id = false, $key = 
 	foreach ($input_ary as $value => $title)
 	{
 		$selected = ($input_default !== false && $value == $input_default) ? ' checked="checked"' : '';
-		$html .= '<label><input type="radio" name="' . $name . '"' . (($id && !$id_assigned) ? ' id="' . $id . '"' : '') . ' value="' . $value . '"' . $selected . (($key) ? ' accesskey="' . $key . '"' : '') . ' class="radio" /> ' . $user->lang[$title] . '</label>' . $separator;
+		$html .= '<label><input type="radio" name="' . $name . '"' . (($id && !$id_assigned) ? ' id="' . $id . '"' : '') . ' value="' . $value . '"' . $selected . (($key) ? ' accesskey="' . $key . '"' : '') . ' class="radio"> ' . $user->lang[$title] . '</label>' . $separator;
 		$id_assigned = true;
 	}
 
@@ -224,14 +224,14 @@ function build_cfg_template($tpl_type, $key, &$new, $config_key, $vars)
 			$size = (int) $tpl_type[1];
 			$maxlength = (int) $tpl_type[2];
 
-			$tpl = '<input id="' . $key . '" type="' . $tpl_type[0] . '"' . (($size) ? ' size="' . $size . '"' : '') . ' maxlength="' . ($maxlength ?: 255) . '" name="' . $name . '" value="' . $new[$config_key] . '"' . (($tpl_type[0] === 'password') ? ' autocomplete="off"' : '') . ' />';
+			$tpl = '<input id="' . $key . '" type="' . $tpl_type[0] . '"' . (($size) ? ' size="' . $size . '"' : '') . ' maxlength="' . ($maxlength ?: 255) . '" name="' . $name . '" value="' . $new[$config_key] . '"' . (($tpl_type[0] === 'password') ? ' autocomplete="off"' : '') . '>';
 		break;
 
 		case 'dimension':
 			$size = (int) $tpl_type[1];
 			$maxlength = (int) $tpl_type[2];
 
-			$tpl = '<input id="' . $key . '" type="text"' . (($size) ? ' size="' . $size . '"' : '') . ' maxlength="' . ($maxlength ?: 255) . '" name="config[' . $config_key . '_width]" value="' . $new[$config_key . '_width'] . '" /> x <input type="text"' . (($size) ? ' size="' . $size . '"' : '') . ' maxlength="' . ($maxlength ?: 255) . '" name="config[' . $config_key . '_height]" value="' . $new[$config_key . '_height'] . '" />';
+			$tpl = '<input id="' . $key . '" type="text"' . (($size) ? ' size="' . $size . '"' : '') . ' maxlength="' . ($maxlength ?: 255) . '" name="config[' . $config_key . '_width]" value="' . $new[$config_key . '_width'] . '"> x <input type="text"' . (($size) ? ' size="' . $size . '"' : '') . ' maxlength="' . ($maxlength ?: 255) . '" name="config[' . $config_key . '_height]" value="' . $new[$config_key . '_height'] . '">';
 		break;
 
 		case 'htmlarea':
@@ -250,8 +250,8 @@ function build_cfg_template($tpl_type, $key, &$new, $config_key, $vars)
 			$tpl_type_cond = explode('_', $tpl_type[1]);
 			$type_no = ($tpl_type_cond[0] != 'disabled' && $tpl_type_cond[0] != 'enabled');
 
-			$tpl_no = '<label><input type="radio" name="' . $name . '" value="0"' . $key_no . ' class="radio" /> ' . (($type_no) ? $user->lang['NO'] : $user->lang['DISABLED']) . '</label>';
-			$tpl_yes = '<label><input type="radio" id="' . $key . '" name="' . $name . '" value="1"' . $key_yes . ' class="radio" /> ' . (($type_no) ? $user->lang['YES'] : $user->lang['ENABLED']) . '</label>';
+			$tpl_no = '<label><input type="radio" name="' . $name . '" value="0"' . $key_no . ' class="radio"> ' . (($type_no) ? $user->lang['NO'] : $user->lang['DISABLED']) . '</label>';
+			$tpl_yes = '<label><input type="radio" id="' . $key . '" name="' . $name . '" value="1"' . $key_yes . ' class="radio"> ' . (($type_no) ? $user->lang['YES'] : $user->lang['ENABLED']) . '</label>';
 
 			$tpl = ($tpl_type_cond[0] == 'yes' || $tpl_type_cond[0] == 'enabled') ? $tpl_yes . $tpl_no : $tpl_no . $tpl_yes;
 		break;

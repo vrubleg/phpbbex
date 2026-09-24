@@ -177,7 +177,7 @@ class sanitise_anonymous_user
 
 		// Inform the user
 		meta_refresh(3, append_sid(STK_INDEX, $plugin->url_arg()));
-		trigger_error($msg . '<br />' . $user->lang['REDIRECT_NEXT_STEP']);
+		trigger_error($msg . '<br>' . $user->lang['REDIRECT_NEXT_STEP']);
 	}
 
 	function _anon_groups(&$_in_guests, &$_other_groups)

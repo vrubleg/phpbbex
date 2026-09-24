@@ -23,14 +23,14 @@
 			<td>{topics.TOPIC_TITLE}</td>
 			<td>{topics.USER_FULL}</td>
 			<td><a href="{topics.U_FORUM}">{topics.FORUM_NAME}</a></td>
-			<td class="mark"><input type="checkbox" name="topics[]" value="{topics.TOPIC_ID}" /></td>
+			<td class="mark"><input type="checkbox" name="topics[]" value="{topics.TOPIC_ID}"></td>
 		</tr>
 	<!-- END topics -->
 	</table>
 
 	<div class="rightside pagination">
-		<a onclick="marklist('stk_empty_topics', 'topics', true);">{L_MARK_ALL}</a> :: <a onclick="marklist('stk_empty_topics', 'topics', false);">{L_UNMARK_ALL}</a><br /><br />
-		<label for="det">{L_DELETE_EMPTY_TOPICS}:</label> <input type="submit" name="submit" id="det" class="button2" value="{L_DELETE}" />
+		<a onclick="marklist('stk_empty_topics', 'topics', true);">{L_MARK_ALL}</a> :: <a onclick="marklist('stk_empty_topics', 'topics', false);">{L_UNMARK_ALL}</a><br><br>
+		<label for="det">{L_DELETE_EMPTY_TOPICS}:</label> <input type="submit" name="submit" id="det" class="button2" value="{L_DELETE}">
 	</div>
 	</fieldset>
 
@@ -46,7 +46,7 @@
 </fieldset>
 <!-- ENDIF -->
 
-<br />
+<br>
 
 <h1>{L_ORPHANED_POSTS}</h1>
 <p>{L_ORPHANED_POSTS_EXPLAIN}</p>
@@ -71,8 +71,8 @@
 			<td>{posts.POST_SUBJECT}<span style="float: right"><a href="{posts.SEARCH_URL}" target="_blank">{L_SEARCH}</a></span></td>
 			<td>{posts.USER_FULL}</td>
 			<td><a href="{posts.U_FORUM}">{posts.FORUM_NAME}</a></td>
-			<td><input type="text" name="posts[{posts.POST_ID}]" /></td>
-			<td class="mark"><input type="checkbox" name="posts_del[]" value="{posts.POST_ID}" /></td>
+			<td><input type="text" name="posts[{posts.POST_ID}]"></td>
+			<td class="mark"><input type="checkbox" name="posts_del[]" value="{posts.POST_ID}"></td>
 		</tr>
 		<tr class="row3">
 			<td colspan="6">
@@ -83,8 +83,8 @@
 	</table>
 
 	<div class="rightside pagination">
-		<input type="submit" name="reassign" class="button2" value="{L_REASSIGN}" />
-		<input type="submit" name="delete" class="button2" value="{L_DELETE}" />
+		<input type="submit" name="reassign" class="button2" value="{L_REASSIGN}">
+		<input type="submit" name="delete" class="button2" value="{L_DELETE}">
 	</div>
     </fieldset>
 

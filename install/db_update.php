@@ -1633,9 +1633,9 @@ require(PHPBB_ROOT_PATH . 'language/' . $config['default_lang'] . '/install.php'
 <!DOCTYPE html>
 <html lang="<?php echo $lang['HTML_LANG_CODE']; ?>">
 <head>
-<meta charset="utf-8" />
+<meta charset="utf-8">
 <title><?php echo $lang['UPDATING_TO_LATEST_STABLE']; ?></title>
-<link href="../adm/style/admin.css" rel="stylesheet" media="screen" />
+<link href="../adm/style/admin.css" rel="stylesheet" media="screen">
 </head>
 <body>
 <div id="wrap">
@@ -1649,7 +1649,7 @@ require(PHPBB_ROOT_PATH . 'language/' . $config['default_lang'] . '/install.php'
 
 	<h1><?php echo $lang['UPDATING_TO_LATEST_STABLE']; ?></h1>
 
-	<br />
+	<br>
 <?php
 
 if ($debug_from_version !== false)
@@ -1657,7 +1657,7 @@ if ($debug_from_version !== false)
 	$config['version'] = $debug_from_version;
 }
 
-echo $lang['PREVIOUS_VERSION'] . ' :: <strong>' . $config['version'] . '</strong><br />';
+echo $lang['PREVIOUS_VERSION'] . ' :: <strong>' . $config['version'] . '</strong><br>';
 echo $lang['UPDATED_VERSION'] . ' :: <strong>' . $updates_to_version . '</strong></p>';
 
 $current_version = str_replace('rc', 'RC', strtolower($config['version']));
@@ -1667,7 +1667,7 @@ $orig_version = $config['version'];
 // Now check if the user wants to update from a version we no longer support updates from
 if (version_compare($current_version, $oldest_from_version, '<'))
 {
-	echo '<br /><br /><h1>' . $lang['ERROR'] . '</h1><br />';
+	echo '<br><br><h1>' . $lang['ERROR'] . '</h1><br>';
 	echo '<p>' . sprintf($lang['DB_UPDATE_NOT_SUPPORTED'], $oldest_from_version, $current_version) . '</p>';
 
 	_print_footer();
@@ -1677,11 +1677,11 @@ if (version_compare($current_version, $oldest_from_version, '<'))
 
 // Schema updates
 ?>
-	<br /><br />
+	<br><br>
 
 	<h1><?php echo $lang['UPDATE_DATABASE_SCHEMA']; ?></h1>
 
-	<br />
+	<br>
 	<p><?php echo $lang['PROGRESS']; ?> :: <strong>
 
 <?php
@@ -1732,9 +1732,9 @@ $errored = $no_updates = false;
 
 ?>
 
-<br /><br />
+<br><br>
 <h1><?php echo $lang['UPDATING_DATA']; ?></h1>
-<br />
+<br>
 <p><?php echo $lang['PROGRESS']; ?> :: <strong>
 
 <?php
@@ -1766,9 +1766,9 @@ $errored = $no_updates = false;
 
 ?>
 
-<br /><br />
+<br><br>
 <h1><?php echo $lang['UPDATE_VERSION_OPTIMIZE']; ?></h1>
-<br />
+<br>
 <p><?php echo $lang['PROGRESS']; ?> :: <strong>
 
 <?php
@@ -1794,7 +1794,7 @@ _write_result($no_updates, $errored, $error_ary);
 
 ?>
 
-<br />
+<br>
 <h1><?php echo $lang['UPDATE_COMPLETED']; ?></h1>
 <p><?php echo $lang['UPDATE_FILES_NOTICE']; ?></p>
 
@@ -1839,7 +1839,7 @@ function _sql($sql, &$errored, &$error_ary, $echo_dot = true)
 
 	if (defined('DEBUG_EXTRA'))
 	{
-		echo "<br />\n{$sql}\n<br />";
+		echo "<br>\n{$sql}\n<br>";
 	}
 
 	$db->sql_return_on_error(true);
@@ -1884,7 +1884,7 @@ function _write_result($no_updates, $errored, $error_ary)
 	}
 	else
 	{
-		echo ' <span class="success">' . $lang['DONE'] . '</span></strong><br />' . $lang['RESULT'] . ' :: ';
+		echo ' <span class="success">' . $lang['DONE'] . '</span></strong><br>' . $lang['RESULT'] . ' :: ';
 
 		if ($errored)
 		{
@@ -1892,11 +1892,11 @@ function _write_result($no_updates, $errored, $error_ary)
 
 			for ($i = 0; $i < sizeof($error_ary['sql']); $i++)
 			{
-				echo '<li>' . $lang['ERROR'] . ' :: <strong>' . htmlspecialchars($error_ary['error_code'][$i]['message']) . '</strong><br />';
-				echo $lang['SQL'] . ' :: <strong>' . htmlspecialchars($error_ary['sql'][$i]) . '</strong><br /><br /></li>';
+				echo '<li>' . $lang['ERROR'] . ' :: <strong>' . htmlspecialchars($error_ary['error_code'][$i]['message']) . '</strong><br>';
+				echo $lang['SQL'] . ' :: <strong>' . htmlspecialchars($error_ary['sql'][$i]) . '</strong><br><br></li>';
 			}
 
-			echo '</ul> <br /><br />' . $lang['SQL_FAILURE_EXPLAIN'] . '</p>';
+			echo '</ul> <br><br>' . $lang['SQL_FAILURE_EXPLAIN'] . '</p>';
 		}
 		else
 		{

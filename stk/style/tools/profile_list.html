@@ -15,7 +15,7 @@
 		</select>
 		&nbsp;
 		<label for="empty_only">{L_ONLY_NON_EMPTY}:</label>
-		<input name="empty_only" type="checkbox" class="checkbox"<!-- IF S_EMPTY_CHECKED --> checked="checked"<!-- ENDIF --> onclick="document.forms['display_form'].submit()" />
+		<input name="empty_only" type="checkbox" class="checkbox"<!-- IF S_EMPTY_CHECKED --> checked="checked"<!-- ENDIF --> onclick="document.forms['display_form'].submit()">
 		&nbsp;
 		<label for="order">{L_ORDER_BY}:</label>
 		<select name="order" id="order" onchange="document.forms['display_form'].submit()">
@@ -29,9 +29,9 @@
 		</select>
 		&nbsp;
 		<label for="limit">{L_LIMIT}:</label>
-		<input name="limit" type="text" size="3" value="{LIMIT}" />
+		<input name="limit" type="text" size="3" value="{LIMIT}">
 		&nbsp;
-		<input type="submit" value="{L_GO}" class="button2" />
+		<input type="submit" value="{L_GO}" class="button2">
 	</fieldset>
 </form>
 
@@ -50,32 +50,32 @@
 	<!-- BEGIN users -->
 		<tr class="<!-- IF items.S_ROW_COUNT is even -->row1<!-- ELSE -->row2<!-- ENDIF -->">
 			<td style="font-weight: bold;">{users.USERNAME} [ <a href="{users.U_USER_ADMIN}">{L_USER_ADMIN}</a> ]</td>
-			<td class="mark"><input type="checkbox" name="marked_user_id[]" <!-- IF users.USERID -->value="{users.USERID}"<!-- ELSE -->disabled="disabled"<!-- ENDIF --> /></td>
+			<td class="mark"><input type="checkbox" name="marked_user_id[]" <!-- IF users.USERID -->value="{users.USERID}"<!-- ELSE -->disabled="disabled"<!-- ENDIF -->></td>
 		</tr>
 		<!-- IF S_DISPLAY_ALL || S_DISPLAY_SIG -->
 		<tr class="row3">
 			<td colspan="3">
 				<!-- IF S_DISPLAY_ALL -->
 					<div class="column1">
-						<!-- IF users.S_USER_INACTIVE --><strong>{L_USER_IS_INACTIVE}:</strong> {users.USER_INACTIVE_REASON}<br /><!-- ENDIF -->
-						<strong>{L_JOINED}:</strong> {users.JOINED}<br />
-						<!-- IF users.VISITED --><strong>{L_VISITED}:</strong> {users.VISITED}<br /><!-- ENDIF -->
-						<strong>{L_TOTAL_POSTS}:</strong> {users.POSTS}<br />
-						<!-- IF users.WARNINGS --><strong>{L_WARNINGS}:</strong> {users.WARNINGS}<br /><!-- ENDIF -->
-						<!-- IF users.LOCATION --><strong>{L_LOCATION}:</strong> {users.LOCATION}<br /><!-- ENDIF -->
-						<!-- IF users.OCCUPATION --><strong>{L_OCCUPATION}:</strong> {users.OCCUPATION}<br /><!-- ENDIF -->
-						<!-- IF users.ABOUT --><strong>{L_ABOUT}:</strong> {users.ABOUT}<br /><!-- ENDIF -->
+						<!-- IF users.S_USER_INACTIVE --><strong>{L_USER_IS_INACTIVE}:</strong> {users.USER_INACTIVE_REASON}<br><!-- ENDIF -->
+						<strong>{L_JOINED}:</strong> {users.JOINED}<br>
+						<!-- IF users.VISITED --><strong>{L_VISITED}:</strong> {users.VISITED}<br><!-- ENDIF -->
+						<strong>{L_TOTAL_POSTS}:</strong> {users.POSTS}<br>
+						<!-- IF users.WARNINGS --><strong>{L_WARNINGS}:</strong> {users.WARNINGS}<br><!-- ENDIF -->
+						<!-- IF users.LOCATION --><strong>{L_LOCATION}:</strong> {users.LOCATION}<br><!-- ENDIF -->
+						<!-- IF users.OCCUPATION --><strong>{L_OCCUPATION}:</strong> {users.OCCUPATION}<br><!-- ENDIF -->
+						<!-- IF users.ABOUT --><strong>{L_ABOUT}:</strong> {users.ABOUT}<br><!-- ENDIF -->
 					</div>
 
 					<div class="column2">
-						<!-- IF users.EMAIL --><strong>{L_EMAIL_ADDRESS}:</strong> {users.EMAIL}<br /><!-- ENDIF -->
-						<!-- IF users.JABBER --><strong>{L_JABBER}:</strong> {users.JABBER}<br /><!-- ENDIF -->
-						<!-- IF users.SKYPE --><strong>{L_SKYPE}:</strong> {users.SKYPE}<br /><!-- ENDIF -->
-						<!-- IF users.TELEGRAM --><strong>{L_TELEGRAM}:</strong> {users.TELEGRAM}<br /><!-- ENDIF -->
-						<!-- IF users.ICQ --><strong>{L_ICQ}:</strong> {users.ICQ}<br /><!-- ENDIF -->
-						<!-- IF users.WEBSITE --><strong>{L_WEBSITE}:</strong> {users.WEBSITE}<br /><!-- ENDIF -->
+						<!-- IF users.EMAIL --><strong>{L_EMAIL_ADDRESS}:</strong> {users.EMAIL}<br><!-- ENDIF -->
+						<!-- IF users.JABBER --><strong>{L_JABBER}:</strong> {users.JABBER}<br><!-- ENDIF -->
+						<!-- IF users.SKYPE --><strong>{L_SKYPE}:</strong> {users.SKYPE}<br><!-- ENDIF -->
+						<!-- IF users.TELEGRAM --><strong>{L_TELEGRAM}:</strong> {users.TELEGRAM}<br><!-- ENDIF -->
+						<!-- IF users.ICQ --><strong>{L_ICQ}:</strong> {users.ICQ}<br><!-- ENDIF -->
+						<!-- IF users.WEBSITE --><strong>{L_WEBSITE}:</strong> {users.WEBSITE}<br><!-- ENDIF -->
 					</div>
-				<!-- IF users.SIGNATURE --><br style="clear: both;" /><br /><hr /><!-- ENDIF -->
+				<!-- IF users.SIGNATURE --><br style="clear: both;"><br><hr><!-- ENDIF -->
 				<!-- ENDIF -->
 				{users.SIGNATURE}
 			</td>
@@ -85,7 +85,7 @@
 </table>
 
 	<fieldset class="jumpbox" style="text-align: right;">
-		<label for="c2d">{L_CLICK_TO_DELETE}:</label> <input type="submit" name="c2d" class="button2" value="{L_DELETE}" />
+		<label for="c2d">{L_CLICK_TO_DELETE}:</label> <input type="submit" name="c2d" class="button2" value="{L_DELETE}">
 	</fieldset>
 </form>
 

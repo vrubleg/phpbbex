@@ -213,7 +213,7 @@ class acp_attachments
 					'S_DEFINED_IPS'         => ($defined_ips != ''),
 					'S_WARNING'             => (sizeof($error) > 0),
 
-					'WARNING_MSG'           => implode('<br />', $error),
+					'WARNING_MSG'           => implode('<br>', $error),
 					'DEFINED_IPS'           => $defined_ips,
 
 					'L_SECURE_TITLE'        => $user->lang['DEFINE_' . $allow_deny . '_IPS'],
@@ -1019,7 +1019,7 @@ class acp_attachments
 		{
 			$template->assign_vars([
 				'S_WARNING'     => true,
-				'WARNING_MSG'   => implode('<br />', $error),
+				'WARNING_MSG'   => implode('<br>', $error),
 			]);
 		}
 
@@ -1027,7 +1027,7 @@ class acp_attachments
 		{
 			$template->assign_vars([
 				'S_NOTIFY'      => true,
-				'NOTIFY_MSG'    => implode('<br />', $notify),
+				'NOTIFY_MSG'    => implode('<br>', $notify),
 			]);
 		}
 	}
@@ -1361,7 +1361,7 @@ class acp_attachments
 		$size_var = $filesize['si_identifier'];
 		$value = $filesize['value'];
 
-		return '<input type="text" id="' . $key . '" size="8" maxlength="15" name="config[' . $key . ']" value="' . $value . '" /> <select name="' . $key . '">' . size_select_options($size_var) . '</select>';
+		return '<input type="text" id="' . $key . '" size="8" maxlength="15" name="config[' . $key . ']" value="' . $value . '"> <select name="' . $key . '">' . size_select_options($size_var) . '</select>';
 	}
 
 	/**

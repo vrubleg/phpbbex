@@ -48,7 +48,7 @@ $lang = array_merge($lang, [
 
 	'NOTICE'                                => 'Notice',
 
-	'PASS_GENERATED'                        => 'Your STK password file was successfully generated!<br/>The password that was generated for you is: <em>%1$s</em><br />This password will expire on: <span style="text-decoration: underline;">%2$s</span>. After this time you <strong>must</strong> generate a new password file in order to keep using the emergency login feature!<br /><br />Use the following button to download the file. Once you’ve downloaded this file you must upload it to your server into the "stk" directory',
+	'PASS_GENERATED'                        => 'Your STK password file was successfully generated!<br>The password that was generated for you is: <em>%1$s</em><br>This password will expire on: <span style="text-decoration: underline;">%2$s</span>. After this time you <strong>must</strong> generate a new password file in order to keep using the emergency login feature!<br><br>Use the following button to download the file. Once you’ve downloaded this file you must upload it to your server into the "stk" directory',
 	'PASS_GENERATED_REDIRECT'           => 'Once you have uploaded the password file to the correct location, click <a href="%s">here</a> to go back to the login page.',
 	'PLUGIN_INCOMPATIBLE_PHPBB_VERSION' => 'This tool isn’t compatible with the version of phpBB that you are running',
 
@@ -61,11 +61,11 @@ $lang = array_merge($lang, [
 	'SUPPORT_TOOL_KIT'                  => 'Support Toolkit',
 	'SUPPORT_TOOL_KIT_INDEX'                => 'Support Toolkit index',
 	'SUPPORT_TOOL_KIT_PASSWORD'         => 'Password',
-	'SUPPORT_TOOL_KIT_PASSWORD_EXPLAIN' => 'Since you are not logged in to phpBB3 you must verify that you are a board founder by entering the Support Toolkit Password.<br /><br /><strong>Cookies MUST be allowed by your browser or you will not be able to stay logged in.</strong>',
+	'SUPPORT_TOOL_KIT_PASSWORD_EXPLAIN' => 'Since you are not logged in to phpBB3 you must verify that you are a board founder by entering the Support Toolkit Password.<br><br><strong>Cookies MUST be allowed by your browser or you will not be able to stay logged in.</strong>',
 
 	'TOOL_INCLUTION_NOT_FOUND'          => 'This tool is attempting to load a file (%1$s) that does not exist.',
 	'TOOL_NAME'                         => 'Tool Name',
 	'TOOL_NOT_AVAILABLE'                    => 'The requested tool is not available.',
 
-	'USING_STK_LOGIN'                   => 'You are logged in using the internal STK authentication method. It is advised to use this method <strong>only</strong> when you are unable to login to phpBB.<br />To disable this authentication method click <a href="%1$s">here</a>.',
+	'USING_STK_LOGIN'                   => 'You are logged in using the internal STK authentication method. It is advised to use this method <strong>only</strong> when you are unable to login to phpBB.<br>To disable this authentication method click <a href="%1$s">here</a>.',
 ]);

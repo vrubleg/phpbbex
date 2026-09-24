@@ -100,7 +100,7 @@ class ucp_prefs
 						$db->sql_query($sql);
 
 						meta_refresh(3, $this->u_action);
-						$message = $user->lang['PREFERENCES_UPDATED'] . '<br /><br />' . sprintf($user->lang['RETURN_UCP'], '<a href="' . $this->u_action . '">', '</a>');
+						$message = $user->lang['PREFERENCES_UPDATED'] . '<br><br>' . sprintf($user->lang['RETURN_UCP'], '<a href="' . $this->u_action . '">', '</a>');
 						trigger_error($message);
 					}
 
@@ -138,7 +138,7 @@ class ucp_prefs
 				$db->sql_freeresult($result);
 
 				$template->assign_vars([
-					'ERROR'             => (sizeof($error)) ? implode('<br />', $error) : '',
+					'ERROR'             => (sizeof($error)) ? implode('<br>', $error) : '',
 
 					'S_NOTIFY_EMAIL'    => ($data['notifymethod'] == NOTIFY_EMAIL),
 					'S_NOTIFY_IM'       => ($data['notifymethod'] == NOTIFY_IM),
@@ -210,7 +210,7 @@ class ucp_prefs
 						$db->sql_query($sql);
 
 						meta_refresh(3, $this->u_action);
-						$message = $user->lang['PREFERENCES_UPDATED'] . '<br /><br />' . sprintf($user->lang['RETURN_UCP'], '<a href="' . $this->u_action . '">', '</a>');
+						$message = $user->lang['PREFERENCES_UPDATED'] . '<br><br>' . sprintf($user->lang['RETURN_UCP'], '<a href="' . $this->u_action . '">', '</a>');
 						trigger_error($message);
 					}
 
@@ -219,7 +219,7 @@ class ucp_prefs
 				}
 
 				$template->assign_vars([
-					'ERROR'             => (sizeof($error)) ? implode('<br />', $error) : '',
+					'ERROR'             => (sizeof($error)) ? implode('<br>', $error) : '',
 
 					'S_IMAGES'          => $data['images'],
 					'S_FLASH'           => $data['flash'],
@@ -274,7 +274,7 @@ class ucp_prefs
 						$msg = $user->lang['FORM_INVALID'];
 					}
 					meta_refresh(3, $this->u_action);
-					$message = $msg . '<br /><br />' . sprintf($user->lang['RETURN_UCP'], '<a href="' . $this->u_action . '">', '</a>');
+					$message = $msg . '<br><br>' . sprintf($user->lang['RETURN_UCP'], '<a href="' . $this->u_action . '">', '</a>');
 					trigger_error($message);
 				}
 

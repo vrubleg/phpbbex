@@ -556,7 +556,7 @@ class acp_board
 			'L_TITLE_EXPLAIN'   => $user->lang[$display_vars['title'] . '_EXPLAIN'],
 
 			'S_ERROR'           => (sizeof($error) > 0),
-			'ERROR_MSG'         => implode('<br />', $error),
+			'ERROR_MSG'         => implode('<br>', $error),
 
 			'U_ACTION'          => $this->u_action]
 		);
@@ -707,7 +707,7 @@ class acp_board
 	{
 		global $user;
 
-		return '<input id="' . $key . '" type="text" size="3" maxlength="3" name="config[min_name_chars]" value="' . $value . '" /> ' . $user->lang['MIN_CHARS'] . '&nbsp;&nbsp;<input type="text" size="3" maxlength="3" name="config[max_name_chars]" value="' . $this->new_config['max_name_chars'] . '" /> ' . $user->lang['MAX_CHARS'];
+		return '<input id="' . $key . '" type="text" size="3" maxlength="3" name="config[min_name_chars]" value="' . $value . '"> ' . $user->lang['MIN_CHARS'] . '&nbsp;&nbsp;<input type="text" size="3" maxlength="3" name="config[max_name_chars]" value="' . $this->new_config['max_name_chars'] . '"> ' . $user->lang['MAX_CHARS'];
 	}
 
 	/**
@@ -736,7 +736,7 @@ class acp_board
 	{
 		global $user;
 
-		return '<input id="' . $key . '" type="text" size="3" maxlength="3" name="config[min_pass_chars]" value="' . $value . '" /> ' . $user->lang['MIN_CHARS'] . '&nbsp;&nbsp;<input type="text" size="3" maxlength="3" name="config[max_pass_chars]" value="' . $this->new_config['max_pass_chars'] . '" /> ' . $user->lang['MAX_CHARS'];
+		return '<input id="' . $key . '" type="text" size="3" maxlength="3" name="config[min_pass_chars]" value="' . $value . '"> ' . $user->lang['MIN_CHARS'] . '&nbsp;&nbsp;<input type="text" size="3" maxlength="3" name="config[max_pass_chars]" value="' . $this->new_config['max_pass_chars'] . '"> ' . $user->lang['MAX_CHARS'];
 	}
 
 	/**
@@ -772,7 +772,7 @@ class acp_board
 			$s_bump_type .= '<option value="' . $type . '"' . $selected . '>' . $user->lang[$lang] . '</option>';
 		}
 
-		return '<input id="' . $key . '" type="text" size="3" maxlength="4" name="config[bump_interval]" value="' . $value . '" />&nbsp;<select name="config[bump_type]">' . $s_bump_type . '</select>';
+		return '<input id="' . $key . '" type="text" size="3" maxlength="4" name="config[bump_interval]" value="' . $value . '">&nbsp;<select name="config[bump_type]">' . $s_bump_type . '</select>';
 	}
 
 	/**
@@ -803,7 +803,7 @@ class acp_board
 
 		$radio_ary = [1 => 'YES', 0 => 'NO'];
 
-		return h_radio('config[board_disable]', $radio_ary, $value) . '<br /><input id="' . $key . '" type="text" name="config[board_disable_msg]" maxlength="255" size="40" value="' . $this->new_config['board_disable_msg'] . '" />';
+		return h_radio('config[board_disable]', $radio_ary, $value) . '<br><input id="' . $key . '" type="text" name="config[board_disable_msg]" maxlength="255" size="40" value="' . $this->new_config['board_disable_msg'] . '">';
 	}
 
 	/**
@@ -841,7 +841,7 @@ class acp_board
 		$user->dst = $old_dst;
 
 		return "<select name=\"dateoptions\" id=\"dateoptions\" onchange=\"if (this.value == 'custom') { document.getElementById('" . addslashes($key) . "').value = '" . addslashes($value) . "'; } else { document.getElementById('" . addslashes($key) . "').value = this.value; }\">{$dateformat_options}</select>
-		<input type=\"text\" name=\"config[{$key}]\" id=\"{$key}\" value=\"{$value}\" maxlength=\"30\" />";
+		<input type=\"text\" name=\"config[{$key}]\" id=\"{$key}\" value=\"{$value}\" maxlength=\"30\">";
 	}
 
 	/**

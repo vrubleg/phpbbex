@@ -10,9 +10,9 @@
 <!-- IF S_FORUM_RULES or FORUM_DESC or FORUM_NAME -->
 	<div class="rules">
 		<div class="inner">
-		<!-- IF FORUM_NAME --><strong>{L_FORUM_NAME}:</strong> {FORUM_NAME}<br /><!-- ENDIF -->
-		<!-- IF FORUM_DESC --><strong>{L_FORUM_DESC}:</strong> {FORUM_DESC}<br /><!-- ENDIF -->
-		<!-- IF S_FORUM_RULES --><strong>{L_FORUM_RULES}:</strong> <!-- IF U_FORUM_RULES --><a href="{U_FORUM_RULES}">{U_FORUM_RULES}</a><!-- ELSE -->{FORUM_RULES}<!-- ENDIF --><br /><!-- ENDIF -->
+		<!-- IF FORUM_NAME --><strong>{L_FORUM_NAME}:</strong> {FORUM_NAME}<br><!-- ENDIF -->
+		<!-- IF FORUM_DESC --><strong>{L_FORUM_DESC}:</strong> {FORUM_DESC}<br><!-- ENDIF -->
+		<!-- IF S_FORUM_RULES --><strong>{L_FORUM_RULES}:</strong> <!-- IF U_FORUM_RULES --><a href="{U_FORUM_RULES}">{U_FORUM_RULES}</a><!-- ELSE -->{FORUM_RULES}<!-- ENDIF --><br><!-- ENDIF -->
 		</div>
 	</div>
 <!-- ENDIF -->
@@ -41,8 +41,8 @@
 <!-- IF S_USER_LOGGED_IN -->
 	{S_FORM_TOKEN}
 <!-- ELSE -->
-	<input type="hidden" name="creation_time" value="0" />
-	<input type="hidden" name="form_token" value="0" />
+	<input type="hidden" name="creation_time" value="0">
+	<input type="hidden" name="form_token" value="0">
 	<script>
 	jQuery(function($)
 	{

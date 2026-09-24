@@ -678,15 +678,15 @@ function close_report($report_id_list, $mode, $action, $pm = false)
 		{
 			if (sizeof($forum_ids) === 1)
 			{
-				$return_forum = sprintf($user->lang['RETURN_FORUM'], '<a href="' . append_sid(PHPBB_ROOT_PATH . 'viewforum.php', 'f=' . current($forum_ids)) . '">', '</a>') . '<br /><br />';
+				$return_forum = sprintf($user->lang['RETURN_FORUM'], '<a href="' . append_sid(PHPBB_ROOT_PATH . 'viewforum.php', 'f=' . current($forum_ids)) . '">', '</a>') . '<br><br>';
 			}
 
 			if (sizeof($topic_ids) === 1)
 			{
-				$return_topic = sprintf($user->lang['RETURN_TOPIC'], '<a href="' . append_sid(PHPBB_ROOT_PATH . 'viewtopic.php', 't=' . current($topic_ids)) . '">', '</a>') . '<br /><br />';
+				$return_topic = sprintf($user->lang['RETURN_TOPIC'], '<a href="' . append_sid(PHPBB_ROOT_PATH . 'viewtopic.php', 't=' . current($topic_ids)) . '">', '</a>') . '<br><br>';
 			}
 		}
 
-		trigger_error($user->lang[$success_msg] . '<br /><br />' . $return_forum . $return_topic . sprintf($user->lang['RETURN_PAGE'], "<a href=\"{$redirect}\">", '</a>'));
+		trigger_error($user->lang[$success_msg] . '<br><br>' . $return_forum . $return_topic . sprintf($user->lang['RETURN_PAGE'], "<a href=\"{$redirect}\">", '</a>'));
 	}
 }

@@ -89,7 +89,7 @@ switch ($mode)
 
 		meta_refresh(3, append_sid(PHPBB_ROOT_PATH . 'index.php'));
 
-		$message = $message . '<br /><br />' . sprintf($user->lang['RETURN_INDEX'], '<a href="' . append_sid(PHPBB_ROOT_PATH . 'index.php') . '">', '</a> ');
+		$message = $message . '<br><br>' . sprintf($user->lang['RETURN_INDEX'], '<a href="' . append_sid(PHPBB_ROOT_PATH . 'index.php') . '">', '</a> ');
 		trigger_error($message);
 
 	break;
@@ -155,7 +155,7 @@ switch ($mode)
 
 		add_log('admin', 'LOG_ACL_TRANSFER_PERMISSIONS', $user_row['username']);
 
-		$message = sprintf($user->lang['PERMISSIONS_TRANSFERRED'], $user_row['username']) . '<br /><br />' . sprintf($user->lang['RETURN_INDEX'], '<a href="' . append_sid(PHPBB_ROOT_PATH . 'index.php') . '">', '</a>');
+		$message = sprintf($user->lang['PERMISSIONS_TRANSFERRED'], $user_row['username']) . '<br><br>' . sprintf($user->lang['RETURN_INDEX'], '<a href="' . append_sid(PHPBB_ROOT_PATH . 'index.php') . '">', '</a>');
 		trigger_error($message);
 
 	break;
@@ -178,7 +178,7 @@ switch ($mode)
 
 		add_log('admin', 'LOG_ACL_RESTORE_PERMISSIONS', $username);
 
-		$message = $user->lang['PERMISSIONS_RESTORED'] . '<br /><br />' . sprintf($user->lang['RETURN_INDEX'], '<a href="' . append_sid(PHPBB_ROOT_PATH . 'index.php') . '">', '</a>');
+		$message = $user->lang['PERMISSIONS_RESTORED'] . '<br><br>' . sprintf($user->lang['RETURN_INDEX'], '<a href="' . append_sid(PHPBB_ROOT_PATH . 'index.php') . '">', '</a>');
 		trigger_error($message);
 
 	break;

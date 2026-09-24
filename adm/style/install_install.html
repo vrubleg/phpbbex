@@ -20,7 +20,7 @@
 		<!-- ELSE -->
 
 			<dl>
-				<dt>{checks.TITLE}:<!-- IF checks.S_EXPLAIN --><br /><span class="explain">{checks.TITLE_EXPLAIN}</span><!-- ENDIF --></dt>
+				<dt>{checks.TITLE}:<!-- IF checks.S_EXPLAIN --><br><span class="explain">{checks.TITLE_EXPLAIN}</span><!-- ENDIF --></dt>
 				<dd>{checks.RESULT}</dd>
 			</dl>
 		<!-- ENDIF -->
@@ -43,7 +43,7 @@
 		<!-- ELSE -->
 
 			<dl>
-				<dt><label for="{options.KEY}">{options.TITLE}:</label><!-- IF options.S_EXPLAIN --><br /><span class="explain">{options.TITLE_EXPLAIN}</span><!-- ENDIF --></dt>
+				<dt><label for="{options.KEY}">{options.TITLE}:</label><!-- IF options.S_EXPLAIN --><br><span class="explain">{options.TITLE_EXPLAIN}</span><!-- ENDIF --></dt>
 				<dd>{options.CONTENT}</dd>
 			</dl>
 
@@ -60,7 +60,7 @@
 	<fieldset class="submit-buttons">
 		<legend>{L_DL_CONFIG}</legend>
 		{S_HIDDEN}
-		<input class="button1" type="submit" id="dlconfig" name="dlconfig" value="{L_DL_DOWNLOAD}" />&nbsp;<input class="button1" type="submit" id="dldone" name="dldone" value="{L_DL_DONE}" />
+		<input class="button1" type="submit" id="dlconfig" name="dlconfig" value="{L_DL_DOWNLOAD}">&nbsp;<input class="button1" type="submit" id="dldone" name="dldone" value="{L_DL_DONE}">
 	</fieldset>
 <!-- ENDIF -->
 
@@ -68,7 +68,7 @@
 	<fieldset class="submit-buttons">
 		<legend>{L_SUBMIT}</legend>
 		{S_HIDDEN}
-		<!-- IF L_SUBMIT --><input class="button1" type="submit" id="submit" onclick="this.className = 'button1 disabled';" name="submit" value="{L_SUBMIT}" /><!-- ENDIF -->
+		<!-- IF L_SUBMIT --><input class="button1" type="submit" id="submit" onclick="this.className = 'button1 disabled';" name="submit" value="{L_SUBMIT}"><!-- ENDIF -->
 	</fieldset>
 <!-- ENDIF -->
 

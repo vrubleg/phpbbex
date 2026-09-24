@@ -368,7 +368,7 @@ if ($config['allow_bookmarks'] && $user->data['is_registered'] && request_var('b
 	}
 	else
 	{
-		$message = $user->lang['BOOKMARK_ERR'] . '<br /><br />' . sprintf($user->lang['RETURN_TOPIC'], '<a href="' . $viewtopic_url . '">', '</a>');
+		$message = $user->lang['BOOKMARK_ERR'] . '<br><br>' . sprintf($user->lang['RETURN_TOPIC'], '<a href="' . $viewtopic_url . '">', '</a>');
 	}
 	meta_refresh(3, $viewtopic_url);
 
@@ -590,7 +590,7 @@ if (!empty($topic_data['poll_start']))
 				$message = 'FORM_INVALID';
 			}
 
-			$message = $user->lang[$message] . '<br /><br />' . sprintf($user->lang['RETURN_TOPIC'], '<a href="' . $redirect_url . '">', '</a>');
+			$message = $user->lang[$message] . '<br><br>' . sprintf($user->lang['RETURN_TOPIC'], '<a href="' . $redirect_url . '">', '</a>');
 			trigger_error($message);
 		}
 

@@ -43,7 +43,7 @@
 
 <fieldset class="submit-buttons">
 	{S_HIDDEN_FIELDS}
-	<input type="submit" name="action[add_feedback]" value="{L_SUBMIT}" class="button1" />
+	<input type="submit" name="action[add_feedback]" value="{L_SUBMIT}" class="button1">
 	{S_FORM_TOKEN}
 </fieldset>
 
@@ -52,7 +52,7 @@
 
 	<ul class="linklist">
 		<li>
-			{L_SEARCH_KEYWORDS}: <input type="text" class="inputbox autowidth" name="keywords" value="{S_KEYWORDS}" />&nbsp;<input type="submit" class="button2" name="filter" value="{L_SEARCH}" />
+			{L_SEARCH_KEYWORDS}: <input type="text" class="inputbox autowidth" name="keywords" value="{S_KEYWORDS}">&nbsp;<input type="submit" class="button2" name="filter" value="{L_SEARCH}">
 		</li>
 		<li class="rightside pagination">
 			<!-- IF TOTAL_REPORTS -->{TOTAL_REPORTS} <!-- ENDIF -->
@@ -78,7 +78,7 @@
 		<td class="center">{usernotes.REPORT_AT}</td>
 		<td>{usernotes.ACTION}</td>
 
-		<!-- IF S_CLEAR_ALLOWED --><td class="center" style="width: 5%;"><input type="checkbox" name="marknote[]" id="note-{usernotes.ID}" value="{usernotes.ID}" /></td><!-- ENDIF -->
+		<!-- IF S_CLEAR_ALLOWED --><td class="center" style="width: 5%;"><input type="checkbox" name="marknote[]" id="note-{usernotes.ID}" value="{usernotes.ID}"></td><!-- ENDIF -->
 	</tr>
 	<!-- BEGINELSE -->
 	<tr>
@@ -88,17 +88,17 @@
 	</tbody>
 	</table>
 
-	<hr />
+	<hr>
 
 	<fieldset class="display-options">
 		<!-- IF NEXT_PAGE --><a href="{NEXT_PAGE}" class="right-box nav-to-right">{L_NEXT}</a><!-- ENDIF -->
 		<!-- IF PREVIOUS_PAGE --><a href="{PREVIOUS_PAGE}" class="left-box nav-to-left">{L_PREVIOUS}</a><!-- ENDIF -->
 		<label>{L_DISPLAY_LOG}: {S_SELECT_SORT_DAYS}</label>
 		<label>{L_SORT_BY} {S_SELECT_SORT_KEY}</label><label>{S_SELECT_SORT_DIR}</label>
-		<input type="submit" name="sort" value="{L_GO}" class="button2" />
+		<input type="submit" name="sort" value="{L_GO}" class="button2">
 	</fieldset>
 
-	<hr />
+	<hr>
 
 	<ul class="linklist">
 		<li class="rightside pagination">
@@ -112,8 +112,8 @@
 
 <!-- IF S_CLEAR_ALLOWED -->
 <fieldset class="display-actions">
-	<input class="button2" type="submit" name="action[del_all]" value="{L_DELETE_ALL}" />
-	&nbsp;<input class="button1" type="submit" name="action[del_marked]" value="{L_DELETE_MARKED}" />
+	<input class="button2" type="submit" name="action[del_all]" value="{L_DELETE_ALL}">
+	&nbsp;<input class="button1" type="submit" name="action[del_marked]" value="{L_DELETE_MARKED}">
 </fieldset>
 
 <fieldset class="display-actions">

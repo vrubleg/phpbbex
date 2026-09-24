@@ -15,9 +15,9 @@
 
 <!-- IF FORUM_DESC or MODERATORS or S_FORUM_RULES -->
 <p style="display: none">
-	<!-- IF FORUM_DESC --><strong>{L_FORUM_DESC}:</strong> {FORUM_DESC}<br /><!-- ENDIF -->
-	<!-- IF S_FORUM_RULES --><strong>{L_FORUM_RULES}:</strong> <!-- IF U_FORUM_RULES --><a href="{U_FORUM_RULES}">{U_FORUM_RULES}</a><!-- ELSE -->{FORUM_RULES}<!-- ENDIF --><br /><!-- ENDIF -->
-	<!-- IF MODERATORS --><strong><!-- IF S_SINGLE_MODERATOR -->{L_MODERATOR}<!-- ELSE -->{L_MODERATORS}<!-- ENDIF -->:</strong> {MODERATORS}<br /><!-- ENDIF -->
+	<!-- IF FORUM_DESC --><strong>{L_FORUM_DESC}:</strong> {FORUM_DESC}<br><!-- ENDIF -->
+	<!-- IF S_FORUM_RULES --><strong>{L_FORUM_RULES}:</strong> <!-- IF U_FORUM_RULES --><a href="{U_FORUM_RULES}">{U_FORUM_RULES}</a><!-- ELSE -->{FORUM_RULES}<!-- ENDIF --><br><!-- ENDIF -->
+	<!-- IF MODERATORS --><strong><!-- IF S_SINGLE_MODERATOR -->{L_MODERATOR}<!-- ELSE -->{L_MODERATORS}<!-- ENDIF -->:</strong> {MODERATORS}<br><!-- ENDIF -->
 </p>
 <!-- ENDIF -->
 
@@ -33,8 +33,8 @@
 		<div class="search-box">
 			<form method="get" id="topic-search" action="{S_SEARCHBOX_ACTION}">
 			<fieldset>
-				<input class="inputbox search tiny" type="text" name="keywords" id="search_keywords" size="20" placeholder="{L_SEARCH_TOPIC}" />
-				<input class="button2" type="submit" value="{L_SEARCH}" />
+				<input class="inputbox search tiny" type="text" name="keywords" id="search_keywords" size="20" placeholder="{L_SEARCH_TOPIC}">
+				<input class="button2" type="submit" value="{L_SEARCH}">
 				{S_SEARCH_LOCAL_HIDDEN_FIELDS}
 			</fieldset>
 			</form>
@@ -59,13 +59,13 @@
 
 		<div class="content">
 			<h2>{POLL_QUESTION}</h2>
-			<p class="author">{L_POLL_LENGTH}<!-- IF S_CAN_VOTE and L_POLL_LENGTH --><br /><!-- ENDIF --><!-- IF S_CAN_VOTE -->{L_MAX_VOTES}<!-- ENDIF --></p>
+			<p class="author">{L_POLL_LENGTH}<!-- IF S_CAN_VOTE and L_POLL_LENGTH --><br><!-- ENDIF --><!-- IF S_CAN_VOTE -->{L_MAX_VOTES}<!-- ENDIF --></p>
 
 			<fieldset class="polls">
 			<!-- BEGIN poll_option -->
 				<dl class="<!-- IF poll_option.POLL_OPTION_VOTED -->voted<!-- ENDIF -->"<!-- IF poll_option.POLL_OPTION_VOTED --> title="{L_POLL_VOTED_OPTION}"<!-- ENDIF -->>
 					<dt>{poll_option.POLL_OPTION_CAPTION}</dt>
-					<!-- IF S_CAN_VOTE --><dd style="width: auto;"><!-- IF S_IS_MULTI_CHOICE --><input type="checkbox" name="vote_id[]" id="vote_{poll_option.POLL_OPTION_ID}" value="{poll_option.POLL_OPTION_ID}"<!-- IF poll_option.POLL_OPTION_VOTED --> checked="checked"<!-- ENDIF --> /><!-- ELSE --><input type="radio" name="vote_id[]" value="{poll_option.POLL_OPTION_ID}"<!-- IF poll_option.POLL_OPTION_VOTED --> checked="checked"<!-- ENDIF --> /><!-- ENDIF --></dd><!-- ENDIF -->
+					<!-- IF S_CAN_VOTE --><dd style="width: auto;"><!-- IF S_IS_MULTI_CHOICE --><input type="checkbox" name="vote_id[]" id="vote_{poll_option.POLL_OPTION_ID}" value="{poll_option.POLL_OPTION_ID}"<!-- IF poll_option.POLL_OPTION_VOTED --> checked="checked"<!-- ENDIF -->><!-- ELSE --><input type="radio" name="vote_id[]" value="{poll_option.POLL_OPTION_ID}"<!-- IF poll_option.POLL_OPTION_VOTED --> checked="checked"<!-- ENDIF -->><!-- ENDIF --></dd><!-- ENDIF -->
 					<!-- IF S_DISPLAY_RESULTS --><dd class="resultbar"><div class="<!-- IF poll_option.POLL_OPTION_PCT < 20 -->pollbar1<!-- ELSEIF poll_option.POLL_OPTION_PCT < 40 -->pollbar2<!-- ELSEIF poll_option.POLL_OPTION_PCT < 60 -->pollbar3<!-- ELSEIF poll_option.POLL_OPTION_PCT < 80 -->pollbar4<!-- ELSE -->pollbar5<!-- ENDIF -->" style="width:{poll_option.POLL_OPTION_PERCENT};">{poll_option.POLL_OPTION_RESULT}</div><!-- IF S_SHOW_VOTERS -->{poll_option.POLL_OPTION_VOTERS}<!-- ENDIF --></dd>
 					<dd><!-- IF poll_option.POLL_OPTION_RESULT == 0 -->{L_NO_VOTES}<!-- ELSE -->{poll_option.POLL_OPTION_PERCENT}<!-- ENDIF --></dd><!-- ENDIF -->
 				</dl>
@@ -83,10 +83,10 @@
 					<dt>&nbsp;</dt>
 					<dd class="resultbar">
 					<!-- IF POLL_VOTED -->
-						<input type="submit" name="update" value="{L_SUBMIT_REVOTE}" class="button1" />
-						<input type="submit" name="unvote" value="{L_SUBMIT_UNVOTE}" class="button2" />
+						<input type="submit" name="update" value="{L_SUBMIT_REVOTE}" class="button1">
+						<input type="submit" name="unvote" value="{L_SUBMIT_UNVOTE}" class="button2">
 					<!-- ELSE -->
-						<input type="submit" name="update" value="{L_SUBMIT_VOTE}" class="button1" />
+						<input type="submit" name="update" value="{L_SUBMIT_VOTE}" class="button1">
 					<!-- ENDIF -->
 					</dd>
 				</dl>
@@ -152,7 +152,7 @@ jQuery(function($)
 <!-- ENDIF -->
 
 <!-- BEGIN postrow -->
-	<!-- IF $LAST_POST_FIRST && postrow.POST_NUMBER != 2 --><hr /><!-- ENDIF -->
+	<!-- IF $LAST_POST_FIRST && postrow.POST_NUMBER != 2 --><hr><!-- ENDIF -->
 	<!-- IF postrow.POST_NUMBER == 1 --><!-- DEFINE $LAST_POST_FIRST = 1 --><!-- ELSE --><!-- DEFINE $LAST_POST_FIRST = 0 --><!-- ENDIF -->
 	<!-- IF postrow.S_FIRST_UNREAD --><a id="unread"></a><!-- ENDIF -->
 	<div id="p{postrow.POST_ID}" data-id="{postrow.POST_ID}" class="post <!-- IF postrow.S_ROW_COUNT is odd -->bg1<!-- ELSE -->bg2<!-- ENDIF --><!-- IF postrow.S_UNREAD_POST --> unreadpost<!-- ENDIF --><!-- IF postrow.S_POST_REPORTED --> reported<!-- ENDIF -->">
@@ -173,12 +173,12 @@ jQuery(function($)
 			<!-- ENDIF -->
 		<!-- ENDIF -->
 
-			<!-- IF postrow.POST_SUBJECT and postrow.POST_SUBJECT != TOPIC_TITLE --><h3 <!-- IF postrow.S_FIRST_ROW -->class="first"<!-- ENDIF -->><!-- IF postrow.POST_ICON_IMG --><img src="{T_TOPIC_ICONS_PATH}{postrow.POST_ICON_IMG}" width="{postrow.POST_ICON_IMG_WIDTH}" height="{postrow.POST_ICON_IMG_HEIGHT}" loading="lazy" /> <!-- ENDIF --><a rel="nofollow" href="#p{postrow.POST_ID}">{postrow.POST_SUBJECT}</a></h3><!-- ENDIF -->
+			<!-- IF postrow.POST_SUBJECT and postrow.POST_SUBJECT != TOPIC_TITLE --><h3 <!-- IF postrow.S_FIRST_ROW -->class="first"<!-- ENDIF -->><!-- IF postrow.POST_ICON_IMG --><img src="{T_TOPIC_ICONS_PATH}{postrow.POST_ICON_IMG}" width="{postrow.POST_ICON_IMG_WIDTH}" height="{postrow.POST_ICON_IMG_HEIGHT}" loading="lazy"> <!-- ENDIF --><a rel="nofollow" href="#p{postrow.POST_ID}">{postrow.POST_SUBJECT}</a></h3><!-- ENDIF -->
 			<p class="author"><!-- IF not S_IS_BOT --><a rel="nofollow" href="{postrow.U_MINI_POST}"><!-- ENDIF --><!-- IF STYLE_VT_SHOW_POST_NUMBERS -->#{postrow.POST_NUMBER}<!-- ELSE -->{postrow.MINI_POST_IMG}<!-- ENDIF --><!-- IF not S_IS_BOT --></a><!-- ENDIF -->{L_POST_BY_AUTHOR} <!-- IF S_QUICK_REPLY --><strong><a onclick="insert_text('[b]{postrow.POSTER_QUOTE}[/b], ');"<!-- IF postrow.POST_AUTHOR_COLOUR --> style="color: {postrow.POST_AUTHOR_COLOUR};"<!-- ENDIF -->>{postrow.POST_AUTHOR}</a></strong><!-- ELSE --><strong>{postrow.POST_AUTHOR_FULL}</strong><!-- ENDIF --> &raquo; {postrow.POST_DATE} </p>
 
 			<!-- IF postrow.S_POST_UNAPPROVED or postrow.S_POST_REPORTED -->
 				<p class="rules">
-					<!-- IF postrow.S_POST_UNAPPROVED -->{UNAPPROVED_IMG} <a href="{postrow.U_MCP_APPROVE}"><strong>{L_POST_UNAPPROVED}</strong></a><br /><!-- ENDIF -->
+					<!-- IF postrow.S_POST_UNAPPROVED -->{UNAPPROVED_IMG} <a href="{postrow.U_MCP_APPROVE}"><strong>{L_POST_UNAPPROVED}</strong></a><br><!-- ENDIF -->
 					<!-- IF postrow.S_POST_REPORTED -->{REPORTED_IMG} <a href="{postrow.U_MCP_REPORT}"><strong>{L_POST_REPORTED}</strong></a><!-- ENDIF -->
 				</p>
 			<!-- ENDIF -->
@@ -200,7 +200,7 @@ jQuery(function($)
 			<!-- IF postrow.S_DISPLAY_NOTICE --><div class="rules">{L_DOWNLOAD_NOTICE}</div><!-- ENDIF -->
 			<!-- IF postrow.EDITED_MESSAGE or postrow.EDIT_REASON -->
 				<div class="notice">{postrow.EDITED_MESSAGE}
-					<!-- IF postrow.EDITED_MESSAGE and postrow.EDIT_REASON --><br /><!-- ENDIF -->
+					<!-- IF postrow.EDITED_MESSAGE and postrow.EDIT_REASON --><br><!-- ENDIF -->
 					<!-- IF postrow.EDIT_REASON --><strong>{L_REASON}:</strong> <em>{postrow.EDIT_REASON}</em><!-- ENDIF -->
 				</div>
 			<!-- ENDIF -->
@@ -209,14 +209,14 @@ jQuery(function($)
 			<!-- BEGIN postwarning -->
 				<div class="{postrow.postwarning.TYPE}">
 					<span class="date">{postrow.postwarning.ISSUER_NAME} » {postrow.postwarning.TIME}</span>
-					<strong>{postrow.postwarning.TITLE}</strong><br />
+					<strong>{postrow.postwarning.TITLE}</strong><br>
 					{postrow.postwarning.TEXT}
 				</div>
 			<!-- END postwarning -->
 		</div>
 
 			<dl class="postprofile" id="profile{postrow.POST_ID}">
-			<dt><span>{postrow.POST_AUTHOR_FULL}</span><!-- IF STYLE_MP_SHOW_GENDER --><!-- IF postrow.S_POSTER_GENDER_M --> <img src="{T_THEME_PATH}/images/icon_gender_m.gif" title="{L_GENDER}: {L_GENDER_M}" alt="M" /><!-- ELSEIF postrow.S_POSTER_GENDER_F --> <img src="{T_THEME_PATH}/images/icon_gender_f.gif" title="{L_GENDER}: {L_GENDER_F}" alt="F" /><!-- ENDIF --><!-- ENDIF --><!-- IF postrow.S_ONLINE --><span class="online"> {L_ONLINE}</span><!-- ENDIF --></dt>
+			<dt><span>{postrow.POST_AUTHOR_FULL}</span><!-- IF STYLE_MP_SHOW_GENDER --><!-- IF postrow.S_POSTER_GENDER_M --> <img src="{T_THEME_PATH}/images/icon_gender_m.gif" title="{L_GENDER}: {L_GENDER_M}" alt="M"><!-- ELSEIF postrow.S_POSTER_GENDER_F --> <img src="{T_THEME_PATH}/images/icon_gender_f.gif" title="{L_GENDER}: {L_GENDER_F}" alt="F"><!-- ENDIF --><!-- ENDIF --><!-- IF postrow.S_ONLINE --><span class="online"> {L_ONLINE}</span><!-- ENDIF --></dt>
 			<!-- IF postrow.RANK_TITLE or STYLE_MP_SHOW_TOPIC_POSTER and postrow.S_TOPIC_POSTER --><dd><!-- IF STYLE_MP_SHOW_TOPIC_POSTER and postrow.S_TOPIC_POSTER -->{L_TOPIC_POSTER}<!-- ENDIF --><!-- IF postrow.RANK_TITLE and STYLE_MP_SHOW_TOPIC_POSTER and postrow.S_TOPIC_POSTER -->, <!-- ENDIF --><!-- IF postrow.RANK_TITLE -->{postrow.RANK_TITLE}<!-- ENDIF --></dd><!-- ENDIF -->
 			<!-- IF postrow.RANK_IMG --><dd>{postrow.RANK_IMG}</dd><!-- ENDIF -->
 			<!-- IF postrow.POSTER_AVATAR --><dd class="avatar"><!-- IF postrow.U_POST_AUTHOR --><a rel="nofollow" href="{postrow.U_POST_AUTHOR}">{postrow.POSTER_AVATAR}</a><!-- ELSE -->{postrow.POSTER_AVATAR}<!-- ENDIF --></dd><!-- ENDIF -->
@@ -225,7 +225,7 @@ jQuery(function($)
 				<dd class="wcards">
 				<!-- BEGIN userwarning -->
 					<!-- IF postrow.userwarning.U_POST --><a rel="nofollow" href="{postrow.userwarning.U_POST}"><!-- ENDIF -->
-					<img src="{T_THEME_PATH}/images/card_{postrow.userwarning.TYPE}.gif" title="{postrow.userwarning.TITLE}" alt="W" />
+					<img src="{T_THEME_PATH}/images/card_{postrow.userwarning.TYPE}.gif" title="{postrow.userwarning.TITLE}" alt="W">
 					<!-- IF postrow.userwarning.U_POST --></a><!-- ENDIF -->
 				<!-- END userwarning -->
 				</dd>
@@ -268,7 +268,7 @@ jQuery(function($)
 
 		</div>
 	</div>
-	<hr class="divider" />
+	<hr class="divider">
 	<!-- IF postrow.S_ROW_COUNT is odd --><!-- DEFINE $NEXT_BG = 'bg2' --><!-- ELSE --><!-- DEFINE $NEXT_BG = 'bg1' --><!-- ENDIF -->
 <!-- END postrow -->
 
@@ -278,7 +278,7 @@ jQuery(function($)
 			{BUMPED_MESSAGE}
 		</div>
 	</div>
-	<hr class="divider" />
+	<hr class="divider">
 <!-- ENDIF -->
 
 <div class="topic-actions">
@@ -303,7 +303,7 @@ jQuery(function($)
 <!-- IF S_TOPIC_MOD -->
 	<form method="post" action="{S_MOD_ACTION}">
 	<fieldset class="quickmod">
-		<label for="quick-mod-select">{L_QUICK_MOD}:</label> {S_TOPIC_MOD} <input type="submit" value="{L_GO}" class="button2" />
+		<label for="quick-mod-select">{L_QUICK_MOD}:</label> {S_TOPIC_MOD} <input type="submit" value="{L_GO}" class="button2">
 		{S_FORM_TOKEN}
 	</fieldset>
 	</form>

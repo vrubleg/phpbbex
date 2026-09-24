@@ -230,7 +230,7 @@ class jabber
 	{
 		if ($this->enable_logging && sizeof($this->log_array))
 		{
-			return implode("<br /><br />", $this->log_array);
+			return implode("<br><br>", $this->log_array);
 		}
 
 		return '';

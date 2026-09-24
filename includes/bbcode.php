@@ -211,7 +211,7 @@ class bbcode
 
 			while ($row = $db->sql_fetchrow($result))
 			{
-				// To circumvent replacing newlines with <br /> for the generated html,
+				// To circumvent replacing newlines with <br> for the generated html,
 				// we use carriage returns here. They are later changed back to newlines
 				$row['bbcode_tpl'] = str_replace("\n", "\r", $row['bbcode_tpl']);
 				$row['second_pass_replace'] = str_replace("\n", "\r", $row['second_pass_replace']);
@@ -489,13 +489,13 @@ class bbcode
 				's_close'   => '</span>',
 				'tt_open'   => '<code>',
 				'tt_close'  => '</code>',
-				'img'       => '<img src="$1" alt="' . $user->lang['IMAGE'] . '" loading="lazy" />',
+				'img'       => '<img src="$1" alt="' . $user->lang['IMAGE'] . '" loading="lazy">',
 				'size'      => '<span style="font-size: $1%; line-height: normal">$2</span>',
 				'color'     => '<span style="color: $1">$2</span>',
 				'email'     => '<a href="mailto:$1" class="postlink">$2</a>',
 				// Fallbacks for old templates
 				'upd_merged'            => '<span style="font-size: 85%; line-height: normal; color: gray;">$1</span>',
-				'upd_subject'           => '<br /><span style="font-weight: bold">$1</span>',
+				'upd_subject'           => '<br><span style="font-weight: bold">$1</span>',
 				'spoiler_title_open'    => '<div><span style="font-weight: bold">$1:</span> ',
 				'spoiler_open'          => '<div>',
 				'spoiler_close'         => '</div>',
@@ -754,10 +754,7 @@ class bbcode
 		{
 			case 'php':
 				// Not the english way, but valid because of hardcoded syntax highlighting
-				if (strpos($code, '<span class="syntaxdefault"><br /></span>') === 0)
-				{
-					$code = substr($code, 41);
-				}
+				$code = preg_replace('#^<span class="syntaxdefault"><br\s*/?></span>#i', '', $code, 1);
 
 			// no break;
 

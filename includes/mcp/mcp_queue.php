@@ -655,7 +655,7 @@ function approve_post($post_id_list, $id, $mode)
 		$messenger->save_queue();
 
 		// Send out normal user notifications
-		$email_sig = str_replace('<br />', "\n", "-- \n" . $config['board_email_sig']);
+		$email_sig = preg_replace('#<br\s*/?>#i', "\n", "-- \n" . $config['board_email_sig']);
 
 		foreach ($post_info as $post_id => $post_data)
 		{
@@ -732,10 +732,10 @@ function approve_post($post_id_list, $id, $mode)
 		$add_message = '';
 		if (sizeof($post_id_list) == 1 && !empty($post_url))
 		{
-			$add_message = '<br /><br />' . sprintf($user->lang['RETURN_POST'], '<a href="' . $post_url . '">', '</a>');
+			$add_message = '<br><br>' . sprintf($user->lang['RETURN_POST'], '<a href="' . $post_url . '">', '</a>');
 		}
 
-		trigger_error($user->lang[$success_msg] . '<br /><br />' . sprintf($user->lang['RETURN_PAGE'], "<a href=\"{$redirect}\">", '</a>') . $add_message);
+		trigger_error($user->lang[$success_msg] . '<br><br>' . sprintf($user->lang['RETURN_PAGE'], "<a href=\"{$redirect}\">", '</a>') . $add_message);
 	}
 }
 
@@ -931,6 +931,6 @@ function disapprove_post($post_id_list, $id, $mode)
 	else
 	{
 		meta_refresh(3, $redirect);
-		trigger_error($user->lang[$success_msg] . '<br /><br />' . sprintf($user->lang['RETURN_PAGE'], "<a href=\"{$redirect}\">", '</a>'));
+		trigger_error($user->lang[$success_msg] . '<br><br>' . sprintf($user->lang['RETURN_PAGE'], "<a href=\"{$redirect}\">", '</a>'));
 	}
 }

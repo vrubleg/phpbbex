@@ -42,8 +42,8 @@ $lang = array_merge($lang, [
 	'CONTINUE_LAST'             => 'Continue last statements',
 	'CONVERT'                   => 'Convert',
 
-	'COULD_NOT_COPY'            => 'Could not copy file <strong>%1$s</strong> to <strong>%2$s</strong><br /><br />Please check that the target directory exists and is writable by the webserver.',
-	'COULD_NOT_FIND_PATH'       => 'Could not find path to your former board. Please check your settings and try again.<br />» %s was specified as the source path.',
+	'COULD_NOT_COPY'            => 'Could not copy file <strong>%1$s</strong> to <strong>%2$s</strong><br><br>Please check that the target directory exists and is writable by the webserver.',
+	'COULD_NOT_FIND_PATH'       => 'Could not find path to your former board. Please check your settings and try again.<br>» %s was specified as the source path.',
 
 	'DBMS'                      => 'Database type',
 	'DB_CONFIG'                 => 'Database configuration',
@@ -144,13 +144,13 @@ $lang = array_merge($lang, [
 	'MBSTRING_ENCODING_TRANSLATION'         => 'Transparent character encoding',
 	'MBSTRING_ENCODING_TRANSLATION_EXPLAIN' => '<var>mbstring.encoding_translation</var> must be set to 0.',
 
-	'MAKE_FOLDER_WRITABLE'      => 'Please make sure that this folder exists and is writable by the webserver then try again:<br />»<strong>%s</strong>.',
-	'MAKE_FOLDERS_WRITABLE'     => 'Please make sure that these folders exist and are writable by the webserver then try again:<br />»<strong>%s</strong>.',
+	'MAKE_FOLDER_WRITABLE'      => 'Please make sure that this folder exists and is writable by the webserver then try again:<br>»<strong>%s</strong>.',
+	'MAKE_FOLDERS_WRITABLE'     => 'Please make sure that these folders exist and are writable by the webserver then try again:<br>»<strong>%s</strong>.',
 
 	'NEXT_STEP'                 => 'Proceed to next step',
 	'NOT_FOUND'                 => 'Cannot find',
 
-	'OVERVIEW_BODY'             => 'Welcome to phpBBex!<br /><br />phpBBex (phpBB extended) is an attempt to create a more advanced version of phpBB, which in this case will remain just a forum, not a combination for all occasions. phpBBex is developed on the professional level, the source code is under Mercurial version control. Most of the changes made do not exist in the form of mods. Almost all the installed mods existing outside phpBBex were reworked a good deal: bugs fixed, the code was adapted to the latest version of phpBB. If phpBBex without modification suits you more than the standard phpBB 3, it will undoubtedly become the best choice for you. <a href="//phpbbex.com/forum/viewtopic.php?t=28">More...</a><br /><br />This installation system will guide you through installing phpBB3. For more information, we encourage you to read <a href="../docs/INSTALL.html">the installation guide</a>. To install, please select the appropriate tab above.',
+	'OVERVIEW_BODY'             => 'Welcome to phpBBex!<br><br>phpBBex (phpBB extended) is an attempt to create a more advanced version of phpBB, which in this case will remain just a forum, not a combination for all occasions. phpBBex is developed on the professional level, the source code is under Mercurial version control. Most of the changes made do not exist in the form of mods. Almost all the installed mods existing outside phpBBex were reworked a good deal: bugs fixed, the code was adapted to the latest version of phpBB. If phpBBex without modification suits you more than the standard phpBB 3, it will undoubtedly become the best choice for you. <a href="//phpbbex.com/forum/viewtopic.php?t=28">More...</a><br><br>This installation system will guide you through installing phpBB3. For more information, we encourage you to read <a href="../docs/INSTALL.html">the installation guide</a>. To install, please select the appropriate tab above.',
 
 	'PHP_OPTIONAL_MODULE'           => 'Optional modules',
 	'PHP_OPTIONAL_MODULE_EXPLAIN'   => '<strong>Optional</strong> - These PHP modules are optional. However, if they are available they will enable extra features.',

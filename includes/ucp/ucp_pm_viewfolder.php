@@ -125,7 +125,7 @@ function view_folder($id, $mode, $folder_id, $folder)
 				'SUBJECT'           => censor_text($row['message_subject']),
 				'FOLDER'            => (isset($folder[$row['folder_id']])) ? $folder[$row['folder_id']]['folder_name'] : '',
 				'U_FOLDER'          => (isset($folder[$row['folder_id']])) ? append_sid(PHPBB_ROOT_PATH . 'ucp.php', 'folder=' . $row['folder_id']) : '',
-				'PM_ICON_IMG'       => (!empty($icons[$row['icon_id']])) ? '<img src="' . TOPIC_ICONS_PATH . '/' . $icons[$row['icon_id']]['img'] . '" width="' . $icons[$row['icon_id']]['width'] . '" height="' . $icons[$row['icon_id']]['height'] . '" />' : '',
+				'PM_ICON_IMG'       => (!empty($icons[$row['icon_id']])) ? '<img src="' . TOPIC_ICONS_PATH . '/' . $icons[$row['icon_id']]['img'] . '" width="' . $icons[$row['icon_id']]['width'] . '" height="' . $icons[$row['icon_id']]['height'] . '">' : '',
 				'PM_ICON_URL'       => (!empty($icons[$row['icon_id']])) ? TOPIC_ICONS_PATH . '/' . $icons[$row['icon_id']]['img'] : '',
 				'FOLDER_IMG'        => $user->img($folder_img, $folder_alt),
 				'FOLDER_IMG_SRC'    => $user->img($folder_img, $folder_alt, false, '', 'src'),

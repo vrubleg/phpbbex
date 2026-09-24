@@ -362,7 +362,7 @@ class acp_styles
 			'L_EXPLAIN'             => $user->lang[$this->page_title . '_EXPLAIN'],
 			'L_NAME'                => $user->lang['STYLE_NAME'],
 
-			'ERROR_MSG'             => (sizeof($error)) ? implode('<br />', $error) : '',
+			'ERROR_MSG'             => (sizeof($error)) ? implode('<br>', $error) : '',
 			'NAME'                  => $style_row['style_name'],
 			'COPYRIGHT'             => $copyright,
 		]);
@@ -428,7 +428,7 @@ class acp_styles
 			'L_EXPLAIN'         => $user->lang[$this->page_title . '_EXPLAIN'],
 			'L_NAME'            => $user->lang['STYLE_NAME'],
 
-			'ERROR_MSG'         => (sizeof($error)) ? implode('<br />', $error) : '',
+			'ERROR_MSG'         => (sizeof($error)) ? implode('<br>', $error) : '',
 			'NAME'              => $style_row['style_name'],
 			'COPYRIGHT'         => $installcfg['copyright'] ?? '',
 			'TEMPLATE_NAME'     => $style_row['template_dir'],
@@ -495,7 +495,7 @@ class acp_styles
 			'L_EXPLAIN'             => $user->lang[$this->page_title . '_EXPLAIN'],
 			'L_NAME'                => $user->lang['STYLE_NAME'],
 
-			'ERROR_MSG'             => (sizeof($error)) ? implode('<br />', $error) : '',
+			'ERROR_MSG'             => (sizeof($error)) ? implode('<br>', $error) : '',
 			'NAME'                  => $style_row['style_name'],
 		]);
 	}

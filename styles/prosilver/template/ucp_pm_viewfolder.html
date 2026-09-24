@@ -19,21 +19,21 @@
 					<dt<!-- IF messagerow.PM_ICON_URL and S_PM_ICONS --> style="background-image: url({messagerow.PM_ICON_URL}); background-repeat: no-repeat;"<!-- ENDIF -->>
 
 						<!-- IF messagerow.S_PM_DELETED -->
-							<a href="{messagerow.U_REMOVE_PM}" class="topictitle">{L_DELETE_MESSAGE}</a><br />
+							<a href="{messagerow.U_REMOVE_PM}" class="topictitle">{L_DELETE_MESSAGE}</a><br>
 							<span class="error">{L_MESSAGE_REMOVED_FROM_OUTBOX}</span>
 						<!-- ELSE -->
 							{messagerow.ATTACH_ICON_IMG} <a href="{messagerow.U_VIEW_PM}" class="topictitle">{messagerow.SUBJECT}</a>
 						<!-- ENDIF -->
 						<!-- IF messagerow.S_AUTHOR_DELETED -->
-							<br /><em class="small">{L_PM_FROM_REMOVED_AUTHOR}</em>
+							<br><em class="small">{L_PM_FROM_REMOVED_AUTHOR}</em>
 						<!-- ENDIF -->
 
-						<!-- IF messagerow.S_PM_REPORTED --><a href="{messagerow.U_MCP_REPORT}">{REPORTED_IMG}</a><!-- ENDIF --><br />
+						<!-- IF messagerow.S_PM_REPORTED --><a href="{messagerow.U_MCP_REPORT}">{REPORTED_IMG}</a><!-- ENDIF --><br>
 						<!-- IF S_SHOW_RECIPIENTS -->{L_MESSAGE_TO} {messagerow.RECIPIENTS}<!-- ELSE -->{L_MESSAGE_BY_AUTHOR} {messagerow.MESSAGE_AUTHOR_FULL} &raquo; {messagerow.SENT_TIME}<!-- ENDIF -->
 					</dt>
 					<!-- IF S_SHOW_RECIPIENTS --><dd class="info">{L_SENT_AT}: {messagerow.SENT_TIME}</dd><!-- ENDIF -->
 					<!-- IF S_UNREAD --><dd class="info"><!-- IF messagerow.FOLDER --><a href="{messagerow.U_FOLDER}">{messagerow.FOLDER}</a><!-- ELSE -->{L_UNKNOWN_FOLDER}<!-- ENDIF --></dd><!-- ENDIF -->
-					<dd class="mark"><input type="checkbox" name="marked_msg_id[]" value="{messagerow.MESSAGE_ID}" /></dd>
+					<dd class="mark"><input type="checkbox" name="marked_msg_id[]" value="{messagerow.MESSAGE_ID}"></dd>
 				</dl>
 			</li>
 		<!-- END messagerow -->
@@ -51,11 +51,11 @@
 
 	<!-- IF FOLDER_CUR_MESSAGES neq 0 -->
 	<fieldset class="display-actions">
-		<select name="mark_option">{S_MARK_OPTIONS}</select> <input class="button2" type="submit" name="submit_mark" value="{L_GO}" />
+		<select name="mark_option">{S_MARK_OPTIONS}</select> <input class="button2" type="submit" name="submit_mark" value="{L_GO}">
 		<div><a onclick="marklist('viewfolder', 'marked_msg', true);">{L_MARK_ALL}</a> &bull; <a onclick="marklist('viewfolder', 'marked_msg', false);">{L_UNMARK_ALL}</a></div>
 	</fieldset>
 
-	<hr />
+	<hr>
 
 	<ul class="linklist">
 		<!-- IF TOTAL_MESSAGES or S_VIEW_MESSAGE -->
@@ -76,8 +76,8 @@
 		<!-- IF NEXT_PAGE --><a href="{NEXT_PAGE}" class="right-box nav-to-right">{L_NEXT}</a><!-- ENDIF -->
 		<label>{L_DISPLAY}: {S_SELECT_SORT_DAYS}</label>
 		<label>{L_SORT_BY} {S_SELECT_SORT_KEY}</label>
-		<label>{S_SELECT_SORT_DIR} <input type="submit" name="sort" value="{L_GO}" class="button2" /></label>
-		<input type="hidden" name="cur_folder_id" value="{CUR_FOLDER_ID}" />
+		<label>{S_SELECT_SORT_DIR} <input type="submit" name="sort" value="{L_GO}" class="button2"></label>
+		<input type="hidden" name="cur_folder_id" value="{CUR_FOLDER_ID}">
 	</fieldset>
 	<!-- ENDIF -->
 

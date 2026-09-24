@@ -308,7 +308,7 @@ class ucp_register
 					}
 				}
 
-				$message = $message . '<br /><br />' . sprintf($user->lang['RETURN_INDEX'], '<a href="' . append_sid(PHPBB_ROOT_PATH . 'index.php') . '">', '</a>');
+				$message = $message . '<br><br>' . sprintf($user->lang['RETURN_INDEX'], '<a href="' . append_sid(PHPBB_ROOT_PATH . 'index.php') . '">', '</a>');
 				trigger_error($message);
 			}
 			else
@@ -357,7 +357,7 @@ class ucp_register
 		}
 
 		$template->assign_vars([
-			'ERROR'             => (sizeof($error)) ? implode('<br />', $error) : '',
+			'ERROR'             => (sizeof($error)) ? implode('<br>', $error) : '',
 			'USERNAME'          => $data['username'],
 			'PASSWORD'          => $data['new_password'],
 			'PASSWORD_CONFIRM'  => $data['password_confirm'],

@@ -23,7 +23,7 @@ class ucp_groups
 
 		$user->add_lang('groups');
 
-		$return_page = '<br /><br />' . sprintf($user->lang['RETURN_PAGE'], '<a href="' . $this->u_action . '">', '</a>');
+		$return_page = '<br><br>' . sprintf($user->lang['RETURN_PAGE'], '<a href="' . $this->u_action . '">', '</a>');
 
 		$mark_ary   = request_var('mark', [0]);
 		$submit     = !empty($_POST['submit']);
@@ -582,7 +582,7 @@ class ucp_groups
 							'S_ERROR'           => (sizeof($error) > 0),
 							'S_SPECIAL_GROUP'   => ($group_type == GROUP_SPECIAL),
 
-							'ERROR_MSG'             => (sizeof($error)) ? implode('<br />', $error) : '',
+							'ERROR_MSG'             => (sizeof($error)) ? implode('<br>', $error) : '',
 							'GROUP_DESC'            => $group_desc_data['text'],
 							'S_DESC_BBCODE_CHECKED' => $group_desc_data['allow_bbcode'],
 							'S_DESC_URLS_CHECKED'   => $group_desc_data['allow_urls'],
@@ -751,7 +751,7 @@ class ucp_groups
 						// Approve, demote or promote
 						group_user_attributes('approve', $group_id, $mark_ary, false, false);
 
-						trigger_error($user->lang['USERS_APPROVED'] . '<br /><br />' . sprintf($user->lang['RETURN_PAGE'], '<a href="' . $this->u_action . '&amp;action=list&amp;g=' . $group_id . '">', '</a>'));
+						trigger_error($user->lang['USERS_APPROVED'] . '<br><br>' . sprintf($user->lang['RETURN_PAGE'], '<a href="' . $this->u_action . '&amp;action=list&amp;g=' . $group_id . '">', '</a>'));
 
 					break;
 
@@ -817,7 +817,7 @@ class ucp_groups
 
 							$user->add_lang('acp/groups');
 
-							trigger_error($user->lang['GROUP_DEFS_UPDATED'] . '<br /><br />' . sprintf($user->lang['RETURN_PAGE'], '<a href="' . $this->u_action . '&amp;action=list&amp;g=' . $group_id . '">', '</a>'));
+							trigger_error($user->lang['GROUP_DEFS_UPDATED'] . '<br><br>' . sprintf($user->lang['RETURN_PAGE'], '<a href="' . $this->u_action . '&amp;action=list&amp;g=' . $group_id . '">', '</a>'));
 						}
 						else
 						{
@@ -865,10 +865,10 @@ class ucp_groups
 
 							if ($error)
 							{
-								trigger_error($user->lang[$error] . '<br /><br />' . sprintf($user->lang['RETURN_PAGE'], '<a href="' . $this->u_action . '&amp;action=list&amp;g=' . $group_id . '">', '</a>'));
+								trigger_error($user->lang[$error] . '<br><br>' . sprintf($user->lang['RETURN_PAGE'], '<a href="' . $this->u_action . '&amp;action=list&amp;g=' . $group_id . '">', '</a>'));
 							}
 
-							trigger_error($user->lang['GROUP_USERS_REMOVE'] . '<br /><br />' . sprintf($user->lang['RETURN_PAGE'], '<a href="' . $this->u_action . '&amp;action=list&amp;g=' . $group_id . '">', '</a>'));
+							trigger_error($user->lang['GROUP_USERS_REMOVE'] . '<br><br>' . sprintf($user->lang['RETURN_PAGE'], '<a href="' . $this->u_action . '&amp;action=list&amp;g=' . $group_id . '">', '</a>'));
 						}
 						else
 						{
@@ -926,7 +926,7 @@ class ucp_groups
 								trigger_error($user->lang[$error] . $return_page);
 							}
 
-							trigger_error($user->lang['GROUP_USERS_ADDED'] . '<br /><br />' . sprintf($user->lang['RETURN_PAGE'], '<a href="' . $this->u_action . '&amp;action=list&amp;g=' . $group_id . '">', '</a>'));
+							trigger_error($user->lang['GROUP_USERS_ADDED'] . '<br><br>' . sprintf($user->lang['RETURN_PAGE'], '<a href="' . $this->u_action . '&amp;action=list&amp;g=' . $group_id . '">', '</a>'));
 						}
 						else
 						{
@@ -941,7 +941,7 @@ class ucp_groups
 							confirm_box(false, sprintf($user->lang['GROUP_CONFIRM_ADD_USER' . ((sizeof($name_ary) == 1) ? '' : 'S')], implode(', ', $name_ary)), build_hidden_fields($s_hidden_fields));
 						}
 
-						trigger_error($user->lang['NO_USERS_ADDED'] . '<br /><br />' . sprintf($user->lang['RETURN_PAGE'], '<a href="' . $this->u_action . '&amp;action=list&amp;g=' . $group_id . '">', '</a>'));
+						trigger_error($user->lang['NO_USERS_ADDED'] . '<br><br>' . sprintf($user->lang['RETURN_PAGE'], '<a href="' . $this->u_action . '&amp;action=list&amp;g=' . $group_id . '">', '</a>'));
 
 					break;
 

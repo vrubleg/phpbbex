@@ -17,7 +17,7 @@ if (empty($lang) || !is_array($lang))
 
 $lang = array_merge($lang, [
 	'CHANGE_PASSWORD'           => 'Change Password',
-	'CHANGE_PASSWORD_EXPLAIN'   => 'Change a user’s password.<br /><strong>You may enter either the Username or User ID, not both.</strong>',
+	'CHANGE_PASSWORD_EXPLAIN'   => 'Change a user’s password.<br><strong>You may enter either the Username or User ID, not both.</strong>',
 	'CHANGE_PASSWORD_SUCCESS'   => 'The password for <a href="%s">%s</a> has been successfully changed.',
 
 	'FIELDS_NOT_FILLED'         => 'One field must be filled in.',

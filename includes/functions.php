@@ -1893,13 +1893,13 @@ function meta_refresh($time, $url = false, $disable_cd_check = false)
 
 	if ($url === false)
 	{
-		$template->assign_var('META', '<meta http-equiv="refresh" content="' . $time . '" />');
+		$template->assign_var('META', '<meta http-equiv="refresh" content="' . $time . '">');
 	}
 	else
 	{
 		$url = redirect($url, true, $disable_cd_check);
 		$url = str_replace('&', '&amp;', $url);
-		$template->assign_var('META', '<meta http-equiv="refresh" content="' . $time . '; url=' . $url . '" />');
+		$template->assign_var('META', '<meta http-equiv="refresh" content="' . $time . '; url=' . $url . '">');
 	}
 }
 
@@ -2357,7 +2357,7 @@ function _build_hidden_fields($key, $value, $specialchar, $stripslashes)
 		$value = ($stripslashes) ? stripslashes($value) : $value;
 		$value = ($specialchar) ? htmlspecialchars($value, ENT_COMPAT, 'UTF-8') : $value;
 
-		$hidden_fields .= '<input type="hidden" name="' . $key . '" value="' . $value . '" />' . "\n";
+		$hidden_fields .= '<input type="hidden" name="' . $key . '" value="' . $value . '">' . "\n";
 	}
 	else
 	{
@@ -2558,12 +2558,12 @@ function format_backtrace($backtrace)
 		$trace['class'] = (!isset($trace['class'])) ? '' : $trace['class'];
 		$trace['type'] = (!isset($trace['type'])) ? '' : $trace['type'];
 
-		if (!empty($output)) { $output .= '<br />'; }
-		$output .= '<b>FILE:</b> ' . $trace['file'] . '<br />';
-		$output .= '<b>LINE:</b> ' . ((!empty($trace['line'])) ? $trace['line'] : '') . '<br />';
+		if (!empty($output)) { $output .= '<br>'; }
+		$output .= '<b>FILE:</b> ' . $trace['file'] . '<br>';
+		$output .= '<b>LINE:</b> ' . ((!empty($trace['line'])) ? $trace['line'] : '') . '<br>';
 
 		$output .= '<b>CALL:</b> ' . htmlspecialchars($trace['class'] . $trace['type'] . $trace['function']);
-		$output .= '(' . (($argument !== '') ? "'{$argument}'" : '') . ')<br />';
+		$output .= '(' . (($argument !== '') ? "'{$argument}'" : '') . ')<br>';
 	}
 
 	return $output;
@@ -2589,7 +2589,7 @@ function get_preg_expression($mode)
 				'#<!\-\- e \-\-><a href="mailto:(.*?)">.*?</a><!\-\- e \-\->#',
 				'#<!\-\- l \-\-><a [-= "\w]*href="(.*?)(?:(&amp;|\?)sid=[0-9a-f]{32})?">.*?</a><!\-\- l \-\->#',
 				'#(?|<!\-\- (m) \-\-><a [-= "\w]*href="(.*?)">.*?</a><!\-\- m \-\->|<!\-\- (w) \-\-><a [-= "\w]*href="(?:https?://)?(.*?)">.*?</a><!\-\- w \-\->)#',
-				'#<!\-\- s(.*?) \-\-><img src="\{SMILIES_PATH\}\/.*? \/><!\-\- s\1 \-\->#',
+				'#<!\-\- s(.*?) \-\-><img src="\{SMILIES_PATH\}\/.*?\s*/?><!\-\- s\1 \-\->#',
 				'#<!\-\- .*? \-\->#s',
 				'#<.*?>#s',
 			];
@@ -2827,7 +2827,7 @@ function msg_handler($errno, $msg_text, $errfile, $errline, $backtrace = [])
 			echo '<!DOCTYPE html>';
 			echo '<html dir="ltr">';
 			echo '<head>';
-			echo '<meta charset="UTF-8" />';
+			echo '<meta charset="UTF-8">';
 			echo '<title>' . $msg_title . '</title>';
 			echo '<style>' . "\n";
 			echo '* { margin: 0; padding: 0; } html { font-size: 100%; height: 100%; overflow-y: scroll; margin-bottom: 1px; background-color: #E4EDF0; } body { font-family: "Lucida Grande", Verdana, Helvetica, Arial, sans-serif; color: #536482; background: #E4EDF0; font-size: 62.5%; margin: 0; } ';
@@ -3641,7 +3641,7 @@ function page_footer($run_cron = true)
 
 		if ($cron_type)
 		{
-			$template->assign_var('RUN_CRON_TASK', '<img src="' . append_sid(PHPBB_ROOT_PATH . 'cron.php', 'cron_type=' . $cron_type) . '" width="1" height="1" alt="cron" />');
+			$template->assign_var('RUN_CRON_TASK', '<img src="' . append_sid(PHPBB_ROOT_PATH . 'cron.php', 'cron_type=' . $cron_type) . '" width="1" height="1" alt="cron">');
 		}
 	}
 

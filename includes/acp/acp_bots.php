@@ -258,7 +258,7 @@ class acp_bots
 					'L_TITLE'       => $user->lang['BOT_' . $l_title],
 					'U_ACTION'      => $this->u_action . "&amp;id={$bot_id}&amp;action={$action}",
 					'U_BACK'        => $this->u_action,
-					'ERROR_MSG'     => (sizeof($error)) ? implode('<br />', $error) : '',
+					'ERROR_MSG'     => (sizeof($error)) ? implode('<br>', $error) : '',
 
 					'BOT_NAME'      => $bot_row['bot_name'],
 					'BOT_IP'        => $bot_row['bot_ip'],

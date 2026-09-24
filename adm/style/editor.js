@@ -119,8 +119,7 @@ function addquote(post_id, username)
 		if (!divarea) { return; }
 
 		selection = divarea.innerHTML
-			.replace(/<br>/ig, '\n')
-			.replace(/<br\/>/ig, '\n')
+			.replace(/<br\s*\/?>/ig, '\n')
 			.replace(/&lt\;/ig, '<')
 			.replace(/&gt\;/ig, '>')
 			.replace(/&amp\;/ig, '&')

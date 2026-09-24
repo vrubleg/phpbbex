@@ -225,5 +225,5 @@ if ($auth->acl_get('f_noapprove', $merge_post_data['forum_id']) || $auth->acl_ge
 meta_refresh(3, $redirect_url);
 
 $message = $user->lang['POST_STORED_MOD'];
-$message .= '<br /><br />' . sprintf($user->lang['RETURN_FORUM'], '<a href="' . append_sid(PHPBB_ROOT_PATH . 'viewforum.php', 'f=' . $merge_post_data['forum_id']) . '">', '</a>');
+$message .= '<br><br>' . sprintf($user->lang['RETURN_FORUM'], '<a href="' . append_sid(PHPBB_ROOT_PATH . 'viewforum.php', 'f=' . $merge_post_data['forum_id']) . '">', '</a>');
 trigger_error($message);

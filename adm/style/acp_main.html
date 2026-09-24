@@ -54,7 +54,7 @@
 
 	<table cellspacing="1">
 		<caption>{L_FORUM_STATS}</caption>
-		<col class="col1" /><col class="col2" /><col class="col1" /><col class="col2" />
+		<col class="col1"><col class="col2"><col class="col1"><col class="col2">
 	<thead>
 	<tr>
 		<th width="20%">{L_STATISTIC}</th>
@@ -103,29 +103,29 @@
 
 			<form id="action_stats_form" method="post" action="{U_ACTION}">
 				<dl>
-					<dt><label for="action_stats">{L_RESYNC_STATS}</label><br /><span>{L_RESYNC_STATS_EXPLAIN}</span></dt>
-					<dd><input type="hidden" name="action" value="stats" /><input class="button2" type="submit" id="action_stats" name="action_stats" value="{L_RUN}" /></dd>
+					<dt><label for="action_stats">{L_RESYNC_STATS}</label><br><span>{L_RESYNC_STATS_EXPLAIN}</span></dt>
+					<dd><input type="hidden" name="action" value="stats"><input class="button2" type="submit" id="action_stats" name="action_stats" value="{L_RUN}"></dd>
 				</dl>
 			</form>
 
 			<form id="action_user_stats_form" method="post" action="{U_ACTION}">
 				<dl>
-					<dt><label for="action_user_stats">{L_RESYNC_USER_STATS}</label><br /><span>{L_RESYNC_USER_STATS_EXPLAIN}</span></dt>
-					<dd><input type="hidden" name="action" value="user_stats" /><input class="button2" type="submit" id="action_user_stats" name="action_user_stats" value="{L_RUN}" /></dd>
+					<dt><label for="action_user_stats">{L_RESYNC_USER_STATS}</label><br><span>{L_RESYNC_USER_STATS_EXPLAIN}</span></dt>
+					<dd><input type="hidden" name="action" value="user_stats"><input class="button2" type="submit" id="action_user_stats" name="action_user_stats" value="{L_RUN}"></dd>
 				</dl>
 			</form>
 
 			<!-- IF S_FOUNDER -->
 			<form id="action_purge_sessions_form" method="post" action="{U_ACTION}">
 				<dl>
-					<dt><label for="action_purge_sessions">{L_PURGE_SESSIONS}</label><br /><span>{L_PURGE_SESSIONS_EXPLAIN}</span></dt>
-					<dd><input type="hidden" name="action" value="purge_sessions" /><input class="button2" type="submit" id="action_purge_sessions" name="action_purge_sessions" value="{L_RUN}" /></dd>
+					<dt><label for="action_purge_sessions">{L_PURGE_SESSIONS}</label><br><span>{L_PURGE_SESSIONS_EXPLAIN}</span></dt>
+					<dd><input type="hidden" name="action" value="purge_sessions"><input class="button2" type="submit" id="action_purge_sessions" name="action_purge_sessions" value="{L_RUN}"></dd>
 				</dl>
 			</form>
 			<form id="action_purge_cache_form" method="post" action="{U_ACTION}">
 				<dl>
-					<dt><label for="action_purge_cache">{L_PURGE_CACHE}</label><br /><span>{L_PURGE_CACHE_EXPLAIN}</span></dt>
-					<dd><input type="hidden" name="action" value="purge_cache" /><input class="button2" type="submit" id="action_purge_cache" name="action_purge_cache" value="{L_RUN}" /></dd>
+					<dt><label for="action_purge_cache">{L_PURGE_CACHE}</label><br><span>{L_PURGE_CACHE_EXPLAIN}</span></dt>
+					<dd><input type="hidden" name="action" value="purge_cache"><input class="button2" type="submit" id="action_purge_cache" name="action_purge_cache" value="{L_RUN}"></dd>
 				</dl>
 			</form>
 			<!-- ENDIF -->
@@ -161,7 +161,7 @@
 		</tbody>
 		</table>
 
-		<br />
+		<br>
 
 	<!-- ENDIF -->
 
@@ -188,14 +188,14 @@
 
 				<td style="vertical-align: top;">
 					{inactive.USERNAME_FULL}
-					<!-- IF inactive.POSTS --><br />{L_POSTS}: <strong>{inactive.POSTS}</strong> [<a href="{inactive.U_SEARCH_USER}">{L_SEARCH_USER_POSTS}</a>]<!-- ENDIF -->
+					<!-- IF inactive.POSTS --><br>{L_POSTS}: <strong>{inactive.POSTS}</strong> [<a href="{inactive.U_SEARCH_USER}">{L_SEARCH_USER_POSTS}</a>]<!-- ENDIF -->
 				</td>
 				<td style="vertical-align: top;">{inactive.JOINED}</td>
 				<td style="vertical-align: top;">{inactive.INACTIVE_DATE}</td>
 				<td style="vertical-align: top;">{inactive.LAST_VISIT}</td>
 				<td style="vertical-align: top;">
 					{inactive.REASON}
-					<!-- IF inactive.REMINDED --><br />{inactive.REMINDED_EXPLAIN}<!-- ENDIF -->
+					<!-- IF inactive.REMINDED --><br>{inactive.REMINDED_EXPLAIN}<!-- ENDIF -->
 				</td>
 			</tr>
 		<!-- BEGINELSE -->

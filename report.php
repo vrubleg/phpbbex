@@ -94,8 +94,8 @@ if ($post_id)
 	if ($report_data['post_reported'])
 	{
 		$message = $user->lang['ALREADY_REPORTED'];
-		$message .= '<br /><br />' . sprintf($user->lang['RETURN_TOPIC'], '<a href="' . $redirect_url . '">', '</a>');
-		$message .= '<br /><br />' . sprintf($user->lang['RETURN_FORUM'], '<a href="' . $return_forum_url . '">', '</a>');
+		$message .= '<br><br>' . sprintf($user->lang['RETURN_TOPIC'], '<a href="' . $redirect_url . '">', '</a>');
+		$message .= '<br><br>' . sprintf($user->lang['RETURN_FORUM'], '<a href="' . $return_forum_url . '">', '</a>');
 		trigger_error($message);
 	}
 }
@@ -120,7 +120,7 @@ else
 	if ($report_data['message_reported'])
 	{
 		$message = $user->lang['ALREADY_REPORTED_PM'];
-		$message .= '<br /><br />' . sprintf($user->lang['RETURN_PM'], '<a href="' . $redirect_url . '">', '</a>');
+		$message .= '<br><br>' . sprintf($user->lang['RETURN_PM'], '<a href="' . $redirect_url . '">', '</a>');
 		trigger_error($message);
 	}
 }
@@ -218,10 +218,10 @@ if ($submit)
 
 		meta_refresh(3, $redirect_url);
 
-		$message = $lang_success . '<br /><br />' . sprintf($lang_return, '<a href="' . $redirect_url . '">', '</a>');
+		$message = $lang_success . '<br><br>' . sprintf($lang_return, '<a href="' . $redirect_url . '">', '</a>');
 		if ($return_forum_url)
 		{
-			$message .= '<br /><br />' . sprintf($user->lang['RETURN_FORUM'], '<a href="' . $return_forum_url . '">', '</a>');
+			$message .= '<br><br>' . sprintf($user->lang['RETURN_FORUM'], '<a href="' . $return_forum_url . '">', '</a>');
 		}
 		trigger_error($message);
 	}
@@ -242,7 +242,7 @@ if (isset($captcha) && $captcha->is_solved() === false)
 }
 
 $template->assign_vars([
-	'ERROR'             => (count($error)) ? implode('<br />', $error) : '',
+	'ERROR'             => (count($error)) ? implode('<br>', $error) : '',
 	'S_REPORT_POST'     => !$pm_id,
 	'REPORT_TEXT'       => $report_text,
 	'S_REPORT_ACTION'   => append_sid(PHPBB_ROOT_PATH . 'report.php', 'f=' . $forum_id . '&amp;p=' . $post_id . '&amp;pm=' . $pm_id),
