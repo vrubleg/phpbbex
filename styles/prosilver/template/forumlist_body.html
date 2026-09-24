@@ -27,12 +27,12 @@
 		<li class="row">
 			<dl class="icon" style="background-image: url({forumrow.FORUM_FOLDER_IMG_SRC}); background-repeat: no-repeat;">
 				<dt title="{forumrow.FORUM_FOLDER_IMG_ALT}">
-					<a href="{forumrow.U_VIEWFORUM}" class="forumtitle">{forumrow.FORUM_NAME}</a><br />
+					<a href="{forumrow.U_VIEWFORUM}" class="forumtitle">{forumrow.FORUM_NAME}</a><br>
 					{forumrow.FORUM_DESC}
 					<!-- IF forumrow.MODERATORS -->
-						<br /><strong>{forumrow.L_MODERATOR_STR}:</strong> {forumrow.MODERATORS}
+						<br><strong>{forumrow.L_MODERATOR_STR}:</strong> {forumrow.MODERATORS}
 					<!-- ENDIF -->
-					<!-- IF forumrow.SUBFORUMS and forumrow.S_LIST_SUBFORUMS --><br /><strong>{forumrow.L_SUBFORUM_STR}</strong> {forumrow.SUBFORUMS}<!-- ENDIF -->
+					<!-- IF forumrow.SUBFORUMS and forumrow.S_LIST_SUBFORUMS --><br><strong>{forumrow.L_SUBFORUM_STR}</strong> {forumrow.SUBFORUMS}<!-- ENDIF -->
 				</dt>
 				<!-- IF forumrow.CLICKS -->
 					<dd class="redirect">{L_REDIRECTS}: {forumrow.CLICKS}</dd>
@@ -43,9 +43,9 @@
 						<!-- IF forumrow.U_UNAPPROVED_TOPICS --><a href="{forumrow.U_UNAPPROVED_TOPICS}">{UNAPPROVED_IMG}</a><!-- ENDIF -->
 						<!-- IF forumrow.LAST_POST_TIME -->
 							<dfn>{L_LAST_POST}</dfn> <a href="{forumrow.U_LAST_TOPIC_URL}" title="{forumrow.LAST_TOPIC_TITLE}">{forumrow.LAST_TOPIC_TITLE}</a>
-							<!-- IF not S_IS_BOT --><a rel="nofollow" href="{forumrow.U_LAST_POST}">{LAST_POST_IMG}</a> <!-- ENDIF --><br />{forumrow.LAST_POST_TIME} {L_POST_BY_AUTHOR} {forumrow.LAST_POSTER_FULL}
+							<!-- IF not S_IS_BOT --><a rel="nofollow" href="{forumrow.U_LAST_POST}">{LAST_POST_IMG}</a> <!-- ENDIF --><br>{forumrow.LAST_POST_TIME} {L_POST_BY_AUTHOR} {forumrow.LAST_POSTER_FULL}
 						<!-- ELSE -->
-							{L_NO_POSTS}<br />&nbsp;
+							{L_NO_POSTS}<br>&nbsp;
 						<!-- ENDIF -->
 					</dd>
 				<!-- ELSE -->

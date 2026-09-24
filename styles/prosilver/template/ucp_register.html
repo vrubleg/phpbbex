@@ -10,24 +10,24 @@
 	<fieldset class="fields2">
 	<!-- IF ERROR --><dl><dd class="error">{ERROR}</dd></dl><!-- ENDIF -->
 	<dl>
-		<dt><label for="username">{L_USERNAME}:</label><br /><span>{L_USERNAME_EXPLAIN}</span></dt>
-		<dd><input type="text" tabindex="1" name="username" id="username" size="25" value="{USERNAME}" class="inputbox autowidth" title="{L_USERNAME}" autocomplete="username" /></dd>
+		<dt><label for="username">{L_USERNAME}:</label><br><span>{L_USERNAME_EXPLAIN}</span></dt>
+		<dd><input type="text" tabindex="1" name="username" id="username" size="25" value="{USERNAME}" class="inputbox autowidth" title="{L_USERNAME}" autocomplete="username"></dd>
 	</dl>
 	<dl>
-		<dt><label for="email">{L_EMAIL_ADDRESS}:</label><!-- IF L_REG_COND --><br /><span>{L_REG_COND}</span><!-- ENDIF --></dt>
-		<dd><input type="text" tabindex="2" name="email" id="email" size="25" maxlength="100" value="{EMAIL}" class="inputbox autowidth" title="{L_EMAIL_ADDRESS}" autocomplete="email" /></dd>
+		<dt><label for="email">{L_EMAIL_ADDRESS}:</label><!-- IF L_REG_COND --><br><span>{L_REG_COND}</span><!-- ENDIF --></dt>
+		<dd><input type="text" tabindex="2" name="email" id="email" size="25" maxlength="100" value="{EMAIL}" class="inputbox autowidth" title="{L_EMAIL_ADDRESS}" autocomplete="email"></dd>
 	</dl>
 	<dl>
-		<dt><label for="new_password">{L_PASSWORD}:</label><br /><span>{L_PASSWORD_EXPLAIN}</span></dt>
-		<dd><input type="password" tabindex="3" name="new_password" id="new_password" size="25" value="{PASSWORD}" class="inputbox autowidth" title="{L_NEW_PASSWORD}" autocomplete="new-password" /></dd>
+		<dt><label for="new_password">{L_PASSWORD}:</label><br><span>{L_PASSWORD_EXPLAIN}</span></dt>
+		<dd><input type="password" tabindex="3" name="new_password" id="new_password" size="25" value="{PASSWORD}" class="inputbox autowidth" title="{L_NEW_PASSWORD}" autocomplete="new-password"></dd>
 	</dl>
 	<dl>
 		<dt><label for="password_confirm">{L_CONFIRM_PASSWORD}:</label></dt>
-		<dd><input type="password" tabindex="4" name="password_confirm" id="password_confirm" size="25" value="{PASSWORD_CONFIRM}" class="inputbox autowidth" title="{L_CONFIRM_PASSWORD}" autocomplete="new-password" /></dd>
+		<dd><input type="password" tabindex="4" name="password_confirm" id="password_confirm" size="25" value="{PASSWORD_CONFIRM}" class="inputbox autowidth" title="{L_CONFIRM_PASSWORD}" autocomplete="new-password"></dd>
 	</dl>
 
 	<!-- IF S_LANG_OPTIONS and S_TZ_OPTIONS -->
-	<hr />
+	<hr>
 	<!-- ENDIF -->
 
 	<!-- IF S_LANG_OPTIONS -->
@@ -56,15 +56,15 @@
 	<!-- BEGIN profile_fields -->
 		<dl>
 			<dt><label<!-- IF profile_fields.FIELD_ID --> for="{profile_fields.FIELD_ID}"<!-- ENDIF -->>{profile_fields.LANG_NAME}:<!-- IF profile_fields.S_REQUIRED --> *<!-- ENDIF --></label>
-			<!-- IF profile_fields.LANG_EXPLAIN --><br /><span>{profile_fields.LANG_EXPLAIN}</span><!-- ENDIF -->
-			<!-- IF profile_fields.ERROR --><br /><span class="error">{profile_fields.ERROR}</span><!-- ENDIF --></dt>
+			<!-- IF profile_fields.LANG_EXPLAIN --><br><span>{profile_fields.LANG_EXPLAIN}</span><!-- ENDIF -->
+			<!-- IF profile_fields.ERROR --><br><span class="error">{profile_fields.ERROR}</span><!-- ENDIF --></dt>
 			<dd>{profile_fields.FIELD}</dd>
 		</dl>
 	<!-- END profile_fields -->
 	<!-- ENDIF -->
 
 	<!-- IF CAPTCHA_TEMPLATE -->
-		<hr />
+		<hr>
 		<!-- DEFINE $CAPTCHA_TAB_INDEX = 7 -->
 		<!-- INCLUDE {CAPTCHA_TEMPLATE} -->
 	<!-- ENDIF -->
@@ -87,10 +87,10 @@
 
 	<fieldset class="submit-buttons">
 		{S_HIDDEN_FIELDS}
-		<input type="hidden" name="creation_time" value="0" />
-		<input type="hidden" name="form_token" value="0" />
-		<input type="submit" tabindex="8" name="agree" value="{L_AGREE}" class="button1 default-submit-action" />&nbsp;
-		<input type="submit" tabindex="9" name="disagree" value="{L_NOT_AGREE}" class="button2" />
+		<input type="hidden" name="creation_time" value="0">
+		<input type="hidden" name="form_token" value="0">
+		<input type="submit" tabindex="8" name="agree" value="{L_AGREE}" class="button1 default-submit-action">&nbsp;
+		<input type="submit" tabindex="9" name="disagree" value="{L_NOT_AGREE}" class="button2">
 	</fieldset>
 
 	</div>

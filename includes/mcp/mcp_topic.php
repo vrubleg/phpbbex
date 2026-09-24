@@ -536,7 +536,7 @@ function split_topic($action, $topic_id, $to_forum_id, $subject)
 		set_config_count('num_topics', 1, true);
 
 		// Link back to both topics
-		$return_link = sprintf($user->lang['RETURN_TOPIC'], '<a href="' . append_sid(PHPBB_ROOT_PATH . 'viewtopic.php', 't=' . $post_info['topic_id']) . '">', '</a>') . '<br /><br />' . sprintf($user->lang['RETURN_NEW_TOPIC'], '<a href="' . append_sid(PHPBB_ROOT_PATH . 'viewtopic.php', 't=' . $to_topic_id) . '">', '</a>');
+		$return_link = sprintf($user->lang['RETURN_TOPIC'], '<a href="' . append_sid(PHPBB_ROOT_PATH . 'viewtopic.php', 't=' . $post_info['topic_id']) . '">', '</a>') . '<br><br>' . sprintf($user->lang['RETURN_NEW_TOPIC'], '<a href="' . append_sid(PHPBB_ROOT_PATH . 'viewtopic.php', 't=' . $to_topic_id) . '">', '</a>');
 	}
 	else
 	{
@@ -553,7 +553,7 @@ function split_topic($action, $topic_id, $to_forum_id, $subject)
 	else
 	{
 		meta_refresh(3, append_sid(PHPBB_ROOT_PATH . 'viewtopic.php', "t={$to_topic_id}"));
-		trigger_error($user->lang[$success_msg] . '<br /><br />' . $return_link);
+		trigger_error($user->lang[$success_msg] . '<br><br>' . $return_link);
 	}
 }
 
@@ -642,7 +642,7 @@ function merge_posts($topic_id, $to_topic_id)
 		}
 
 		// Link to the new topic
-		$return_link .= (($return_link) ? '<br /><br />' : '') . sprintf($user->lang['RETURN_NEW_TOPIC'], '<a href="' . append_sid(PHPBB_ROOT_PATH . 'viewtopic.php', 't=' . $to_topic_id) . '">', '</a>');
+		$return_link .= (($return_link) ? '<br><br>' : '') . sprintf($user->lang['RETURN_NEW_TOPIC'], '<a href="' . append_sid(PHPBB_ROOT_PATH . 'viewtopic.php', 't=' . $to_topic_id) . '">', '</a>');
 	}
 	else
 	{
@@ -659,6 +659,6 @@ function merge_posts($topic_id, $to_topic_id)
 	else
 	{
 		meta_refresh(3, append_sid(PHPBB_ROOT_PATH . 'viewtopic.php', "t={$to_topic_id}"));
-		trigger_error($user->lang[$success_msg] . '<br /><br />' . $return_link);
+		trigger_error($user->lang[$success_msg] . '<br><br>' . $return_link);
 	}
 }

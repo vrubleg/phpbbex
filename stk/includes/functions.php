@@ -46,7 +46,7 @@ function build_cfg_template($tpl_type, $name, $vars)
 			$size = (int) $tpl_type[1];
 			$maxlength = (int) $tpl_type[2];
 
-			$tpl['tpl'] = '<input id="' . $name . '" type="' . $tpl_type[0] . '"' . (($size) ? ' size="' . $size . '"' : '') . ' maxlength="' . ($maxlength ?: 255) . '" name="' . $name . '" value="' . $default . '" />';
+			$tpl['tpl'] = '<input id="' . $name . '" type="' . $tpl_type[0] . '"' . (($size) ? ' size="' . $size . '"' : '') . ' maxlength="' . ($maxlength ?: 255) . '" name="' . $name . '" value="' . $default . '">';
 		break;
 
 		case 'textarea':
@@ -63,8 +63,8 @@ function build_cfg_template($tpl_type, $name, $vars)
 			$tpl_type_cond = explode('_', $tpl_type[1]);
 			$type_no = ($tpl_type_cond[0] != 'disabled' && $tpl_type_cond[0] != 'enabled');
 
-			$tpl_no = '<label><input type="radio" name="' . $name . '" value="0"' . $name_no . ' class="radio" /> ' . (($type_no) ? $user->lang['NO'] : $user->lang['DISABLED']) . '</label>';
-			$tpl_yes = '<label><input type="radio" id="' . $name . '" name="' . $name . '" value="1"' . $name_yes . ' class="radio" /> ' . (($type_no) ? $user->lang['YES'] : $user->lang['ENABLED']) . '</label>';
+			$tpl_no = '<label><input type="radio" name="' . $name . '" value="0"' . $name_no . ' class="radio"> ' . (($type_no) ? $user->lang['NO'] : $user->lang['DISABLED']) . '</label>';
+			$tpl_yes = '<label><input type="radio" id="' . $name . '" name="' . $name . '" value="1"' . $name_yes . ' class="radio"> ' . (($type_no) ? $user->lang['YES'] : $user->lang['ENABLED']) . '</label>';
 
 			$tpl['tpl'] = ($tpl_type_cond[0] == 'yes' || $tpl_type_cond[0] == 'enabled') ? $tpl_yes . $tpl_no : $tpl_no . $tpl_yes;
 		break;
@@ -74,11 +74,11 @@ function build_cfg_template($tpl_type, $name, $vars)
 
 			if (empty($tpl_type[1]))
 			{
-				$tpl['tpl'] = '<input type="checkbox" id="' . $name . '" name="' . $name . '"' . $checked . ' />';
+				$tpl['tpl'] = '<input type="checkbox" id="' . $name . '" name="' . $name . '"' . $checked . '>';
 			}
 			else
 			{
-				$tpl['tpl'] = '<input type="radio" id="' . $name . '" name="' . $tpl_type[1] . '" value="' . $name . '"' . $checked . ' />';
+				$tpl['tpl'] = '<input type="radio" id="' . $name . '" name="' . $tpl_type[1] . '" value="' . $name . '"' . $checked . '>';
 			}
 		break;
 

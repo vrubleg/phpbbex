@@ -11,57 +11,57 @@
 	<fieldset>
 		<legend>{L_GENERAL_SEARCH_SETTINGS}</legend>
 	<dl>
-		<dt><label for="load_search">{L_YES_SEARCH}:</label><br /><span>{L_YES_SEARCH_EXPLAIN}</span></dt>
-		<dd><label><input type="radio" class="radio" id="load_search" name="config[load_search]" value="1"<!-- IF S_YES_SEARCH --> checked="checked"<!-- ENDIF --> /> {L_YES}</label>
-			<label><input type="radio" class="radio" name="config[load_search]" value="0"<!-- IF not S_YES_SEARCH --> checked="checked"<!-- ENDIF --> /> {L_NO}</label></dd>
+		<dt><label for="load_search">{L_YES_SEARCH}:</label><br><span>{L_YES_SEARCH_EXPLAIN}</span></dt>
+		<dd><label><input type="radio" class="radio" id="load_search" name="config[load_search]" value="1"<!-- IF S_YES_SEARCH --> checked="checked"<!-- ENDIF -->> {L_YES}</label>
+			<label><input type="radio" class="radio" name="config[load_search]" value="0"<!-- IF not S_YES_SEARCH --> checked="checked"<!-- ENDIF -->> {L_NO}</label></dd>
 	</dl>
 	<dl>
-		<dt><label for="default_search_titleonly">{L_DEFAULT_SEARCH_TITLEONLY}:</label><br /><span>{L_DEFAULT_SEARCH_TITLEONLY_EXPLAIN}</span></dt>
-		<dd><label><input type="radio" class="radio" id="default_search_titleonly" name="config[default_search_titleonly]" value="1"<!-- IF S_DEFAULT_TITLEONLY --> checked="checked"<!-- ENDIF --> /> {L_YES}</label>
-			<label><input type="radio" class="radio" name="config[default_search_titleonly]" value="0"<!-- IF not S_DEFAULT_TITLEONLY --> checked="checked"<!-- ENDIF --> /> {L_NO}</label></dd>
+		<dt><label for="default_search_titleonly">{L_DEFAULT_SEARCH_TITLEONLY}:</label><br><span>{L_DEFAULT_SEARCH_TITLEONLY_EXPLAIN}</span></dt>
+		<dd><label><input type="radio" class="radio" id="default_search_titleonly" name="config[default_search_titleonly]" value="1"<!-- IF S_DEFAULT_TITLEONLY --> checked="checked"<!-- ENDIF -->> {L_YES}</label>
+			<label><input type="radio" class="radio" name="config[default_search_titleonly]" value="0"<!-- IF not S_DEFAULT_TITLEONLY --> checked="checked"<!-- ENDIF -->> {L_NO}</label></dd>
 	</dl>
 	<dl>
-		<dt><label for="search_highlight_keywords">{L_SEARCH_HIGHLIGHT_KEYWORDS}:</label><br /><span>{L_SEARCH_HIGHLIGHT_KEYWORDS_EXPLAIN}</span></dt>
-		<dd><label><input type="radio" class="radio" id="search_highlight_keywords" name="config[search_highlight_keywords]" value="1"<!-- IF S_HIGHLIGHT_KEYWORDS --> checked="checked"<!-- ENDIF --> /> {L_YES}</label>
-			<label><input type="radio" class="radio" name="config[search_highlight_keywords]" value="0"<!-- IF not S_HIGHLIGHT_KEYWORDS --> checked="checked"<!-- ENDIF --> /> {L_NO}</label></dd>
+		<dt><label for="search_highlight_keywords">{L_SEARCH_HIGHLIGHT_KEYWORDS}:</label><br><span>{L_SEARCH_HIGHLIGHT_KEYWORDS_EXPLAIN}</span></dt>
+		<dd><label><input type="radio" class="radio" id="search_highlight_keywords" name="config[search_highlight_keywords]" value="1"<!-- IF S_HIGHLIGHT_KEYWORDS --> checked="checked"<!-- ENDIF -->> {L_YES}</label>
+			<label><input type="radio" class="radio" name="config[search_highlight_keywords]" value="0"<!-- IF not S_HIGHLIGHT_KEYWORDS --> checked="checked"<!-- ENDIF -->> {L_NO}</label></dd>
 	</dl>
 	<dl>
-		<dt><label for="search_interval">{L_SEARCH_INTERVAL}:</label><br /><span>{L_SEARCH_INTERVAL_EXPLAIN}</span></dt>
-		<dd><input id="search_interval" type="text" size="4" maxlength="4" name="config[search_interval]" value="{SEARCH_INTERVAL}" /> {L_SECONDS}</dd>
+		<dt><label for="search_interval">{L_SEARCH_INTERVAL}:</label><br><span>{L_SEARCH_INTERVAL_EXPLAIN}</span></dt>
+		<dd><input id="search_interval" type="text" size="4" maxlength="4" name="config[search_interval]" value="{SEARCH_INTERVAL}"> {L_SECONDS}</dd>
 	</dl>
 	<dl>
-		<dt><label for="search_anonymous_interval">{L_SEARCH_GUEST_INTERVAL}:</label><br /><span>{L_SEARCH_GUEST_INTERVAL_EXPLAIN}</span></dt>
-		<dd><input id="search_anonymous_interval" type="text" size="4" maxlength="4" name="config[search_anonymous_interval]" value="{SEARCH_GUEST_INTERVAL}" /> {L_SECONDS}</dd>
+		<dt><label for="search_anonymous_interval">{L_SEARCH_GUEST_INTERVAL}:</label><br><span>{L_SEARCH_GUEST_INTERVAL_EXPLAIN}</span></dt>
+		<dd><input id="search_anonymous_interval" type="text" size="4" maxlength="4" name="config[search_anonymous_interval]" value="{SEARCH_GUEST_INTERVAL}"> {L_SECONDS}</dd>
 	</dl>
 	<dl>
-		<dt><label for="min_search_author_chars">{L_MIN_SEARCH_AUTHOR_CHARS}:</label><br /><span>{L_MIN_SEARCH_AUTHOR_CHARS_EXPLAIN}</span></dt>
-		<dd><input id="min_search_author_chars" type="text" size="4" maxlength="4" name="config[min_search_author_chars]" value="{MIN_SEARCH_AUTHOR_CHARS}" /></dd>
+		<dt><label for="min_search_author_chars">{L_MIN_SEARCH_AUTHOR_CHARS}:</label><br><span>{L_MIN_SEARCH_AUTHOR_CHARS_EXPLAIN}</span></dt>
+		<dd><input id="min_search_author_chars" type="text" size="4" maxlength="4" name="config[min_search_author_chars]" value="{MIN_SEARCH_AUTHOR_CHARS}"></dd>
 	</dl>
 	<dl>
-		<dt><label for="max_num_search_keywords">{L_MAX_NUM_SEARCH_KEYWORDS}:</label><br /><span>{L_MAX_NUM_SEARCH_KEYWORDS_EXPLAIN}</span></dt>
-		<dd><input id="max_num_search_keywords" type="text" size="4" maxlength="4" name="config[max_num_search_keywords]" value="{MAX_NUM_SEARCH_KEYWORDS}" /></dd>
+		<dt><label for="max_num_search_keywords">{L_MAX_NUM_SEARCH_KEYWORDS}:</label><br><span>{L_MAX_NUM_SEARCH_KEYWORDS_EXPLAIN}</span></dt>
+		<dd><input id="max_num_search_keywords" type="text" size="4" maxlength="4" name="config[max_num_search_keywords]" value="{MAX_NUM_SEARCH_KEYWORDS}"></dd>
 	</dl>
 	<dl>
-		<dt><label for="search_store_results">{L_SEARCH_STORE_RESULTS}:</label><br /><span>{L_SEARCH_STORE_RESULTS_EXPLAIN}</span></dt>
-		<dd><input id="search_store_results" type="text" size="4" maxlength="6" name="config[search_store_results]" value="{SEARCH_STORE_RESULTS}" /> {L_SECONDS}</dd>
+		<dt><label for="search_store_results">{L_SEARCH_STORE_RESULTS}:</label><br><span>{L_SEARCH_STORE_RESULTS_EXPLAIN}</span></dt>
+		<dd><input id="search_store_results" type="text" size="4" maxlength="6" name="config[search_store_results]" value="{SEARCH_STORE_RESULTS}"> {L_SECONDS}</dd>
 	</dl>
 	</fieldset>
 
 	<fieldset>
 		<legend>{L_FULLTEXT_MYSQL_INDEX}</legend>
 	<dl>
-		<dt><label>{L_FULLTEXT_MYSQL_STATUS}:</label><br /><span>{L_FULLTEXT_MYSQL_STATUS_EXPLAIN}</span></dt>
+		<dt><label>{L_FULLTEXT_MYSQL_STATUS}:</label><br><span>{L_FULLTEXT_MYSQL_STATUS_EXPLAIN}</span></dt>
 		<dd><b class="<!-- IF S_INDEXED -->status-green<!-- ELSE -->status-red<!-- ENDIF -->"><!-- IF S_INDEXED -->{L_FULLTEXT_MYSQL_STATUS_INDEXED}<!-- ELSE -->{L_FULLTEXT_MYSQL_STATUS_MISSING}<!-- ENDIF --></b><!-- IF S_INDEXED --> <i>({FULLTEXT_MYSQL_INDEXED_POSTS})</i> <button class="button2" type="submit" name="action" value="delete">{L_DELETE_INDEX}</button><!-- ELSE --> <button class="button2" type="submit" name="action" value="create">{L_CREATE_INDEX}</button><!-- ENDIF --></dd>
 	</dl>
 	<dl>
-		<dt><label>{L_FULLTEXT_MYSQL_WORD_LENGTH}:</label><br /><span>{L_FULLTEXT_MYSQL_WORD_LENGTH_EXPLAIN}</span></dt>
+		<dt><label>{L_FULLTEXT_MYSQL_WORD_LENGTH}:</label><br><span>{L_FULLTEXT_MYSQL_WORD_LENGTH_EXPLAIN}</span></dt>
 		<dd>{FULLTEXT_MYSQL_WORD_LENGTH_RANGE}</dd>
 	</dl>
 	</fieldset>
 
 	<fieldset class="submit-buttons">
 		<legend>{L_SUBMIT}</legend>
-		<input class="button1" type="submit" id="submit" name="submit" value="{L_SUBMIT}" />
+		<input class="button1" type="submit" id="submit" name="submit" value="{L_SUBMIT}">
 		{S_FORM_TOKEN}
 	</fieldset>
 </form>

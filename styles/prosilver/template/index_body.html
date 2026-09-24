@@ -24,7 +24,7 @@
 					<!-- IF announcetopic.S_UNREAD_TOPIC --><a rel="nofollow" href="{announcetopic.U_NEWEST_POST}">{NEWEST_POST_IMG}</a> <!-- ENDIF -->
 					<a href="{announcetopic.U_VIEW_TOPIC}" class="topictitle">{announcetopic.TOPIC_TITLE}</a>
 					<!-- IF announcetopic.S_TOPIC_UNAPPROVED or announcetopic.S_POSTS_UNAPPROVED --><a href="{announcetopic.U_MCP_QUEUE}">{announcetopic.UNAPPROVED_IMG}</a> <!-- ENDIF -->
-					<!-- IF announcetopic.S_TOPIC_REPORTED --><a href="{announcetopic.U_MCP_REPORT}">{announcetopic.REPORTED_IMG}</a><!-- ENDIF --><br />
+					<!-- IF announcetopic.S_TOPIC_REPORTED --><a href="{announcetopic.U_MCP_REPORT}">{announcetopic.REPORTED_IMG}</a><!-- ENDIF --><br>
 					<!-- IF announcetopic.PAGINATION --><strong class="pagination"><span>{announcetopic.PAGINATION}</span></strong><!-- ENDIF -->
 					{L_POST_BY_AUTHOR} {announcetopic.TOPIC_AUTHOR_FULL} &raquo; {announcetopic.FIRST_POST_TIME}
 					{L_IN} <a href="{announcetopic.U_VIEW_FORUM}">{announcetopic.FORUM_TITLE}</a>
@@ -32,7 +32,7 @@
 				<dd class="posts">{announcetopic.REPLIES} <dfn>{L_REPLIES}</dfn></dd>
 				<!-- IF STYLE_SHOW_TOPIC_VIEWS --><dd class="views">{announcetopic.VIEWS} <dfn>{L_VIEWS}</dfn></dd><!-- ENDIF -->
 				<dd class="lastpost"><dfn>{L_LAST_POST} </dfn>{L_POST_BY_AUTHOR} {announcetopic.LAST_POST_AUTHOR_FULL}
-					<!-- IF not S_IS_BOT --><a rel="nofollow" href="{announcetopic.U_LAST_POST}">{LAST_POST_IMG}</a> <br /><!-- ENDIF -->{L_POSTED_ON_DATE} {announcetopic.LAST_POST_TIME}
+					<!-- IF not S_IS_BOT --><a rel="nofollow" href="{announcetopic.U_LAST_POST}">{LAST_POST_IMG}</a> <br><!-- ENDIF -->{L_POSTED_ON_DATE} {announcetopic.LAST_POST_TIME}
 				</dd>
 			</dl>
 		</li>
@@ -65,7 +65,7 @@
 					<!-- IF activetopic.S_UNREAD_TOPIC --><a rel="nofollow" href="{activetopic.U_NEWEST_POST}">{NEWEST_POST_IMG}</a> <!-- ENDIF -->
 					<a href="{activetopic.U_VIEW_TOPIC}" class="topictitle">{activetopic.TOPIC_TITLE}</a>
 					<!-- IF activetopic.S_TOPIC_UNAPPROVED or activetopic.S_POSTS_UNAPPROVED --><a href="{activetopic.U_MCP_QUEUE}">{activetopic.UNAPPROVED_IMG}</a> <!-- ENDIF -->
-					<!-- IF activetopic.S_TOPIC_REPORTED --><a href="{activetopic.U_MCP_REPORT}">{activetopic.REPORTED_IMG}</a><!-- ENDIF --><br />
+					<!-- IF activetopic.S_TOPIC_REPORTED --><a href="{activetopic.U_MCP_REPORT}">{activetopic.REPORTED_IMG}</a><!-- ENDIF --><br>
 					<!-- IF activetopic.PAGINATION --><strong class="pagination"><span>{activetopic.PAGINATION}</span></strong><!-- ENDIF -->
 					{L_POST_BY_AUTHOR} {activetopic.TOPIC_AUTHOR_FULL} &raquo; {activetopic.FIRST_POST_TIME}
 					{L_IN} <a href="{activetopic.U_VIEW_FORUM}">{activetopic.FORUM_TITLE}</a>
@@ -74,7 +74,7 @@
 				<!-- IF STYLE_SHOW_TOPIC_VIEWS --><dd class="views">{activetopic.VIEWS}</dd><!-- ENDIF -->
 				<dd class="lastpost">
 					{L_POST_BY_AUTHOR} {activetopic.LAST_POST_AUTHOR_FULL}
-					<!-- IF not S_IS_BOT --><a rel="nofollow" href="{activetopic.U_LAST_POST}">{LAST_POST_IMG}</a> <!-- ENDIF --><br />{activetopic.LAST_POST_TIME}<br />
+					<!-- IF not S_IS_BOT --><a rel="nofollow" href="{activetopic.U_LAST_POST}">{LAST_POST_IMG}</a> <!-- ENDIF --><br>{activetopic.LAST_POST_TIME}<br>
 				</dd>
 			</dl>
 		</li>
@@ -104,12 +104,12 @@
 	<form method="post" action="{S_LOGIN_ACTION}" class="headerspace">
 	<h3><a rel="nofollow" href="{U_LOGIN_LOGOUT}">{L_LOGIN_LOGOUT}</a><!-- IF S_REGISTER_ENABLED -->&nbsp; &bull; &nbsp;<a rel="nofollow" href="{U_REGISTER}">{L_REGISTER}</a><!-- ENDIF --></h3>
 		<fieldset class="quick-login">
-			<label for="username">{L_LOGIN_NAME}:</label>&nbsp;<input type="text" name="username" id="username" size="10" class="inputbox" title="{L_USERNAME}" autocomplete="username" />
-			<label for="password">{L_PASSWORD}:</label>&nbsp;<input type="password" name="password" id="password" size="10" class="inputbox" title="{L_PASSWORD}" autocomplete="current-password" />
+			<label for="username">{L_LOGIN_NAME}:</label>&nbsp;<input type="text" name="username" id="username" size="10" class="inputbox" title="{L_USERNAME}" autocomplete="username">
+			<label for="password">{L_PASSWORD}:</label>&nbsp;<input type="password" name="password" id="password" size="10" class="inputbox" title="{L_PASSWORD}" autocomplete="current-password">
 			<!-- IF S_AUTOLOGIN_ENABLED -->
-				| <label for="autologin">{L_LOG_ME_IN} <input type="checkbox" name="autologin" id="autologin" checked="checked" /></label>
+				| <label for="autologin">{L_LOG_ME_IN} <input type="checkbox" name="autologin" id="autologin" checked="checked"></label>
 			<!-- ENDIF -->
-			<input type="submit" name="login" value="{L_LOGIN}" class="button2" />
+			<input type="submit" name="login" value="{L_LOGIN}" class="button2">
 			{S_LOGIN_REDIRECT}
 		</fieldset>
 	</form>
@@ -117,8 +117,8 @@
 
 <!-- IF S_DISPLAY_ONLINE_LIST -->
 	<h3><!-- IF U_VIEWONLINE --><a rel="nofollow" href="{U_VIEWONLINE}">{L_WHO_IS_ONLINE}</a><!-- ELSE -->{L_WHO_IS_ONLINE}<!-- ENDIF --> <span class="extra">({L_ONLINE_EXPLAIN})</span></h3>
-	<p>{TOTAL_USERS_ONLINE}<!-- IF LOGGED_IN_USER_LIST --><br />{LOGGED_IN_USER_LIST}<!-- ENDIF -->
-	<!-- IF LEGEND --><br /><em>{L_LEGEND}: {LEGEND}</em><!-- ENDIF --></p>
+	<p>{TOTAL_USERS_ONLINE}<!-- IF LOGGED_IN_USER_LIST --><br>{LOGGED_IN_USER_LIST}<!-- ENDIF -->
+	<!-- IF LEGEND --><br><em>{L_LEGEND}: {LEGEND}</em><!-- ENDIF --></p>
 <!-- ENDIF -->
 
 <!-- IF S_DISPLAY_BIRTHDAY_LIST and BIRTHDAY_LIST -->

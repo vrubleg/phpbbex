@@ -263,7 +263,7 @@ class messenger
 		if (!isset($this->vars['EMAIL_SIG']))
 		{
 			$this->assign_vars([
-				'EMAIL_SIG' => str_replace('<br />', "\n", "-- \n" . htmlspecialchars_decode($config['board_email_sig'])),
+				'EMAIL_SIG' => preg_replace('#<br\s*/?>#i', "\n", "-- \n" . htmlspecialchars_decode($config['board_email_sig'])),
 			]);
 		}
 
@@ -351,7 +351,7 @@ class messenger
 			break;
 		}
 
-		$message .= '<br /><em>' . htmlspecialchars($calling_page) . '</em><br /><br />' . $msg . '<br />';
+		$message .= '<br><em>' . htmlspecialchars($calling_page) . '</em><br><br>' . $msg . '<br>';
 		add_log('critical', 'LOG_ERROR_' . $type, $message);
 	}
 
@@ -557,13 +557,13 @@ class messenger
 
 			if (!$this->jabber->connect())
 			{
-				self::error('JABBER', $user->lang['ERR_JAB_CONNECT'] . '<br />' . $this->jabber->get_log());
+				self::error('JABBER', $user->lang['ERR_JAB_CONNECT'] . '<br>' . $this->jabber->get_log());
 				return false;
 			}
 
 			if (!$this->jabber->login())
 			{
-				self::error('JABBER', $user->lang['ERR_JAB_AUTH'] . '<br />' . $this->jabber->get_log());
+				self::error('JABBER', $user->lang['ERR_JAB_AUTH'] . '<br>' . $this->jabber->get_log());
 				return false;
 			}
 
@@ -999,7 +999,7 @@ function smtpmail($addresses, $subject, $message, &$err_msg, $headers = false)
 		}
 
 		$err_msg = (isset($user->lang['NO_CONNECT_TO_SMTP_HOST'])) ? sprintf($user->lang['NO_CONNECT_TO_SMTP_HOST'], $errno, $errstr) : "Could not connect to smtp host : {$errno} : {$errstr}";
-		$err_msg .= ($error_contents) ? '<br /><br />' . htmlspecialchars($error_contents) : '';
+		$err_msg .= ($error_contents) ? '<br><br>' . htmlspecialchars($error_contents) : '';
 		return false;
 	}
 
@@ -1061,7 +1061,7 @@ function smtpmail($addresses, $subject, $message, &$err_msg, $headers = false)
 	if (!$rcpt)
 	{
 		$user->session_begin();
-		$err_msg .= '<br /><br />';
+		$err_msg .= '<br><br>';
 		$err_msg .= (isset($user->lang['INVALID_EMAIL_LOG'])) ? sprintf($user->lang['INVALID_EMAIL_LOG'], htmlspecialchars($mail_to_address)) : '<strong>' . htmlspecialchars($mail_to_address) . '</strong> possibly an invalid email address?';
 		$smtp->close_session($err_msg);
 		return false;
@@ -1201,7 +1201,7 @@ class smtp_class
 
 		if ($this->backtrace)
 		{
-			$message = '<h1>Backtrace</h1><p>' . implode('<br />', $this->backtrace_log) . '</p>';
+			$message = '<h1>Backtrace</h1><p>' . implode('<br>', $this->backtrace_log) . '</p>';
 			$err_msg .= $message;
 		}
 	}
@@ -1236,7 +1236,7 @@ class smtp_class
 			if (!$this->socket_tls)
 			{
 				$err_msg = 'STARTTLS: Could not enable TLS on a socket';
-				if (count($collector->errors)) { $err_msg .= '<br /><br />' . htmlspecialchars($collector->format_errors()); }
+				if (count($collector->errors)) { $err_msg .= '<br><br>' . htmlspecialchars($collector->format_errors()); }
 				return $err_msg;
 			}
 

@@ -25,14 +25,14 @@
 			<li class="row<!-- IF draftrow.S_ROW_COUNT is odd --> bg1<!-- ELSE --> bg2<!-- ENDIF -->">
 				<dl>
 					<dt>
-						<a class="topictitle" href="{draftrow.U_INSERT}"><!-- IF draftrow.DRAFT_SUBJECT -->{draftrow.DRAFT_SUBJECT}<!-- ELSE -->{L_NO_SUBJECT}<!-- ENDIF --></a><br />
+						<a class="topictitle" href="{draftrow.U_INSERT}"><!-- IF draftrow.DRAFT_SUBJECT -->{draftrow.DRAFT_SUBJECT}<!-- ELSE -->{L_NO_SUBJECT}<!-- ENDIF --></a><br>
 						<!-- IF draftrow.S_LINK_TOPIC -->{L_TOPIC}: <a href="{draftrow.U_VIEW}">{draftrow.TITLE}</a>
 						<!-- ELSEIF draftrow.S_LINK_FORUM -->{L_FORUM}: <a href="{draftrow.U_VIEW}">{draftrow.TITLE}</a>
 						<!-- ELSEIF S_PRIVMSGS -->
 						<!-- ELSE -->{L_NO_TOPIC_FORUM}<!-- ENDIF -->
 					</dt>
 					<dd class="info">{draftrow.DATE}</dd>
-					<dd class="mark"><input type="checkbox" name="d[{draftrow.DRAFT_ID}]" id="d{draftrow.DRAFT_ID}" /></dd>
+					<dd class="mark"><input type="checkbox" name="d[{draftrow.DRAFT_ID}]" id="d{draftrow.DRAFT_ID}"></dd>
 				</dl>
 			</li>
 		<!-- END draftrow -->
@@ -46,7 +46,7 @@
 
 	<!-- IF .draftrow -->
 		<fieldset class="display-actions">
-			<input class="button2" type="submit" name="delete" value="{L_DELETE_MARKED}" />
+			<input class="button2" type="submit" name="delete" value="{L_DELETE_MARKED}">
 			<div><a onclick="marklist('postform', '', true);">{L_MARK_ALL}</a> &bull; <a onclick="marklist('postform', '', false);">{L_UNMARK_ALL}</a></div>
 			{S_FORM_TOKEN}
 		</fieldset>

@@ -140,7 +140,7 @@ $lang = array_merge($lang, [
 
 	'acl_f_search'      => ['lang' => 'Can search the forum', 'cat' => 'misc'],
 	'acl_f_ignoreflood' => ['lang' => 'Can ignore flood limit', 'cat' => 'misc'],
-	'acl_f_postcount'   => ['lang' => 'Increment post counter<br /><em>Please note that this setting only affects new posts.</em>', 'cat' => 'misc'],
+	'acl_f_postcount'   => ['lang' => 'Increment post counter<br><em>Please note that this setting only affects new posts.</em>', 'cat' => 'misc'],
 	'acl_f_noapprove'   => ['lang' => 'Can post without approval', 'cat' => 'misc'],
 ]);
 
@@ -158,8 +158,8 @@ $lang = array_merge($lang, [
 	'acl_m_merge'   => ['lang' => 'Can merge topics', 'cat' => 'topic_actions'],
 
 	'acl_m_info'    => ['lang' => 'Can view post details', 'cat' => 'misc'],
-	'acl_m_warn'    => ['lang' => 'Can issue warnings<br /><em>This setting is only assigned globally. It is not forum based.</em>', 'cat' => 'misc'], // This moderator setting is only global (and not local)
-	'acl_m_ban'     => ['lang' => 'Can manage bans<br /><em>This setting is only assigned globally. It is not forum based.</em>', 'cat' => 'misc'], // This moderator setting is only global (and not local)
+	'acl_m_warn'    => ['lang' => 'Can issue warnings<br><em>This setting is only assigned globally. It is not forum based.</em>', 'cat' => 'misc'], // This moderator setting is only global (and not local)
+	'acl_m_ban'     => ['lang' => 'Can manage bans<br><em>This setting is only assigned globally. It is not forum based.</em>', 'cat' => 'misc'], // This moderator setting is only global (and not local)
 ]);
 
 // Admin Permissions
@@ -178,7 +178,7 @@ $lang = array_merge($lang, [
 	'acl_a_bbcode'      => ['lang' => 'Can define BBCode tags', 'cat' => 'posting'],
 	'acl_a_attach'      => ['lang' => 'Can alter attachment related settings', 'cat' => 'posting'],
 
-	'acl_a_user'        => ['lang' => 'Can manage users<br /><em>This also includes seeing the users browser agent within the viewonline list.</em>', 'cat' => 'user_group'],
+	'acl_a_user'        => ['lang' => 'Can manage users<br><em>This also includes seeing the users browser agent within the viewonline list.</em>', 'cat' => 'user_group'],
 	'acl_a_userdel'     => ['lang' => 'Can delete/prune users', 'cat' => 'user_group'],
 	'acl_a_group'       => ['lang' => 'Can manage groups', 'cat' => 'user_group'],
 	'acl_a_groupadd'    => ['lang' => 'Can add new groups', 'cat' => 'user_group'],

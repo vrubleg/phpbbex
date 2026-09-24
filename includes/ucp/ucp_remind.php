@@ -104,7 +104,7 @@ class ucp_remind
 
 			meta_refresh(3, append_sid(PHPBB_ROOT_PATH . 'index.php'));
 
-			$message = $user->lang['PASSWORD_UPDATED'] . '<br /><br />' . sprintf($user->lang['RETURN_INDEX'], '<a href="' . append_sid(PHPBB_ROOT_PATH . 'index.php') . '">', '</a>');
+			$message = $user->lang['PASSWORD_UPDATED'] . '<br><br>' . sprintf($user->lang['RETURN_INDEX'], '<a href="' . append_sid(PHPBB_ROOT_PATH . 'index.php') . '">', '</a>');
 			trigger_error($message);
 		}
 

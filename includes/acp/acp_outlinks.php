@@ -86,7 +86,7 @@ class acp_outlinks
 				if (isset($outlinks[$id]))
 				{
 					$link_info = $outlinks[$id];
-					$s_hidden_fields .= '<input type="hidden" name="id" value="' . $id . '" />';
+					$s_hidden_fields .= '<input type="hidden" name="id" value="' . $id . '">';
 				}
 				else
 				{

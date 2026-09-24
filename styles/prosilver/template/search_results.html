@@ -12,8 +12,8 @@
 		<div class="search-box">
 		<form method="post" action="{S_SEARCH_ACTION}">
 			<fieldset>
-				<input type="text" name="add_keywords" class="inputbox search tiny" placeholder="{L_SEARCH_IN_RESULTS}" />
-				<input class="button2" type="submit" name="submit" value="{L_SEARCH}" />
+				<input type="text" name="add_keywords" class="inputbox search tiny" placeholder="{L_SEARCH_IN_RESULTS}">
+				<input class="button2" type="submit" name="submit" value="{L_SEARCH}">
 			</fieldset>
 		</form>
 		</div>
@@ -56,7 +56,7 @@
 						<!-- IF searchresults.S_UNREAD_TOPIC --><a rel="nofollow" href="{searchresults.U_NEWEST_POST}">{NEWEST_POST_IMG}</a> <!-- ENDIF -->
 						<a href="{searchresults.U_VIEW_TOPIC}" class="topictitle">{searchresults.TOPIC_TITLE}</a>
 						<!-- IF searchresults.S_TOPIC_UNAPPROVED or searchresults.S_POSTS_UNAPPROVED --><a href="{searchresults.U_MCP_QUEUE}">{searchresults.UNAPPROVED_IMG}</a> <!-- ENDIF -->
-						<!-- IF searchresults.S_TOPIC_REPORTED --><a href="{searchresults.U_MCP_REPORT}">{REPORTED_IMG}</a><!-- ENDIF --><br />
+						<!-- IF searchresults.S_TOPIC_REPORTED --><a href="{searchresults.U_MCP_REPORT}">{REPORTED_IMG}</a><!-- ENDIF --><br>
 						<!-- IF searchresults.PAGINATION --><strong class="pagination"><span>{searchresults.PAGINATION}</span></strong><!-- ENDIF -->
 						{L_POST_BY_AUTHOR} {searchresults.TOPIC_AUTHOR_FULL} &raquo; {searchresults.FIRST_POST_TIME}
 						{L_IN} <a href="{searchresults.U_VIEW_FORUM}">{searchresults.FORUM_TITLE}</a>
@@ -65,7 +65,7 @@
 					<!-- IF STYLE_SHOW_TOPIC_VIEWS --><dd class="views">{searchresults.TOPIC_VIEWS}</dd><!-- ENDIF -->
 					<dd class="lastpost">
 						{L_POST_BY_AUTHOR} {searchresults.LAST_POST_AUTHOR_FULL}
-						<!-- IF not S_IS_BOT --><a rel="nofollow" href="{searchresults.U_LAST_POST}">{LAST_POST_IMG}</a> <!-- ENDIF --><br />{searchresults.LAST_POST_TIME}<br />
+						<!-- IF not S_IS_BOT --><a rel="nofollow" href="{searchresults.U_LAST_POST}">{LAST_POST_IMG}</a> <!-- ENDIF --><br>{searchresults.LAST_POST_TIME}<br>
 					</dd>
 				</dl>
 			</li>
@@ -127,13 +127,13 @@
 		<!-- IF NEXT_PAGE --><a href="{NEXT_PAGE}" class="right-box nav-to-right">{L_NEXT}</a><!-- ENDIF -->
 		<!-- IF S_SELECT_SORT_DAYS or S_SELECT_SORT_KEY -->
 			<label><!-- IF S_SHOW_TOPICS -->{L_DISPLAY_TOPICS}<!-- ELSE -->{L_DISPLAY_POSTS}<!-- ENDIF -->: {S_SELECT_SORT_DAYS}<!-- IF S_SELECT_SORT_KEY --></label> <label>{L_SORT_BY} {S_SELECT_SORT_KEY}</label>
-			<label>{S_SELECT_SORT_DIR}<!-- ENDIF --> <input type="submit" name="sort" value="{L_GO}" class="button2" /></label>
+			<label>{S_SELECT_SORT_DIR}<!-- ENDIF --> <input type="submit" name="sort" value="{L_GO}" class="button2"></label>
 		<!-- ENDIF -->
 	</fieldset>
 
 	</form>
 
-	<hr />
+	<hr>
 <!-- ENDIF -->
 
 <!-- IF PAGINATION or .searchresults or PAGE_NUMBER -->

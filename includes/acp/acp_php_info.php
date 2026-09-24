@@ -58,7 +58,8 @@ class acp_php_info
 		}
 		$output = preg_replace('#<table[^>]+>#i', '<table>', $output);
 		$output = preg_replace('#<img border="0"#i', '<img', $output);
-		$output = str_replace(['class="e"', 'class="v"', 'class="h"', '<hr />', '<font', '</font>'], ['class="row1"', 'class="row2"', '', '', '<span', '</span>'], $output);
+		$output = str_replace(['class="e"', 'class="v"', 'class="h"', '<font', '</font>'], ['class="row1"', 'class="row2"', '', '<span', '</span>'], $output);
+		$output = preg_replace('#<hr\s*/?>#i', '', $output);
 
 		// Fix invalid anchor names (eg "module_Zend Optimizer")
 		$output = preg_replace_callback('#<a name="([^"]+)">#', [$this, 'remove_spaces'], $output);

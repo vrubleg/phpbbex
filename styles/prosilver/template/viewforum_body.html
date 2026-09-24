@@ -13,9 +13,9 @@
 
 <!-- IF FORUM_DESC or MODERATORS or S_FORUM_RULES -->
 <p>
-	<!-- IF FORUM_DESC --><strong>{L_FORUM_DESC}:</strong> {FORUM_DESC}<br /><!-- ENDIF -->
-	<!-- IF S_FORUM_RULES --><strong>{L_FORUM_RULES}:</strong> <!-- IF U_FORUM_RULES --><a href="{U_FORUM_RULES}">{U_FORUM_RULES}</a><!-- ELSE -->{FORUM_RULES}<!-- ENDIF --><br /><!-- ENDIF -->
-	<!-- IF MODERATORS --><strong><!-- IF S_SINGLE_MODERATOR -->{L_MODERATOR}<!-- ELSE -->{L_MODERATORS}<!-- ENDIF -->:</strong> {MODERATORS}<br /><!-- ENDIF -->
+	<!-- IF FORUM_DESC --><strong>{L_FORUM_DESC}:</strong> {FORUM_DESC}<br><!-- ENDIF -->
+	<!-- IF S_FORUM_RULES --><strong>{L_FORUM_RULES}:</strong> <!-- IF U_FORUM_RULES --><a href="{U_FORUM_RULES}">{U_FORUM_RULES}</a><!-- ELSE -->{FORUM_RULES}<!-- ENDIF --><br><!-- ENDIF -->
+	<!-- IF MODERATORS --><strong><!-- IF S_SINGLE_MODERATOR -->{L_MODERATOR}<!-- ELSE -->{L_MODERATORS}<!-- ENDIF -->:</strong> {MODERATORS}<br><!-- ENDIF -->
 </p>
 <!-- ENDIF -->
 
@@ -43,8 +43,8 @@
 		<div class="search-box">
 			<form method="get" id="forum-search" action="{S_SEARCHBOX_ACTION}">
 			<fieldset>
-				<input class="inputbox search tiny" type="text" name="keywords" id="search_keywords" size="20" placeholder="{L_SEARCH_FORUM}" />
-				<input class="button2" type="submit" value="{L_SEARCH}" />
+				<input class="inputbox search tiny" type="text" name="keywords" id="search_keywords" size="20" placeholder="{L_SEARCH_FORUM}">
+				<input class="button2" type="submit" value="{L_SEARCH}">
 				{S_SEARCH_LOCAL_HIDDEN_FIELDS}
 			</fieldset>
 			</form>
@@ -84,17 +84,17 @@
 				<fieldset class="fields1">
 				<dl>
 					<dt><label for="username">{L_USERNAME}:</label></dt>
-					<dd><input type="text" tabindex="1" name="username" id="username" size="25" value="{USERNAME}" class="inputbox autowidth" autocomplete="username" /></dd>
+					<dd><input type="text" tabindex="1" name="username" id="username" size="25" value="{USERNAME}" class="inputbox autowidth" autocomplete="username"></dd>
 				</dl>
 				<dl>
 					<dt><label for="password">{L_PASSWORD}:</label></dt>
-					<dd><input type="password" tabindex="2" id="password" name="password" size="25" class="inputbox autowidth" autocomplete="current-password" /></dd>
-					<!-- IF S_AUTOLOGIN_ENABLED --><dd><label for="autologin"><input type="checkbox" name="autologin" id="autologin" checked="checked" tabindex="3" /> {L_LOG_ME_IN}</label></dd><!-- ENDIF -->
-					<dd><label for="viewonline"><input type="checkbox" name="viewonline" id="viewonline" tabindex="4" /> {L_HIDE_ME}</label></dd>
+					<dd><input type="password" tabindex="2" id="password" name="password" size="25" class="inputbox autowidth" autocomplete="current-password"></dd>
+					<!-- IF S_AUTOLOGIN_ENABLED --><dd><label for="autologin"><input type="checkbox" name="autologin" id="autologin" checked="checked" tabindex="3"> {L_LOG_ME_IN}</label></dd><!-- ENDIF -->
+					<dd><label for="viewonline"><input type="checkbox" name="viewonline" id="viewonline" tabindex="4"> {L_HIDE_ME}</label></dd>
 				</dl>
 				<dl>
 					<dt>&nbsp;</dt>
-					<dd><input type="submit" name="login" tabindex="5" value="{L_LOGIN}" class="button1" /></dd>
+					<dd><input type="submit" name="login" tabindex="5" value="{L_LOGIN}" class="button1"></dd>
 				</dl>
 				{S_LOGIN_REDIRECT}
 				</fieldset>
@@ -130,14 +130,14 @@
 			<dl class="icon" style="background-image: url({topicrow.TOPIC_FOLDER_IMG_SRC}); background-repeat: no-repeat;">
 				<dt<!-- IF topicrow.TOPIC_ICON_IMG --> style="background-image: url({T_TOPIC_ICONS_PATH}{topicrow.TOPIC_ICON_IMG}); background-repeat: no-repeat;"<!-- ENDIF --> title="{topicrow.TOPIC_FOLDER_IMG_ALT}"><!-- IF topicrow.S_UNREAD_TOPIC --><a rel="nofollow" href="{topicrow.U_NEWEST_POST}">{NEWEST_POST_IMG}</a> <!-- ENDIF --><a href="{topicrow.U_VIEW_TOPIC}" class="topictitle">{topicrow.TOPIC_TITLE}</a>
 					<!-- IF topicrow.S_TOPIC_UNAPPROVED or topicrow.S_POSTS_UNAPPROVED --><a href="{topicrow.U_MCP_QUEUE}">{topicrow.UNAPPROVED_IMG}</a> <!-- ENDIF -->
-					<!-- IF topicrow.S_TOPIC_REPORTED --><a href="{topicrow.U_MCP_REPORT}">{REPORTED_IMG}</a><!-- ENDIF --><br />
+					<!-- IF topicrow.S_TOPIC_REPORTED --><a href="{topicrow.U_MCP_REPORT}">{REPORTED_IMG}</a><!-- ENDIF --><br>
 					<!-- IF topicrow.PAGINATION --><strong class="pagination"><span>{topicrow.PAGINATION}</span></strong><!-- ENDIF -->
 					{L_POST_BY_AUTHOR} {topicrow.TOPIC_AUTHOR_FULL} &raquo; {topicrow.FIRST_POST_TIME}
 				</dt>
 				<dd class="posts">{topicrow.REPLIES} <dfn>{L_REPLIES}</dfn></dd>
 				<!-- IF STYLE_SHOW_TOPIC_VIEWS --><dd class="views">{topicrow.VIEWS} <dfn>{L_VIEWS}</dfn></dd><!-- ENDIF -->
 				<dd class="lastpost"><dfn>{L_LAST_POST} </dfn>{L_POST_BY_AUTHOR} {topicrow.LAST_POST_AUTHOR_FULL}
-					<!-- IF not S_IS_BOT --><a rel="nofollow" href="{topicrow.U_LAST_POST}">{LAST_POST_IMG}</a> <!-- ENDIF --><br />{topicrow.LAST_POST_TIME}
+					<!-- IF not S_IS_BOT --><a rel="nofollow" href="{topicrow.U_LAST_POST}">{LAST_POST_IMG}</a> <!-- ENDIF --><br>{topicrow.LAST_POST_TIME}
 				</dd>
 			</dl>
 		</li>
@@ -164,11 +164,11 @@
 			<!-- IF NEXT_PAGE --><a href="{NEXT_PAGE}" class="right-box nav-to-right">{L_NEXT}</a><!-- ENDIF -->
 	<!-- IF not S_IS_BOT -->
 			<label>{L_SORT_BY} {S_SELECT_SORT_KEY}</label>
-			<label>{S_SELECT_SORT_DIR} <input type="submit" name="sort" value="{L_GO}" class="button2" /></label>
+			<label>{S_SELECT_SORT_DIR} <input type="submit" name="sort" value="{L_GO}" class="button2"></label>
 	<!-- ENDIF -->
 		</fieldset>
 	</form>
-	<hr />
+	<hr>
 <!-- ENDIF -->
 
 <!-- IF .topicrow and not S_DISPLAY_ACTIVE -->
@@ -194,7 +194,7 @@
 
 <!-- IF S_DISPLAY_POST_INFO -->
 	<h3>{L_FORUM_PERMISSIONS}</h3>
-	<p><!-- BEGIN rules -->{rules.RULE}<br /><!-- END rules --></p>
+	<p><!-- BEGIN rules -->{rules.RULE}<br><!-- END rules --></p>
 <!-- ENDIF -->
 
 <!-- INCLUDE overall_footer.html -->

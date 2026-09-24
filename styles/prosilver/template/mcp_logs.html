@@ -9,7 +9,7 @@
 
 	<ul class="linklist">
 		<li>
-			{L_SEARCH_KEYWORDS}: <input type="text" class="inputbox autowidth" name="keywords" value="{S_KEYWORDS}" />&nbsp;<input type="submit" class="button2" name="filter" value="{L_SEARCH}" />
+			{L_SEARCH_KEYWORDS}: <input type="text" class="inputbox autowidth" name="keywords" value="{S_KEYWORDS}">&nbsp;<input type="submit" class="button2" name="filter" value="{L_SEARCH}">
 		</li>
 		<li class="rightside pagination">
 			<!-- IF TOTAL -->{TOTAL} <!-- ENDIF -->
@@ -34,10 +34,10 @@
 			<td>{log.USERNAME}</td>
 			<td class="center">{log.IP}</td>
 			<td class="center">{log.DATE}</td>
-			<td>{log.ACTION}<br />
+			<td>{log.ACTION}<br>
 			{log.DATA}
 		</td>
-			<!-- IF S_CLEAR_ALLOWED --><td style="width: 5%" align="center"><input type="checkbox" name="mark[]" value="{log.ID}" /></td><!-- ENDIF -->
+			<!-- IF S_CLEAR_ALLOWED --><td style="width: 5%" align="center"><input type="checkbox" name="mark[]" value="{log.ID}"></td><!-- ENDIF -->
 		</tr>
 		<!-- END log -->
 	<!-- ELSE -->
@@ -55,10 +55,10 @@
 			<label>{L_DISPLAY_POSTS}: {S_SELECT_SORT_DAYS}</label>
 			<label>{L_SORT_BY} {S_SELECT_SORT_KEY}</label>
 			<label>{S_SELECT_SORT_DIR}</label>
-			<input type="submit" name="sort" value="{L_GO}" class="button2" />
+			<input type="submit" name="sort" value="{L_GO}" class="button2">
 		</fieldset>
 
-		<hr />
+		<hr>
 
 		<ul class="linklist">
 			<li class="rightside pagination">
@@ -72,8 +72,8 @@
 
 		<!-- IF S_CLEAR_ALLOWED -->
 			<fieldset class="display-actions">
-				<input class="button2" type="submit" name="action[del_all]" value="{L_DELETE_ALL}" />
-				&nbsp;<input class="button1" type="submit" value="{L_DELETE_MARKED}" name="action[del_marked]" />
+				<input class="button2" type="submit" name="action[del_all]" value="{L_DELETE_ALL}">
+				&nbsp;<input class="button1" type="submit" value="{L_DELETE_MARKED}" name="action[del_marked]">
 
 				<div><a onclick="marklist('mcp', 'mark', true);">{L_MARK_ALL}</a> :: <a onclick="marklist('mcp', 'mark', false);">{L_UNMARK_ALL}</a></div>
 			</fieldset>
@@ -85,6 +85,6 @@
 	<!-- ENDIF -->
 </form>
 
-<br />
+<br>
 
 <!-- INCLUDE mcp_footer.html -->

@@ -251,7 +251,7 @@ function send_file_to_browser($attachment, $upload_dir, $category)
 		if (!empty($php_errormsg))
 		{
 			http_response_code(500);
-			trigger_error($user->lang['UNABLE_TO_DELIVER_FILE'] . '<br />' . sprintf($user->lang['TRACKED_PHP_ERROR'], $php_errormsg));
+			trigger_error($user->lang['UNABLE_TO_DELIVER_FILE'] . '<br>' . sprintf($user->lang['TRACKED_PHP_ERROR'], $php_errormsg));
 		}
 
 		http_response_code(500);

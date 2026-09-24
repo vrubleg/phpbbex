@@ -30,7 +30,7 @@ function view_message($id, $mode, $folder_id, $msg_id, $folder, $message_row)
 		$meta_info = append_sid(PHPBB_ROOT_PATH . 'ucp.php', "i=pm&amp;folder={$folder_id}");
 		$message = $user->lang['NO_AUTH_READ_REMOVED_MESSAGE'];
 
-		$message .= '<br /><br />' . sprintf($user->lang['RETURN_FOLDER'], '<a href="' . $meta_info . '">', '</a>');
+		$message .= '<br><br>' . sprintf($user->lang['RETURN_FOLDER'], '<a href="' . $meta_info . '">', '</a>');
 		trigger_error($message);
 	}
 

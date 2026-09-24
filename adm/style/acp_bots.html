@@ -22,24 +22,24 @@
 	<fieldset>
 		<legend>{L_TITLE}</legend>
 	<dl>
-		<dt><label for="bot_name">{L_BOT_NAME}:</label><br /><span>{L_BOT_NAME_EXPLAIN}</span></dt>
-		<dd><input name="bot_name" type="text" id="bot_name" value="{BOT_NAME}" maxlength="255" /></dd>
+		<dt><label for="bot_name">{L_BOT_NAME}:</label><br><span>{L_BOT_NAME_EXPLAIN}</span></dt>
+		<dd><input name="bot_name" type="text" id="bot_name" value="{BOT_NAME}" maxlength="255"></dd>
 	</dl>
 	<dl>
 		<dt><label for="bot_active">{L_BOT_ACTIVE}:</label></dt>
 		<dd><select id="bot_active" name="bot_active">{S_ACTIVE_OPTIONS}</select></dd>
 	</dl>
 	<dl>
-		<dt><label for="bot_agent">{L_BOT_AGENT}:</label><br /><span>{L_BOT_AGENT_EXPLAIN}</span></dt>
-		<dd><input name="bot_agent" type="text" id="bot_agent" value="{BOT_AGENT}" maxlength="255" /></dd>
+		<dt><label for="bot_agent">{L_BOT_AGENT}:</label><br><span>{L_BOT_AGENT_EXPLAIN}</span></dt>
+		<dd><input name="bot_agent" type="text" id="bot_agent" value="{BOT_AGENT}" maxlength="255"></dd>
 	</dl>
 	<dl>
-		<dt><label for="bot_ip">{L_BOT_IP}:</label><br /><span>{L_BOT_IP_EXPLAIN}</span></dt>
-		<dd><input name="bot_ip" type="text" id="bot_ip" value="{BOT_IP}" maxlength="255" /></dd>
+		<dt><label for="bot_ip">{L_BOT_IP}:</label><br><span>{L_BOT_IP_EXPLAIN}</span></dt>
+		<dd><input name="bot_ip" type="text" id="bot_ip" value="{BOT_IP}" maxlength="255"></dd>
 	</dl>
 
 	<p class="submit-buttons">
-		<input class="button1" type="submit" id="submit" name="submit" value="{L_SUBMIT}" />
+		<input class="button1" type="submit" id="submit" name="submit" value="{L_SUBMIT}">
 		{S_FORM_TOKEN}
 	</p>
 	</fieldset>
@@ -70,19 +70,19 @@
 			<td style="text-align: center;">&nbsp;<a href="{bots.U_ACTIVATE_DEACTIVATE}">{bots.L_ACTIVATE_DEACTIVATE}</a>&nbsp;</td>
 			<td style="text-align: center;">&nbsp;<a href="{bots.U_EDIT}">{L_EDIT}</a>&nbsp;</td>
 			<td style="text-align: center;">&nbsp;<a href="{bots.U_DELETE}">{L_DELETE}</a>&nbsp;</td>
-			<td style="text-align: center;"><input type="checkbox" class="radio" name="mark[]" value="{bots.BOT_ID}" /></td>
+			<td style="text-align: center;"><input type="checkbox" class="radio" name="mark[]" value="{bots.BOT_ID}"></td>
 		</tr>
 	<!-- END bots -->
 	</tbody>
 	</table>
 
 	<fieldset class="quick" style="float: left;">
-		<input class="button2" name="add" type="submit" value="{L_BOT_ADD}" />
+		<input class="button2" name="add" type="submit" value="{L_BOT_ADD}">
 	</fieldset>
 
 	<fieldset class="quick" style="float: right;">
 		<select name="action">{S_BOT_OPTIONS}</select>
-		<input class="button2" name="submit" type="submit" value="{L_SUBMIT}" />
+		<input class="button2" name="submit" type="submit" value="{L_SUBMIT}">
 		<p class="small"><a onclick="marklist('acp_bots', 'mark', true);">{L_MARK_ALL}</a> &bull; <a onclick="marklist('acp_bots', 'mark', false);">{L_UNMARK_ALL}</a></p>
 		{S_FORM_TOKEN}
 	</fieldset>

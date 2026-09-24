@@ -34,7 +34,7 @@ $lang = array_merge($lang, [
 	'LANGUAGE_PACK_USED_BY'             => 'Used by',
 
 	'NO_LANG_CODE'                  => 'You haven’t specified a language pack.',
-	'NO_REMOVE_DEFAULT_LANG'        => 'You are not able to remove the default language pack.<br />If you want to remove this language pack, change your boards default language first.',
+	'NO_REMOVE_DEFAULT_LANG'        => 'You are not able to remove the default language pack.<br>If you want to remove this language pack, change your boards default language first.',
 	'NO_UNINSTALLED_LANGUAGE_PACKS' => 'No uninstalled language packs',
 
 	'UNINSTALLED_LANGUAGE_PACKS'    => 'Uninstalled language packs',

@@ -45,26 +45,26 @@ function insert_single(user)
 	<fieldset class="fields1 column1">
 	<dl>
 		<dt><label for="username">{L_USERNAME}:</label></dt>
-		<dd><input type="text" name="username" id="username" value="{USERNAME}" class="inputbox" /></dd>
+		<dd><input type="text" name="username" id="username" value="{USERNAME}" class="inputbox"></dd>
 	</dl>
 <!-- IF S_EMAIL_SEARCH_ALLOWED -->
 	<dl>
 		<dt><label for="email">{L_EMAIL}:</label></dt>
-		<dd><input type="text" name="email" id="email" value="{EMAIL}" class="inputbox" /></dd>
+		<dd><input type="text" name="email" id="email" value="{EMAIL}" class="inputbox"></dd>
 	</dl>
 <!-- ENDIF -->
 	<dl>
 		<dt><label for="telegram">{L_TELEGRAM}:</label></dt>
-		<dd><input type="text" name="telegram" id="telegram" value="{TELEGRAM}" class="inputbox" /></dd>
+		<dd><input type="text" name="telegram" id="telegram" value="{TELEGRAM}" class="inputbox"></dd>
 	</dl>
 	<dl>
 		<dt><label for="jabber">{L_JABBER}:</label></dt>
-		<dd><input type="text" name="jabber" id="jabber" value="{JABBER}" class="inputbox" /></dd>
+		<dd><input type="text" name="jabber" id="jabber" value="{JABBER}" class="inputbox"></dd>
 	</dl>
 <!-- IF S_IP_SEARCH_ALLOWED -->
 	<dl>
 		<dt><label for="ip">{L_POST_IP}:</label></dt>
-		<dd><input type="text" name="ip" id="ip" value="{IP}" class="inputbox" /></dd>
+		<dd><input type="text" name="ip" id="ip" value="{IP}" class="inputbox"></dd>
 	</dl>
 <!-- ENDIF -->
 	<dl>
@@ -76,17 +76,17 @@ function insert_single(user)
 	<fieldset class="fields1 column2">
 	<dl>
 		<dt><label for="joined">{L_JOINED}:</label></dt>
-		<dd><select name="joined_select">{S_JOINED_TIME_OPTIONS}</select> <input class="inputbox medium" type="text" name="joined" id="joined" value="{JOINED}" title="{L_YEAR_MONTH_DAY}" /></dd>
+		<dd><select name="joined_select">{S_JOINED_TIME_OPTIONS}</select> <input class="inputbox medium" type="text" name="joined" id="joined" value="{JOINED}" title="{L_YEAR_MONTH_DAY}"></dd>
 	</dl>
 <!-- IF S_VIEWONLINE -->
 	<dl>
 		<dt><label for="active">{L_LAST_ACTIVE}:</label></dt>
-		<dd><select name="active_select">{S_ACTIVE_TIME_OPTIONS}</select> <input class="inputbox medium" type="text" name="active" id="active" value="{ACTIVE}" title="{L_YEAR_MONTH_DAY}" /></dd>
+		<dd><select name="active_select">{S_ACTIVE_TIME_OPTIONS}</select> <input class="inputbox medium" type="text" name="active" id="active" value="{ACTIVE}" title="{L_YEAR_MONTH_DAY}"></dd>
 	</dl>
 <!-- ENDIF -->
 	<dl>
 		<dt><label for="count">{L_POSTS}:</label></dt>
-		<dd><select name="count_select">{S_COUNT_OPTIONS}</select> <input class="inputbox medium" type="text" name="count" id="count" value="{COUNT}" /></dd>
+		<dd><select name="count_select">{S_COUNT_OPTIONS}</select> <input class="inputbox medium" type="text" name="count" id="count" value="{COUNT}"></dd>
 	</dl>
 	<dl>
 		<dt><label for="sk" class="label3">{L_SORT_BY}:</label></dt>
@@ -96,10 +96,10 @@ function insert_single(user)
 
 	<div class="clear"></div>
 
-	<hr />
+	<hr>
 
 	<fieldset class="submit-buttons">
-		<input type="submit" name="submit" value="{L_SEARCH}" class="button1" />
+		<input type="submit" name="submit" value="{L_SEARCH}" class="button1">
 		{S_FORM_TOKEN}
 	</fieldset>
 

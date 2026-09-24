@@ -355,16 +355,16 @@ function phpbb_clean_search_string($search_string)
 function decode_message(&$message, $bbcode_uid = '')
 {
 	global $config;
+	$message = preg_replace('#<br\s*/?>#i', "\n", $message);
 
 	if ($bbcode_uid)
 	{
-		$match = ['<br />', "[/*:m:{$bbcode_uid}]", ":u:{$bbcode_uid}", ":o:{$bbcode_uid}", ":{$bbcode_uid}"];
-		$replace = ["\n", '', '', '', ''];
+		$match = ["[/*:m:{$bbcode_uid}]", ":u:{$bbcode_uid}", ":o:{$bbcode_uid}", ":{$bbcode_uid}"];
+		$replace = ['', '', '', ''];
 	}
 	else
 	{
-		$match = ['<br />'];
-		$replace = ["\n"];
+		$match = $replace = [];
 	}
 
 	$message = str_replace($match, $replace, $message);
@@ -688,8 +688,8 @@ function censor_text($text)
 function bbcode_nl2br($text)
 {
 	// custom BBCodes might contain carriage returns so they
-	// are not converted into <br /> so now revert that
-	$text = str_replace(["\n", "\r"], ['<br />', "\n"], $text);
+	// are not converted into <br> so now revert that
+	$text = str_replace(["\n", "\r"], ['<br>', "\n"], $text);
 	return $text;
 }
 
@@ -702,12 +702,12 @@ function smiley_text($text, $force_option = false)
 
 	if ($force_option || !$config['allow_smilies'] || !$user->optionget('viewsmilies'))
 	{
-		return preg_replace('#<!\-\- s(.*?) \-\-><img src="\{SMILIES_PATH\}\/.*? \/><!\-\- s\1 \-\->#', '\1', $text);
+		return preg_replace('#<!\-\- s(.*?) \-\-><img src="\{SMILIES_PATH\}\/.*?\s*/?><!\-\- s\1 \-\->#', '\1', $text);
 	}
 	else
 	{
 		$root_path = (defined('PHPBB_USE_BOARD_URL_PATH') && PHPBB_USE_BOARD_URL_PATH) ? generate_board_url() . '/' : PHPBB_ROOT_PATH;
-		return preg_replace('#<!\-\- s(.*?) \-\-><img src="\{SMILIES_PATH\}\/(.*?) \/><!\-\- s\1 \-\->#', '<img src="' . $root_path . SMILIES_PATH . '/\2 loading="lazy" />', $text);
+		return preg_replace('#<!\-\- s(.*?) \-\-><img src="\{SMILIES_PATH\}\/(.*?)\s*/?><!\-\- s\1 \-\->#', '<img src="' . $root_path . SMILIES_PATH . '/\2 loading="lazy">', $text);
 	}
 }
 
@@ -869,7 +869,7 @@ function parse_attachments($forum_id, &$message, &$attachments, $preview = false
 		$upload_icon = '';
 		if (isset($extensions[$attachment['extension']]) && $extensions[$attachment['extension']]['upload_icon'])
 		{
-			$upload_icon = '<img src="' . PHPBB_ROOT_PATH . FILE_ICONS_PATH . '/' . trim($extensions[$attachment['extension']]['upload_icon']) . '" />';
+			$upload_icon = '<img src="' . PHPBB_ROOT_PATH . FILE_ICONS_PATH . '/' . trim($extensions[$attachment['extension']]['upload_icon']) . '">';
 		}
 
 		$filesize = get_formatted_filesize($attachment['filesize'], false);

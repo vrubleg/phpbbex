@@ -209,7 +209,7 @@ class ucp_profile
 						if (!empty($sql_ary['user_actkey']))
 						{
 							meta_refresh(5, append_sid(PHPBB_ROOT_PATH . 'index.php'));
-							$message = $user->lang[$message] . '<br /><br />' . sprintf($user->lang['RETURN_INDEX'], '<a href="' . append_sid(PHPBB_ROOT_PATH . 'index.php') . '">', '</a>');
+							$message = $user->lang[$message] . '<br><br>' . sprintf($user->lang['RETURN_INDEX'], '<a href="' . append_sid(PHPBB_ROOT_PATH . 'index.php') . '">', '</a>');
 
 							// Because the user gets deactivated we log him out too, killing his session
 							$user->session_kill();
@@ -217,7 +217,7 @@ class ucp_profile
 						else
 						{
 							meta_refresh(3, $this->u_action);
-							$message = $user->lang[$message] . '<br /><br />' . sprintf($user->lang['RETURN_UCP'], '<a href="' . $this->u_action . '">', '</a>');
+							$message = $user->lang[$message] . '<br><br>' . sprintf($user->lang['RETURN_UCP'], '<a href="' . $this->u_action . '">', '</a>');
 						}
 
 						trigger_error($message);
@@ -228,7 +228,7 @@ class ucp_profile
 				}
 
 				$template->assign_vars([
-					'ERROR'             => (sizeof($error)) ? implode('<br />', $error) : '',
+					'ERROR'             => (sizeof($error)) ? implode('<br>', $error) : '',
 
 					'USERNAME'          => $data['username'],
 					'EMAIL'             => $data['email'],
@@ -381,7 +381,7 @@ class ucp_profile
 						$cp->update_profile_field_data($user->data['user_id'], $cp_data);
 
 						meta_refresh(3, $this->u_action);
-						$message = $user->lang['PROFILE_UPDATED'] . '<br /><br />' . sprintf($user->lang['RETURN_UCP'], '<a href="' . $this->u_action . '">', '</a>');
+						$message = $user->lang['PROFILE_UPDATED'] . '<br><br>' . sprintf($user->lang['RETURN_UCP'], '<a href="' . $this->u_action . '">', '</a>');
 						trigger_error($message);
 					}
 
@@ -424,7 +424,7 @@ class ucp_profile
 				}
 
 				$template->assign_vars([
-					'ERROR'     => (sizeof($error)) ? implode('<br />', $error) : '',
+					'ERROR'     => (sizeof($error)) ? implode('<br>', $error) : '',
 					'USERNAME'  => $user->data['username'],
 					'EMAIL'     => $user->data['user_email'],
 
@@ -502,7 +502,7 @@ class ucp_profile
 
 						if (sizeof($message_parser->warn_msg))
 						{
-							$error[] = implode('<br />', $message_parser->warn_msg);
+							$error[] = implode('<br>', $message_parser->warn_msg);
 						}
 
 						if (!check_form_key('ucp_sig'))
@@ -528,7 +528,7 @@ class ucp_profile
 								WHERE user_id = ' . $user->data['user_id'];
 							$db->sql_query($sql);
 
-							$message = $user->lang['PROFILE_UPDATED'] . '<br /><br />' . sprintf($user->lang['RETURN_UCP'], '<a href="' . $this->u_action . '">', '</a>');
+							$message = $user->lang['PROFILE_UPDATED'] . '<br><br>' . sprintf($user->lang['RETURN_UCP'], '<a href="' . $this->u_action . '">', '</a>');
 							trigger_error($message);
 						}
 					}
@@ -548,7 +548,7 @@ class ucp_profile
 				decode_message($signature, $user->data['user_sig_bbcode_uid']);
 
 				$template->assign_vars([
-					'ERROR'             => (sizeof($error)) ? implode('<br />', $error) : '',
+					'ERROR'             => (sizeof($error)) ? implode('<br>', $error) : '',
 					'SIGNATURE'         => $signature,
 					'SIGNATURE_PREVIEW' => $signature_preview,
 
@@ -603,7 +603,7 @@ class ucp_profile
 						if (avatar_process_user($error, false, $can_upload))
 						{
 							meta_refresh(3, $this->u_action);
-							$message = $user->lang['PROFILE_UPDATED'] . '<br /><br />' . sprintf($user->lang['RETURN_UCP'], '<a href="' . $this->u_action . '">', '</a>');
+							$message = $user->lang['PROFILE_UPDATED'] . '<br><br>' . sprintf($user->lang['RETURN_UCP'], '<a href="' . $this->u_action . '">', '</a>');
 							trigger_error($message);
 						}
 					}
@@ -627,7 +627,7 @@ class ucp_profile
 				}
 
 				$template->assign_vars([
-					'ERROR'         => (sizeof($error)) ? implode('<br />', $error) : '',
+					'ERROR'         => (sizeof($error)) ? implode('<br>', $error) : '',
 					'AVATAR'        => get_user_avatar($user->data['user_avatar'], $user->data['user_avatar_type'], $user->data['user_avatar_width'], $user->data['user_avatar_height'], true),
 					'AVATAR_SIZE'   => $config['avatar_filesize'],
 					'AVATAR_WIDTH'  => $user->data['user_avatar_width'],

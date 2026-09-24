@@ -20,41 +20,41 @@
 	<dl>
 		<dt><label for="viewemail1">{L_SHOW_EMAIL}:</label></dt>
 		<dd>
-			<label for="viewemail1"><input type="radio" name="viewemail" id="viewemail1" value="1"<!-- IF S_VIEW_EMAIL --> checked="checked"<!-- ENDIF --> /> {L_YES}</label>
-			<label for="viewemail0"><input type="radio" name="viewemail" id="viewemail0" value="0"<!-- IF not S_VIEW_EMAIL --> checked="checked"<!-- ENDIF --> /> {L_NO}</label>
+			<label for="viewemail1"><input type="radio" name="viewemail" id="viewemail1" value="1"<!-- IF S_VIEW_EMAIL --> checked="checked"<!-- ENDIF -->> {L_YES}</label>
+			<label for="viewemail0"><input type="radio" name="viewemail" id="viewemail0" value="0"<!-- IF not S_VIEW_EMAIL --> checked="checked"<!-- ENDIF -->> {L_NO}</label>
 		</dd>
 	</dl>
 	<dl>
 		<dt><label for="jabber">{L_JABBER}:</label></dt>
-		<dd><input type="text" name="jabber" id="jabber" maxlength="100" value="{JABBER}" class="inputbox" /></dd>
+		<dd><input type="text" name="jabber" id="jabber" maxlength="100" value="{JABBER}" class="inputbox"></dd>
 	</dl>
 	<!-- IF SKYPE -->
 	<dl>
 		<dt><label for="skype">{L_SKYPE}:</label></dt>
-		<dd><input type="text" name="skype" id="skype" maxlength="32" value="{SKYPE}" class="inputbox" /></dd>
+		<dd><input type="text" name="skype" id="skype" maxlength="32" value="{SKYPE}" class="inputbox"></dd>
 	</dl>
 	<!-- ENDIF -->
 	<dl>
 		<dt><label for="telegram">{L_TELEGRAM}:</label></dt>
-		<dd><input type="text" name="telegram" id="telegram" maxlength="32" value="{TELEGRAM}" class="inputbox" /></dd>
+		<dd><input type="text" name="telegram" id="telegram" maxlength="32" value="{TELEGRAM}" class="inputbox"></dd>
 	</dl>
 	<!-- IF ICQ -->
 	<dl>
 		<dt><label for="icq">{L_ICQ}:</label></dt>
-		<dd><input type="text" name="icq" id="icq" maxlength="15" value="{ICQ}" class="inputbox" /></dd>
+		<dd><input type="text" name="icq" id="icq" maxlength="15" value="{ICQ}" class="inputbox"></dd>
 	</dl>
 	<!-- ENDIF -->
 	<dl>
 		<dt><label for="website">{L_WEBSITE}:</label></dt>
-		<dd><input type="text" name="website" id="website" maxlength="100" value="{WEBSITE}" class="inputbox" /></dd>
+		<dd><input type="text" name="website" id="website" maxlength="100" value="{WEBSITE}" class="inputbox"></dd>
 	</dl>
 	<dl>
 		<dt><label for="location">{L_LOCATION}:</label></dt>
-		<dd><input type="text" name="location" id="location" maxlength="50" value="{LOCATION}" class="inputbox" /></dd>
+		<dd><input type="text" name="location" id="location" maxlength="50" value="{LOCATION}" class="inputbox"></dd>
 	</dl>
 	<dl>
 		<dt><label for="occupation">{L_OCCUPATION}:</label></dt>
-		<dd><input type="text" name="occupation" id="occupation" maxlength="50" value="{OCCUPATION}" class="inputbox" /></dd>
+		<dd><input type="text" name="occupation" id="occupation" maxlength="50" value="{OCCUPATION}" class="inputbox"></dd>
 	</dl>
 	<dl>
 		<dt><label for="about">{L_ABOUT}:</label></dt>
@@ -62,7 +62,7 @@
 	</dl>
 	<!-- IF S_BIRTHDAYS_ENABLED -->
 		<dl>
-			<dt><label for="bday_day">{L_BIRTHDAY}:</label><br /><span>{L_BIRTHDAY_EXPLAIN}</span></dt>
+			<dt><label for="bday_day">{L_BIRTHDAY}:</label><br><span>{L_BIRTHDAY_EXPLAIN}</span></dt>
 			<dd>
 				<label for="bday_day">{L_DAY}: <select name="bday_day" id="bday_day">{S_BIRTHDAY_DAY_OPTIONS}</select></label>
 				<label for="bday_month">{L_MONTH}: <select name="bday_month" id="bday_month">{S_BIRTHDAY_MONTH_OPTIONS}</select></label>
@@ -73,15 +73,15 @@
 	<dl>
 		<dt><label for="gender_x">{L_GENDER}:</label></dt>
 		<dd>
-			<label for="gender_x"><input type="radio" name="gender" id="gender_x" value="0"<!-- IF S_GENDER_X --> checked="checked"<!-- ENDIF --> /> {L_GENDER_X}</label>
-			<label for="gender_m"><input type="radio" name="gender" id="gender_m" value="1"<!-- IF S_GENDER_M --> checked="checked"<!-- ENDIF --> /> {L_GENDER_M}</label>
-			<label for="gender_f"><input type="radio" name="gender" id="gender_f" value="2"<!-- IF S_GENDER_F --> checked="checked"<!-- ENDIF --> /> {L_GENDER_F}</label>
+			<label for="gender_x"><input type="radio" name="gender" id="gender_x" value="0"<!-- IF S_GENDER_X --> checked="checked"<!-- ENDIF -->> {L_GENDER_X}</label>
+			<label for="gender_m"><input type="radio" name="gender" id="gender_m" value="1"<!-- IF S_GENDER_M --> checked="checked"<!-- ENDIF -->> {L_GENDER_M}</label>
+			<label for="gender_f"><input type="radio" name="gender" id="gender_f" value="2"<!-- IF S_GENDER_F --> checked="checked"<!-- ENDIF -->> {L_GENDER_F}</label>
 		</dd>
 	</dl>
 	<!-- BEGIN profile_fields -->
 		<dl>
 			<dt><label<!-- IF profile_fields.FIELD_ID --> for="{profile_fields.FIELD_ID}"<!-- ENDIF -->>{profile_fields.LANG_NAME}:<!-- IF profile_fields.S_REQUIRED --> *<!-- ENDIF --></label>
-			<!-- IF profile_fields.LANG_EXPLAIN --><br /><span>{profile_fields.LANG_EXPLAIN}</span><!-- ENDIF --></dt>
+			<!-- IF profile_fields.LANG_EXPLAIN --><br><span>{profile_fields.LANG_EXPLAIN}</span><!-- ENDIF --></dt>
 			<!-- IF profile_fields.ERROR --><dd class="error">{profile_fields.ERROR}</dd><!-- ENDIF -->
 			<dd>{profile_fields.FIELD}</dd>
 		</dl>
@@ -93,7 +93,7 @@
 
 <fieldset class="submit-buttons">
 	{S_HIDDEN_FIELDS}
-	<input type="submit" name="submit" value="{L_SUBMIT}" class="button1" />
+	<input type="submit" name="submit" value="{L_SUBMIT}" class="button1">
 	{S_FORM_TOKEN}
 </fieldset>
 </form>

@@ -273,7 +273,7 @@ class mcp_warn
 			}
 			$redirect = append_sid(PHPBB_ROOT_PATH . 'viewtopic.php', "p={$post_id}#p{$post_id}");
 			meta_refresh(2, $redirect);
-			trigger_error($msg . '<br /><br />' . sprintf($user->lang['RETURN_PAGE'], '<a href="' . $redirect . '">', '</a>'));
+			trigger_error($msg . '<br><br>' . sprintf($user->lang['RETURN_PAGE'], '<a href="' . $redirect . '">', '</a>'));
 		}
 
 		// OK, they didn't submit a warning so lets build the page for them to do so
@@ -395,7 +395,7 @@ class mcp_warn
 			}
 			$redirect = append_sid(PHPBB_ROOT_PATH . 'mcp.php', "i=notes&amp;mode=user_notes&amp;u={$user_id}");
 			meta_refresh(2, $redirect);
-			trigger_error($msg . '<br /><br />' . sprintf($user->lang['RETURN_PAGE'], '<a href="' . $redirect . '">', '</a>'));
+			trigger_error($msg . '<br><br>' . sprintf($user->lang['RETURN_PAGE'], '<a href="' . $redirect . '">', '</a>'));
 		}
 
 		// Generate the appropriate user information for the user we are looking at
@@ -500,7 +500,7 @@ class mcp_warn
 				? append_sid(PHPBB_ROOT_PATH . 'viewtopic.php', "p={$post_id}#p{$post_id}")
 				: append_sid(PHPBB_ROOT_PATH . 'mcp.php', "i=notes&amp;mode=user_notes&amp;u={$user_id}");
 			meta_refresh(2, $redirect);
-			trigger_error($msg . '<br /><br />' . sprintf($user->lang['RETURN_PAGE'], '<a href="' . $redirect . '">', '</a>'));
+			trigger_error($msg . '<br><br>' . sprintf($user->lang['RETURN_PAGE'], '<a href="' . $redirect . '">', '</a>'));
 		}
 
 		// OK, they didn't submit a warning so lets build the page for them to do so

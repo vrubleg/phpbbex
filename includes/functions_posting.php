@@ -759,7 +759,7 @@ function posting_gen_attachment_entry($attachment_data, &$filename_data, $show_a
 
 			foreach ($attach_row as $key => $value)
 			{
-				$hidden .= '<input type="hidden" name="attachment_data[' . $count . '][' . $key . ']" value="' . $value . '" />';
+				$hidden .= '<input type="hidden" name="attachment_data[' . $count . '][' . $key . ']" value="' . $value . '">';
 			}
 
 			$download_link = append_sid(PHPBB_ROOT_PATH . 'file.php', 'mode=view&amp;id=' . (int) $attach_row['attach_id']);

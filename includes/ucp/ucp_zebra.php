@@ -206,12 +206,12 @@ class ucp_zebra
 					if ($updated)
 					{
 						meta_refresh(3, $this->u_action);
-						$message = $user->lang[$l_mode . '_UPDATED'] . '<br />' . implode('<br />', $error) . ((sizeof($error)) ? '<br />' : '') . '<br />' . sprintf($user->lang['RETURN_UCP'], '<a href="' . $this->u_action . '">', '</a>');
+						$message = $user->lang[$l_mode . '_UPDATED'] . '<br>' . implode('<br>', $error) . ((sizeof($error)) ? '<br>' : '') . '<br>' . sprintf($user->lang['RETURN_UCP'], '<a href="' . $this->u_action . '">', '</a>');
 						trigger_error($message);
 					}
 					else
 					{
-						$template->assign_var('ERROR', implode('<br />', $error));
+						$template->assign_var('ERROR', implode('<br>', $error));
 					}
 				}
 				else

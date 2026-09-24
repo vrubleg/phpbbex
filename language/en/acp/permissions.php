@@ -31,7 +31,7 @@ $lang = array_merge($lang, [
 		<h2>Permission Masks</h2>
 		<p>These are used to view the effective permissions assigned to Users, Moderators (Local and Global), Administrators or Forums.</p>
 
-		<br />
+		<br>
 
 		<p>For further information on setting up and managing permissions on your phpBBex board, please see <a href="http://www.phpbb.com/support/documentation/3.0/quickstart/quick_permissions.html">phpBB Quick Start Guide</a>.</p>
 	',
@@ -171,14 +171,14 @@ $lang = array_merge($lang, [
 	'ROLE_USER_BOT'             => 'Bot Features',
 
 	'ROLE_DESCRIPTION_ADMIN_FORUM'          => 'Can access the forum management and forum permission settings.',
-	'ROLE_DESCRIPTION_ADMIN_FULL'           => 'Has access to all administrative functions of this board.<br />Not recommended.',
+	'ROLE_DESCRIPTION_ADMIN_FULL'           => 'Has access to all administrative functions of this board.<br>Not recommended.',
 	'ROLE_DESCRIPTION_ADMIN_STANDARD'       => 'Has access to most administrative features but is not allowed to use server or system related tools.',
 	'ROLE_DESCRIPTION_ADMIN_USERGROUP'      => 'Can manage groups and users: Able to change permissions, settings, manage bans, and manage ranks.',
 	'ROLE_DESCRIPTION_FORUM_BOT'            => 'This role is recommended for bots and search spiders.',
 	'ROLE_DESCRIPTION_FORUM_GUEST'          => 'Can reply with BBCode and smilies.',
 	'ROLE_DESCRIPTION_FORUM_GUEST_TOPIC'    => 'Also can create new topics.',
 	'ROLE_DESCRIPTION_FORUM_GUEST_PREMOD'   => 'Can reply with BBCode and smilies (with approving).',
-	'ROLE_DESCRIPTION_FORUM_FULL'           => 'Can use all forum features, including posting of announcements and stickies. Can also ignore the flood limit.<br />Not recommended for normal users.',
+	'ROLE_DESCRIPTION_FORUM_FULL'           => 'Can use all forum features, including posting of announcements and stickies. Can also ignore the flood limit.<br>Not recommended for normal users.',
 	'ROLE_DESCRIPTION_FORUM_LIMITED'        => 'Can use some forum features, but cannot attach files.',
 	'ROLE_DESCRIPTION_FORUM_LIMITED_POLLS'  => 'As per Limited Access but can also create polls.',
 	'ROLE_DESCRIPTION_FORUM_NOACCESS'       => 'Can neither see nor access the forum.',
@@ -193,7 +193,7 @@ $lang = array_merge($lang, [
 	'ROLE_DESCRIPTION_MOD_QUEUE'            => 'Can use the Moderation Queue to validate and edit posts, but nothing else.',
 	'ROLE_DESCRIPTION_MOD_SIMPLE'           => 'Can only use basic topic actions. Cannot send warnings or use moderation queue.',
 	'ROLE_DESCRIPTION_MOD_STANDARD'         => 'Can use most moderating tools, but cannot ban users or change the post author.',
-	'ROLE_DESCRIPTION_USER_FULL'            => 'Can use all available forum features for users, including changing the user name or ignoring the flood limit.<br />Not recommended.',
+	'ROLE_DESCRIPTION_USER_FULL'            => 'Can use all available forum features for users, including changing the user name or ignoring the flood limit.<br>Not recommended.',
 	'ROLE_DESCRIPTION_USER_LIMITED'         => 'Can access some of the user features. Attachments, emails, or instant messages are not allowed.',
 	'ROLE_DESCRIPTION_USER_NOAVATAR'        => 'Has a limited feature set and is not allowed to use the Avatar feature.',
 	'ROLE_DESCRIPTION_USER_NOPM'            => 'Has a limited feature set, and is not allowed to use Private Messages.',

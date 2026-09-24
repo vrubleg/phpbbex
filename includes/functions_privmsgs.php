@@ -241,7 +241,7 @@ function handle_mark_actions($user_id, $mark_action)
 				$redirect = append_sid(PHPBB_ROOT_PATH . 'ucp.php', 'i=pm&amp;folder=' . $cur_folder_id);
 
 				meta_refresh(3, $redirect);
-				trigger_error($user->lang[$success_msg] . '<br /><br />' . sprintf($user->lang['RETURN_FOLDER'], '<a href="' . $redirect . '">', '</a>'));
+				trigger_error($user->lang[$success_msg] . '<br><br>' . sprintf($user->lang['RETURN_FOLDER'], '<a href="' . $redirect . '">', '</a>'));
 			}
 			else
 			{

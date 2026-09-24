@@ -140,7 +140,7 @@ $lang = array_merge($lang, [
 
 	'acl_f_search'      => ['lang' => 'Может использовать поиск в разделе', 'cat' => 'misc'],
 	'acl_f_ignoreflood' => ['lang' => 'Может игнорировать флуд-контроль', 'cat' => 'misc'],
-	'acl_f_postcount'   => ['lang' => 'Счётчик сообщений включён<br /><em>Учтите, что данная установка эффективна только при создании новых сообщений.</em>', 'cat' => 'misc'],
+	'acl_f_postcount'   => ['lang' => 'Счётчик сообщений включён<br><em>Учтите, что данная установка эффективна только при создании новых сообщений.</em>', 'cat' => 'misc'],
 	'acl_f_noapprove'   => ['lang' => 'Может размещать сообщения без одобрения', 'cat' => 'misc'],
 ]);
 
@@ -158,8 +158,8 @@ $lang = array_merge($lang, [
 	'acl_m_merge'   => ['lang' => 'Может объединять темы', 'cat' => 'topic_actions'],
 
 	'acl_m_info'    => ['lang' => 'Может просматривать подробности о сообщениях', 'cat' => 'misc'],
-	'acl_m_warn'    => ['lang' => 'Может объявлять предупреждения<br /><em>Это право может быть назначено только глобально, а не на уровне разделов.</em>', 'cat' => 'misc'], // This moderator setting is only global (and not local)
-	'acl_m_ban'     => ['lang' => 'Может управлять блокировкой<br /><em>Это право может быть назначено только глобально, а не на уровне разделов.</em>', 'cat' => 'misc'], // This moderator setting is only global (and not local)
+	'acl_m_warn'    => ['lang' => 'Может объявлять предупреждения<br><em>Это право может быть назначено только глобально, а не на уровне разделов.</em>', 'cat' => 'misc'], // This moderator setting is only global (and not local)
+	'acl_m_ban'     => ['lang' => 'Может управлять блокировкой<br><em>Это право может быть назначено только глобально, а не на уровне разделов.</em>', 'cat' => 'misc'], // This moderator setting is only global (and not local)
 ]);
 
 // Admin Permissions
@@ -178,7 +178,7 @@ $lang = array_merge($lang, [
 	'acl_a_bbcode'      => ['lang' => 'Может определять BBCode', 'cat' => 'posting'],
 	'acl_a_attach'      => ['lang' => 'Может изменять настройки вложений', 'cat' => 'posting'],
 
-	'acl_a_user'        => ['lang' => 'Может управлять пользователями<br /><em>Право также включает просмотр типа браузера пользователей в списке находящихся на форуме.</em>', 'cat' => 'user_group'],
+	'acl_a_user'        => ['lang' => 'Может управлять пользователями<br><em>Право также включает просмотр типа браузера пользователей в списке находящихся на форуме.</em>', 'cat' => 'user_group'],
 	'acl_a_userdel'     => ['lang' => 'Может удалять пользователей', 'cat' => 'user_group'],
 	'acl_a_group'       => ['lang' => 'Может управлять группами', 'cat' => 'user_group'],
 	'acl_a_groupadd'    => ['lang' => 'Может создавать группы', 'cat' => 'user_group'],

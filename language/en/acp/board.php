@@ -157,7 +157,7 @@ $lang = array_merge($lang, [
 	'ACP_AVATAR_SETTINGS_EXPLAIN'   => 'Avatars are generally small, unique images a user can associate with themselves. Depending on the style they are usually displayed below the username when viewing topics. Here you can determine how users can define their avatars. Please note that in order to upload avatars you need to have created the directory you name below and ensure it can be written to by the web server. Please also note that file size limits are only imposed on uploaded avatars, they do not apply to remotely linked images.',
 
 	'ALLOW_AVATARS'                 => 'Enable avatars',
-	'ALLOW_AVATARS_EXPLAIN'         => 'Allow general usage of avatars;<br />If you disable avatars in general or avatars of a certain mode, the disabled avatars will no longer be shown on the board, but users will still be able to download their own avatars in the User Control Panel.',
+	'ALLOW_AVATARS_EXPLAIN'         => 'Allow general usage of avatars;<br>If you disable avatars in general or avatars of a certain mode, the disabled avatars will no longer be shown on the board, but users will still be able to download their own avatars in the User Control Panel.',
 	'ALLOW_AVATAR_LOCAL'            => 'Enable gallery avatars',
 	'ALLOW_AVATAR_REMOTE_UPLOAD'            => 'Enable remote avatar uploading',
 	'ALLOW_AVATAR_REMOTE_UPLOAD_EXPLAIN'    => 'Allow uploading of avatars from another website.',
@@ -328,7 +328,7 @@ $lang = array_merge($lang, [
 	'ACP_FEED_TOPIC_BASED'              => 'Topic-based feed settings',
 
 	'ACP_FEED_ENABLE'                   => 'Enable feeds',
-	'ACP_FEED_ENABLE_EXPLAIN'           => 'Turns on or off ATOM feeds for the entire board.<br />Disabling this switches off all feeds, no matter how the options below are set.',
+	'ACP_FEED_ENABLE_EXPLAIN'           => 'Turns on or off ATOM feeds for the entire board.<br>Disabling this switches off all feeds, no matter how the options below are set.',
 	'ACP_FEED_LIMIT'                    => 'Number of items',
 	'ACP_FEED_LIMIT_EXPLAIN'            => 'The maximum number of feed items to display.',
 
@@ -344,14 +344,14 @@ $lang = array_merge($lang, [
 	'ACP_FEED_TOPICS_ACTIVE'            => 'Enable active topics feed',
 	'ACP_FEED_TOPICS_ACTIVE_EXPLAIN'    => 'Enables the “Active Topics” feed, which displays the last active topics including the last post.',
 	'ACP_FEED_NEWS'                     => 'News feed',
-	'ACP_FEED_NEWS_EXPLAIN'             => 'Pull the first post from these forums. Select no forums to disable news feed.<br />Select multiple forums by holding <samp>CTRL</samp> and clicking.',
+	'ACP_FEED_NEWS_EXPLAIN'             => 'Pull the first post from these forums. Select no forums to disable news feed.<br>Select multiple forums by holding <samp>CTRL</samp> and clicking.',
 
 	'ACP_FEED_HTTP_AUTH'                => 'Allow HTTP Authentication',
 	'ACP_FEED_HTTP_AUTH_EXPLAIN'        => 'Enables HTTP authentication, which allows users to receive content that is hidden to guest users by adding the <samp>auth=http</samp> parameter to the feed URL. Please note that some PHP setups require additional changes to the .htaccess file. Instructions can be found in that file.',
 	'ACP_FEED_ITEM_STATISTICS'          => 'Item statistics',
-	'ACP_FEED_ITEM_STATISTICS_EXPLAIN'  => 'Display individual statistics underneath feed items<br />(e.g. posted by, date and time, replies, views)',
+	'ACP_FEED_ITEM_STATISTICS_EXPLAIN'  => 'Display individual statistics underneath feed items<br>(e.g. posted by, date and time, replies, views)',
 	'ACP_FEED_EXCLUDE_ID'               => 'Exclude these forums',
-	'ACP_FEED_EXCLUDE_ID_EXPLAIN'       => 'Content from these will be <strong>not included in feeds</strong>. Select no forum to pull data from all forums.<br />Select/Deselect multiple forums by holding <samp>CTRL</samp> and clicking.',
+	'ACP_FEED_EXCLUDE_ID_EXPLAIN'       => 'Content from these will be <strong>not included in feeds</strong>. Select no forum to pull data from all forums.<br>Select/Deselect multiple forums by holding <samp>CTRL</samp> and clicking.',
 ]);
 
 // Visual Confirmation Settings
@@ -445,7 +445,7 @@ $lang = array_merge($lang, [
 	'IP_LOGIN_LIMIT_TIME'           => 'IP address login attempt expiration time',
 	'IP_LOGIN_LIMIT_TIME_EXPLAIN'   => 'Login attempts expire after this period.',
 	'IP_LOGIN_LIMIT_USE_FORWARDED'  => 'Limit login attempts by <var>X_FORWARDED_FOR</var> header',
-	'IP_LOGIN_LIMIT_USE_FORWARDED_EXPLAIN'  => 'Instead of limiting login attempts by IP address they are limited by <var>X_FORWARDED_FOR</var> values. <br /><em><strong>Warning:</strong> Only enable this if you are operating a proxy server that sets <var>X_FORWARDED_FOR</var> to trustworthy values.</em>',
+	'IP_LOGIN_LIMIT_USE_FORWARDED_EXPLAIN'  => 'Instead of limiting login attempts by IP address they are limited by <var>X_FORWARDED_FOR</var> values. <br><em><strong>Warning:</strong> Only enable this if you are operating a proxy server that sets <var>X_FORWARDED_FOR</var> to trustworthy values.</em>',
 	'MAX_LOGIN_ATTEMPTS'            => 'Maximum number of login attempts per username',
 	'MAX_LOGIN_ATTEMPTS_EXPLAIN'    => 'The number of login attempts allowed for a single account before the anti-spambot task is triggered. Enter 0 to prevent the anti-spambot task from being triggered for distinct user accounts.',
 	'NO_IP_VALIDATION'              => 'None',
@@ -477,7 +477,7 @@ $lang = array_merge($lang, [
 	'EMAIL_SIG'                     => 'Email signature',
 	'EMAIL_SIG_EXPLAIN'             => 'This text will be attached to all emails the board sends.',
 	'ENABLE_EMAIL'                  => 'Enable board-wide emails',
-	'ENABLE_EMAIL_EXPLAIN'          => 'If this is set to disabled, no emails will be sent by the board at all.<br /><em><strong>Warning:</strong> the user and admin account activation settings require this setting to be enabled.</em>',
+	'ENABLE_EMAIL_EXPLAIN'          => 'If this is set to disabled, no emails will be sent by the board at all.<br><em><strong>Warning:</strong> the user and admin account activation settings require this setting to be enabled.</em>',
 	'SEND_TEST_EMAIL'               => 'Send a test email',
 	'SEND_TEST_EMAIL_EXPLAIN'       => 'This will send a test email to the address defined in your account.',
 	'SMTP_AUTH_METHOD'              => 'Authentication method for SMTP',
@@ -486,7 +486,7 @@ $lang = array_merge($lang, [
 	'SMTP_DIGEST_MD5'               => 'DIGEST-MD5',
 	'SMTP_LOGIN'                    => 'LOGIN',
 	'SMTP_PASSWORD'                 => 'SMTP password',
-	'SMTP_PASSWORD_EXPLAIN'         => 'Only enter a password if your SMTP server requires it.<br /><em><strong>Warning:</strong> This password will be stored as plain text in the database, visible to everybody who can access your database or who can view this configuration page.</em>',
+	'SMTP_PASSWORD_EXPLAIN'         => 'Only enter a password if your SMTP server requires it.<br><em><strong>Warning:</strong> This password will be stored as plain text in the database, visible to everybody who can access your database or who can view this configuration page.</em>',
 	'SMTP_PLAIN'                    => 'PLAIN',
 	'SMTP_PORT'                     => 'SMTP server port',
 	'SMTP_PORT_EXPLAIN'             => 'Usually, 25 is for unencrypted SMTP, 465 is for SMTPS with tls:// address, and 587 is for SMTP with STARTTLS support.',

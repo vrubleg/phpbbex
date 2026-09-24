@@ -193,7 +193,7 @@ class acp_forums
 						// redirect directly to permission settings screen if authed
 						if ($action == 'add' && !$copied_permissions && $auth->acl_get('a_fauth'))
 						{
-							$message .= '<br /><br />' . sprintf($user->lang['REDIRECT_ACL'], '<a href="' . append_sid(PHPBB_ADMIN_PATH . 'index.php', 'i=permissions' . $acl_url) . '">', '</a>');
+							$message .= '<br><br>' . sprintf($user->lang['REDIRECT_ACL'], '<a href="' . append_sid(PHPBB_ADMIN_PATH . 'index.php', 'i=permissions' . $acl_url) . '">', '</a>');
 
 							meta_refresh(5, append_sid(PHPBB_ADMIN_PATH . 'index.php', 'i=permissions' . $acl_url));
 						}
@@ -462,7 +462,7 @@ class acp_forums
 
 					'L_COPY_PERMISSIONS_EXPLAIN'    => $user->lang['COPY_PERMISSIONS_' . strtoupper($action) . '_EXPLAIN'],
 					'L_TITLE'                       => $user->lang[$this->page_title],
-					'ERROR_MSG'                     => (sizeof($errors)) ? implode('<br />', $errors) : '',
+					'ERROR_MSG'                     => (sizeof($errors)) ? implode('<br>', $errors) : '',
 
 					'FORUM_NAME'                => $forum_data['forum_name'],
 					'FORUM_DATA_LINK'           => $forum_data['forum_link'],
@@ -560,7 +560,7 @@ class acp_forums
 					'S_HAS_SUBFORUMS'       => ($forum_data['right_id'] - $forum_data['left_id'] > 1),
 					'S_FORUMS_LIST'         => $forums_list,
 					'S_ERROR'               => (sizeof($errors) > 0),
-					'ERROR_MSG'             => (sizeof($errors)) ? implode('<br />', $errors) : '',
+					'ERROR_MSG'             => (sizeof($errors)) ? implode('<br>', $errors) : '',
 				]);
 
 				return;
@@ -584,7 +584,7 @@ class acp_forums
 					// Redirect to permissions
 					if ($auth->acl_get('a_fauth'))
 					{
-						$message .= '<br /><br />' . sprintf($user->lang['REDIRECT_ACL'], '<a href="' . append_sid(PHPBB_ADMIN_PATH . 'index.php', 'i=permissions' . $acl_url) . '">', '</a>');
+						$message .= '<br><br>' . sprintf($user->lang['REDIRECT_ACL'], '<a href="' . append_sid(PHPBB_ADMIN_PATH . 'index.php', 'i=permissions' . $acl_url) . '">', '</a>');
 					}
 
 					trigger_error($message . adm_back_link($this->u_action . '&amp;parent_id=' . $this->parent_id));
@@ -638,18 +638,18 @@ class acp_forums
 
 				if ($row['forum_status'] == ITEM_LOCKED)
 				{
-					$folder_image = '<img src="images/icon_folder_lock.png" alt="' . $user->lang['LOCKED'] . '" />';
+					$folder_image = '<img src="images/icon_folder_lock.png" alt="' . $user->lang['LOCKED'] . '">';
 				}
 				else
 				{
 					switch ($forum_type)
 					{
 						case FORUM_LINK:
-							$folder_image = '<img src="images/icon_folder_link.png" alt="' . $user->lang['LINK'] . '" />';
+							$folder_image = '<img src="images/icon_folder_link.png" alt="' . $user->lang['LINK'] . '">';
 						break;
 
 						default:
-							$folder_image = '<img src="images/icon_folder.png" alt="' . $user->lang['FOLDER'] . '" />';
+							$folder_image = '<img src="images/icon_folder.png" alt="' . $user->lang['FOLDER'] . '">';
 						break;
 					}
 				}
@@ -689,7 +689,7 @@ class acp_forums
 		}
 
 		$template->assign_vars([
-			'ERROR_MSG'     => (sizeof($errors)) ? implode('<br />', $errors) : '',
+			'ERROR_MSG'     => (sizeof($errors)) ? implode('<br>', $errors) : '',
 			'NAVIGATION'    => $navigation,
 			'FORUM_BOX'     => $forum_box,
 			'U_SEL_ACTION'  => $this->u_action,

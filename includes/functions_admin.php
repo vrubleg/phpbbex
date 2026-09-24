@@ -2209,7 +2209,7 @@ function view_log($mode, &$log, &$log_count, $limit = 0, $offset = 0, $forum_id 
 			}
 			else if (!empty($log_data_ary))
 			{
-				$log[$i]['action'] .= '<br />' . implode('', $log_data_ary);
+				$log[$i]['action'] .= '<br>' . implode('', $log_data_ary);
 			}
 
 			/* Apply make_clickable... has to be seen if it is for good. :/

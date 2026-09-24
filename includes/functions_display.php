@@ -1185,7 +1185,7 @@ function watch_topic_forum($mode, &$s_watching, $user_id, $forum_id, $topic_id, 
 					if (($uid && $uid != $user_id) || $_GET['unwatch'] != $mode)
 					{
 						$redirect_url = append_sid(PHPBB_ROOT_PATH . "view{$mode}.php", $u_url);
-						$message = $user->lang['ERR_UNWATCHING'] . '<br /><br />' . sprintf($user->lang['RETURN_' . strtoupper($mode)], '<a href="' . $redirect_url . '">', '</a>');
+						$message = $user->lang['ERR_UNWATCHING'] . '<br><br>' . sprintf($user->lang['RETURN_' . strtoupper($mode)], '<a href="' . $redirect_url . '">', '</a>');
 						trigger_error($message);
 					}
 
@@ -1256,7 +1256,7 @@ function watch_topic_forum($mode, &$s_watching, $user_id, $forum_id, $topic_id, 
 					if (($uid && $uid != $user_id) || $_GET['watch'] != $mode)
 					{
 						$redirect_url = append_sid(PHPBB_ROOT_PATH . "view{$mode}.php", $u_url);
-						$message = $user->lang['ERR_WATCHING'] . '<br /><br />' . sprintf($user->lang['RETURN_' . strtoupper($mode)], '<a href="' . $redirect_url . '">', '</a>');
+						$message = $user->lang['ERR_WATCHING'] . '<br><br>' . sprintf($user->lang['RETURN_' . strtoupper($mode)], '<a href="' . $redirect_url . '">', '</a>');
 						trigger_error($message);
 					}
 
@@ -1328,7 +1328,7 @@ function get_user_rank($user_rank, $user_posts, &$rank_title, &$rank_img, &$rank
 	{
 		$rank = $ranks['special'][$user_rank];
 		$rank_title = (!$rank['rank_hide_title']) ? $rank['rank_title'] : '';
-		$rank_img = (!empty($rank['rank_image'])) ? '<img src="' . PHPBB_ROOT_PATH . RANK_IMAGES_PATH . '/' . $rank['rank_image'] . '" alt="' . $rank['rank_title'] . '" title="' . $rank['rank_title'] . '" />' : '';
+		$rank_img = (!empty($rank['rank_image'])) ? '<img src="' . PHPBB_ROOT_PATH . RANK_IMAGES_PATH . '/' . $rank['rank_image'] . '" alt="' . $rank['rank_title'] . '" title="' . $rank['rank_title'] . '">' : '';
 		$rank_img_src = (!empty($rank['rank_image'])) ? PHPBB_ROOT_PATH . RANK_IMAGES_PATH . '/' . $rank['rank_image'] : '';
 	}
 	else if ($user_posts !== false)
@@ -1340,7 +1340,7 @@ function get_user_rank($user_rank, $user_posts, &$rank_title, &$rank_img, &$rank
 				if ($user_posts >= $rank['rank_min'])
 				{
 					$rank_title = (!$rank['rank_hide_title']) ? $rank['rank_title'] : '';
-					$rank_img = (!empty($rank['rank_image'])) ? '<img src="' . PHPBB_ROOT_PATH . RANK_IMAGES_PATH . '/' . $rank['rank_image'] . '" alt="' . $rank['rank_title'] . '" title="' . $rank['rank_title'] . '" />' : '';
+					$rank_img = (!empty($rank['rank_image'])) ? '<img src="' . PHPBB_ROOT_PATH . RANK_IMAGES_PATH . '/' . $rank['rank_image'] . '" alt="' . $rank['rank_title'] . '" title="' . $rank['rank_title'] . '">' : '';
 					$rank_img_src = (!empty($rank['rank_image'])) ? PHPBB_ROOT_PATH . RANK_IMAGES_PATH . '/' . $rank['rank_image'] : '';
 					break;
 				}
@@ -1420,5 +1420,5 @@ function get_user_avatar($avatar, $avatar_type, $avatar_width, $avatar_height, $
 		}
 	}
 
-	return '<img src="' . (str_replace(' ', '%20', $avatar_img)) . '" width="' . $avatar_width . '" height="' . $avatar_height . '" loading="lazy" />';
+	return '<img src="' . (str_replace(' ', '%20', $avatar_img)) . '" width="' . $avatar_width . '" height="' . $avatar_height . '" loading="lazy">';
 }

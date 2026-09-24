@@ -56,7 +56,7 @@ class mcp_ban
 				{
 					user_ban($mode, $ban, $ban_len, $ban_len_other, $ban_exclude, $ban_reason, $ban_give_reason);
 
-					trigger_error($user->lang['BAN_UPDATE_SUCCESSFUL'] . '<br /><br /><a href="' . $this->u_action . '">&laquo; ' . $user->lang['BACK_TO_PREV'] . '</a>');
+					trigger_error($user->lang['BAN_UPDATE_SUCCESSFUL'] . '<br><br><a href="' . $this->u_action . '">&laquo; ' . $user->lang['BACK_TO_PREV'] . '</a>');
 				}
 				else
 				{
@@ -82,7 +82,7 @@ class mcp_ban
 				{
 					user_unban($mode, $ban);
 
-					trigger_error($user->lang['BAN_UPDATE_SUCCESSFUL'] . '<br /><br /><a href="' . $this->u_action . '">&laquo; ' . $user->lang['BACK_TO_PREV'] . '</a>');
+					trigger_error($user->lang['BAN_UPDATE_SUCCESSFUL'] . '<br><br><a href="' . $this->u_action . '">&laquo; ' . $user->lang['BACK_TO_PREV'] . '</a>');
 				}
 				else
 				{

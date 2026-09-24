@@ -149,7 +149,7 @@ if (!$auth->acl_get('f_read', $forum_id))
 // Do the forum Prune thang - cron type job ...
 if ($forum_data['prune_next'] < time() && $forum_data['enable_prune'])
 {
-	$template->assign_var('RUN_CRON_TASK', '<img src="' . append_sid(PHPBB_ROOT_PATH . 'cron.php', 'cron_type=prune_forum&amp;f=' . $forum_id) . '" alt="cron" width="1" height="1" />');
+	$template->assign_var('RUN_CRON_TASK', '<img src="' . append_sid(PHPBB_ROOT_PATH . 'cron.php', 'cron_type=prune_forum&amp;f=' . $forum_id) . '" alt="cron" width="1" height="1">');
 }
 
 // Forum rules and subscription info

@@ -41,7 +41,7 @@ class phpbb_error_collector
 		{
 			if (!empty($text))
 			{
-				$text .= "<br />\n";
+				$text .= "<br>\n";
 			}
 
 			[$errno, $msg_text, $errfile, $errline] = $error;

@@ -32,7 +32,7 @@ $lang = array_merge($lang, [
 	'ORPHANED_POSTS_EXPLAIN'    => 'These are posts that do not have a topic associated with them. Specify a new topic ID to have the post attached to that topic.',
 	'NO_ORPHANED_POSTS'         => 'No orphaned posts found',
 	'NO_TOPIC_IDS'              => 'No topic IDs provided',
-	'NONEXISTENT_TOPIC_IDS'     => 'The following target topic IDs do not exist: %s.<br />Please verify the specified topic IDs.',
+	'NONEXISTENT_TOPIC_IDS'     => 'The following target topic IDs do not exist: %s.<br>Please verify the specified topic IDs.',
 	'REASSIGN'                  => 'Reassign',
 
 

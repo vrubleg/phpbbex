@@ -244,7 +244,7 @@ class acp_language
 				add_log('admin', 'LOG_LANGUAGE_PACK_INSTALLED', $lang_pack['name']);
 
 				$message = sprintf($user->lang['LANGUAGE_PACK_INSTALLED'], $lang_pack['name']);
-				$message .= ($notify_cpf_update) ? '<br /><br />' . $user->lang['LANGUAGE_PACK_CPF_UPDATE'] : '';
+				$message .= ($notify_cpf_update) ? '<br><br>' . $user->lang['LANGUAGE_PACK_CPF_UPDATE'] : '';
 				trigger_error($message . adm_back_link($this->u_action));
 
 			break;

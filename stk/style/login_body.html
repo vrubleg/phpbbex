@@ -2,7 +2,7 @@
 
 <!-- IF S_STK_LOGIN_METHOD -->
 	<h1>{L_STK_LOGIN}</h1>
-	<br />
+	<br>
 	<!-- IF LOGIN_ERROR -->
 	<div class="errorbox">
 		<h3>{L_WARNING}</h3>
@@ -13,12 +13,12 @@
 		<fieldset>
 			<legend>{L_LOGIN}</legend>
 			<dl>
-				<dt><label for="stk_pass">{TITLE}</label><br /><span class="explain">{TITLE_EXPLAIN}</span></dt>
-				<dd><input id="stk_pass" type="password" size="40" maxlength="255" name="stk_pass" value="" tabindex="1" /></dd>
+				<dt><label for="stk_pass">{TITLE}</label><br><span class="explain">{TITLE_EXPLAIN}</span></dt>
+				<dd><input id="stk_pass" type="password" size="40" maxlength="255" name="stk_pass" value="" tabindex="1"></dd>
 			</dl>
 
 			<p class="submit-buttons">
-				<input class="button1" type="submit" id="login" name="login" value="{L_LOGIN}" tabindex="2" />
+				<input class="button1" type="submit" id="login" name="login" value="{L_LOGIN}" tabindex="2">
 			</p>
 			{S_HIDDEN_FIELDS}
 			{S_FORM_TOKEN}
@@ -38,15 +38,15 @@
 			<legend>{L_LOGIN}</legend>
 			<dl>
 				<dt><label for="{USERNAME_CREDENTIAL}">{L_USERNAME}:</label></dt>
-				<dd><input type="text" tabindex="1" name="{USERNAME_CREDENTIAL}" id="{USERNAME_CREDENTIAL}" size="25" value="{USERNAME}" class="inputbox autowidth" /></dd>
+				<dd><input type="text" tabindex="1" name="{USERNAME_CREDENTIAL}" id="{USERNAME_CREDENTIAL}" size="25" value="{USERNAME}" class="inputbox autowidth"></dd>
 			</dl>
 			<dl>
 				<dt><label for="{PASSWORD_CREDENTIAL}">{L_PASSWORD}:</label></dt>
-				<dd><input type="password" tabindex="2" id="{PASSWORD_CREDENTIAL}" name="{PASSWORD_CREDENTIAL}" size="25" class="inputbox autowidth" /></dd>
+				<dd><input type="password" tabindex="2" id="{PASSWORD_CREDENTIAL}" name="{PASSWORD_CREDENTIAL}" size="25" class="inputbox autowidth"></dd>
 			</dl>
 
 			<p class="submit-buttons">
-				<input type="submit" name="login" tabindex="3" value="{L_LOGIN}" class="button1" />
+				<input type="submit" name="login" tabindex="3" value="{L_LOGIN}" class="button1">
 			</p>
 			{S_HIDDEN_FIELDS}
 			{S_FORM_TOKEN}

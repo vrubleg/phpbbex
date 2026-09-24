@@ -303,12 +303,12 @@ function feed_generate_content($content, $uid, $bitfield, $options)
 	}
 
 	// Prepare some bbcodes for better parsing
-	$content    = preg_replace("#\[quote(=&quot;.*?&quot;)?:{$uid}\]\s*(.*?)\s*\[/quote:{$uid}\]#si", "[quote$1:{$uid}]<br />$2<br />[/quote:{$uid}]", $content);
+	$content    = preg_replace("#\[quote(=&quot;.*?&quot;)?:{$uid}\]\s*(.*?)\s*\[/quote:{$uid}\]#si", "[quote$1:{$uid}]<br>$2<br>[/quote:{$uid}]", $content);
 
 	$content = generate_text_for_display($content, $uid, $bitfield, $options);
 
 	// Add newlines
-	$content = str_replace('<br />', '<br />' . "\n", $content);
+	$content = preg_replace('#<br\s*/?>#i', '<br>' . "\n", $content);
 
 	// Convert smiley Relative paths to Absolute path, Windows style
 	$content = str_replace(PHPBB_ROOT_PATH . SMILIES_PATH, $board_url . '/' . SMILIES_PATH, $content);

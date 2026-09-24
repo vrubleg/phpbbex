@@ -499,7 +499,7 @@ class acp_icons
 				$errormsgs = '';
 				foreach ($errors as $img => $error)
 				{
-					$errormsgs .= '<br />' . sprintf($user->lang[$error], $img);
+					$errormsgs .= '<br>' . sprintf($user->lang[$error], $img);
 				}
 				if ($action == 'modify')
 				{

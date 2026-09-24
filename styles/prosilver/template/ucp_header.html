@@ -41,7 +41,7 @@
 				<!-- ENDIF -->
 			<!-- END t_block2 -->
 
-			<hr />
+			<hr>
 			<!-- BEGIN folder -->
 				<!-- IF folder.S_FIRST_ROW --><ul><!-- ENDIF -->
 				<!-- IF folder.S_CUR_FOLDER -->
@@ -51,7 +51,7 @@
 				<!-- ENDIF -->
 				<!-- IF folder.S_LAST_ROW --></ul><!-- ENDIF -->
 			<!-- END folder -->
-			<hr />
+			<hr>
 		<!-- ENDIF -->
 
 			<ul>
@@ -75,11 +75,11 @@
 				<dt>{L_FRIENDS}</dt>
 
 				<!-- BEGIN friends_online -->
-					<dd class="friend-online" title="{L_FRIENDS_ONLINE}">{friends_online.USERNAME_FULL} <!-- IF S_SHOW_PM_BOX and (not MAX_RECIPIENTS or NUM_RECIPIENTS < MAX_RECIPIENTS) --> <input type="submit" name="add_to[{friends_online.USER_ID}]" value="{L_ADD}" class="button2" /><!-- ENDIF --><!-- IF friends_online.S_LAST_ROW and .friends_offline --><hr /><!-- ENDIF --></dd>
+					<dd class="friend-online" title="{L_FRIENDS_ONLINE}">{friends_online.USERNAME_FULL} <!-- IF S_SHOW_PM_BOX and (not MAX_RECIPIENTS or NUM_RECIPIENTS < MAX_RECIPIENTS) --> <input type="submit" name="add_to[{friends_online.USER_ID}]" value="{L_ADD}" class="button2"><!-- ENDIF --><!-- IF friends_online.S_LAST_ROW and .friends_offline --><hr><!-- ENDIF --></dd>
 				<!-- END friends_online -->
 
 				<!-- BEGIN friends_offline -->
-					<dd class="friend-offline" title="{L_FRIENDS_OFFLINE}">{friends_offline.USERNAME_FULL} <!-- IF S_SHOW_PM_BOX and (not MAX_RECIPIENTS or NUM_RECIPIENTS < MAX_RECIPIENTS) --><input type="submit" name="add_to[{friends_offline.USER_ID}]" value="{L_ADD}" class="button2" /><!-- ENDIF --></dd>
+					<dd class="friend-offline" title="{L_FRIENDS_OFFLINE}">{friends_offline.USERNAME_FULL} <!-- IF S_SHOW_PM_BOX and (not MAX_RECIPIENTS or NUM_RECIPIENTS < MAX_RECIPIENTS) --><input type="submit" name="add_to[{friends_offline.USER_ID}]" value="{L_ADD}" class="button2"><!-- ENDIF --></dd>
 				<!-- END friends_offline -->
 			</dl>
 

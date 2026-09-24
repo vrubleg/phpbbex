@@ -342,7 +342,7 @@ class acp_manage_attachments
 		{
 			$template->assign_vars([
 				'S_WARNING'     => true,
-				'WARNING_MSG'   => implode('<br />', $error)]
+				'WARNING_MSG'   => implode('<br>', $error)]
 			);
 		}
 
@@ -350,7 +350,7 @@ class acp_manage_attachments
 		{
 			$template->assign_vars([
 				'S_NOTIFY'      => true,
-				'NOTIFY_MSG'    => implode('<br />', $notify)]
+				'NOTIFY_MSG'    => implode('<br>', $notify)]
 			);
 		}
 	}

@@ -4,55 +4,55 @@
 		<legend>{L_USER_PROFILE}</legend>
 	<dl>
 		<dt><label for="viewemail">{L_SHOW_EMAIL}:</label></dt>
-		<dd><label><input type="radio" class="radio" name="viewemail" value="1"<!-- IF VIEW_EMAIL --> id="viewemail" checked="checked"<!-- ENDIF --> /> {L_YES}</label>
-			<label><input type="radio" class="radio" name="viewemail" value="0"<!-- IF not VIEW_EMAIL --> id="viewemail" checked="checked"<!-- ENDIF --> /> {L_NO}</label></dd>
+		<dd><label><input type="radio" class="radio" name="viewemail" value="1"<!-- IF VIEW_EMAIL --> id="viewemail" checked="checked"<!-- ENDIF -->> {L_YES}</label>
+			<label><input type="radio" class="radio" name="viewemail" value="0"<!-- IF not VIEW_EMAIL --> id="viewemail" checked="checked"<!-- ENDIF -->> {L_NO}</label></dd>
 	</dl>
 	<dl>
 		<dt><label for="jabber">{L_JABBER}:</label></dt>
-		<dd><input type="text" id="jabber" name="jabber" maxlength="100" value="{JABBER}" /></dd>
+		<dd><input type="text" id="jabber" name="jabber" maxlength="100" value="{JABBER}"></dd>
 	</dl>
 	<!-- IF SKYPE -->
 	<dl>
 		<dt><label for="skype">{L_SKYPE}:</label></dt>
-		<dd><input type="text" name="skype" id="skype" maxlength="32" value="{SKYPE}" /></dd>
+		<dd><input type="text" name="skype" id="skype" maxlength="32" value="{SKYPE}"></dd>
 	</dl>
 	<!-- ENDIF -->
 	<dl>
 		<dt><label for="telegram">{L_TELEGRAM}:</label></dt>
-		<dd><input type="text" name="telegram" id="telegram" maxlength="32" value="{TELEGRAM}" /></dd>
+		<dd><input type="text" name="telegram" id="telegram" maxlength="32" value="{TELEGRAM}"></dd>
 	</dl>
 	<!-- IF ICQ -->
 	<dl>
 		<dt><label for="icq">{L_ICQ}:</label></dt>
-		<dd><input type="text" id="icq" name="icq" value="{ICQ}" /></dd>
+		<dd><input type="text" id="icq" name="icq" value="{ICQ}"></dd>
 	</dl>
 	<!-- ENDIF -->
 	<dl>
 		<dt><label for="website">{L_WEBSITE}:</label></dt>
-		<dd><input type="text" id="website" name="website" maxlength="100" value="{WEBSITE}" /></dd>
+		<dd><input type="text" id="website" name="website" maxlength="100" value="{WEBSITE}"></dd>
 	</dl>
 	<dl>
 		<dt><label for="location">{L_LOCATION}:</label></dt>
-		<dd><input type="text" id="location" name="location" maxlength="50" value="{LOCATION}" /></dd>
+		<dd><input type="text" id="location" name="location" maxlength="50" value="{LOCATION}"></dd>
 	</dl>
 	<dl>
 		<dt><label for="occupation">{L_OCCUPATION}:</label></dt>
-		<dd><input type="text" id="occupation" name="occupation" maxlength="50" value="{OCCUPATION}" /></dd>
+		<dd><input type="text" id="occupation" name="occupation" maxlength="50" value="{OCCUPATION}"></dd>
 	</dl>
 	<dl>
 		<dt><label for="about">{L_ABOUT}:</label></dt>
 		<dd><textarea id="about" name="about" rows="3" cols="30" maxlength="1000">{ABOUT}</textarea></dd>
 	</dl>
 	<dl>
-		<dt><label for="birthday">{L_BIRTHDAY}:</label><br /><span>{L_BIRTHDAY_EXPLAIN}</span></dt>
+		<dt><label for="birthday">{L_BIRTHDAY}:</label><br><span>{L_BIRTHDAY_EXPLAIN}</span></dt>
 		<dd>{L_DAY}: <select id="birthday" name="bday_day">{S_BIRTHDAY_DAY_OPTIONS}</select> {L_MONTH}: <select name="bday_month">{S_BIRTHDAY_MONTH_OPTIONS}</select> {L_YEAR}: <select name="bday_year">{S_BIRTHDAY_YEAR_OPTIONS}</select></dd>
 	</dl>
 	<dl>
 		<dt><label for="gender_x">{L_GENDER}:</label></dt>
 		<dd>
-			<input type="radio" name="gender" id="gender_x" value="0"<!-- IF S_GENDER_X --> checked="checked"<!-- ENDIF --> /> {L_GENDER_X}
-			<input type="radio" name="gender" id="gender_m" value="1"<!-- IF S_GENDER_M --> checked="checked"<!-- ENDIF --> /> {L_GENDER_M}
-			<input type="radio" name="gender" id="gender_f" value="2"<!-- IF S_GENDER_F --> checked="checked"<!-- ENDIF --> /> {L_GENDER_F}
+			<input type="radio" name="gender" id="gender_x" value="0"<!-- IF S_GENDER_X --> checked="checked"<!-- ENDIF -->> {L_GENDER_X}
+			<input type="radio" name="gender" id="gender_m" value="1"<!-- IF S_GENDER_M --> checked="checked"<!-- ENDIF -->> {L_GENDER_M}
+			<input type="radio" name="gender" id="gender_f" value="2"<!-- IF S_GENDER_F --> checked="checked"<!-- ENDIF -->> {L_GENDER_F}
 		</dd>
 	</dl>
 	</fieldset>
@@ -62,7 +62,7 @@
 			<legend>{L_USER_CUSTOM_PROFILE_FIELDS}</legend>
 		<!-- BEGIN profile_fields -->
 		<dl>
-			<dt><label<!-- IF profile_fields.FIELD_ID --> for="{profile_fields.FIELD_ID}"<!-- ENDIF -->>{profile_fields.LANG_NAME}:</label><!-- IF profile_fields.LANG_EXPLAIN --><br /><span>{profile_fields.LANG_EXPLAIN}</span><!-- ENDIF --></dt>
+			<dt><label<!-- IF profile_fields.FIELD_ID --> for="{profile_fields.FIELD_ID}"<!-- ENDIF -->>{profile_fields.LANG_NAME}:</label><!-- IF profile_fields.LANG_EXPLAIN --><br><span>{profile_fields.LANG_EXPLAIN}</span><!-- ENDIF --></dt>
 			<dd>{profile_fields.FIELD}</dd>
 			<!-- IF profile_fields.ERROR -->
 				<dd><span class="small" style="color: red;">{profile_fields.ERROR}</span></dd>
@@ -73,7 +73,7 @@
 	<!-- ENDIF -->
 
 	<fieldset class="quick">
-		<input class="button1" type="submit" name="update" value="{L_SUBMIT}" />
+		<input class="button1" type="submit" name="update" value="{L_SUBMIT}">
 		{S_FORM_TOKEN}
 	</fieldset>
 	</form>

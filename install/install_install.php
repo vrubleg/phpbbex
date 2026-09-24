@@ -421,7 +421,7 @@ class install_install extends module
 			{
 				$template->assign_block_vars('checks', [
 					'TITLE'     => $lang['DB_TEST'],
-					'RESULT'    => '<strong style="color:red">' . implode('<br />', $error) . '</strong>',
+					'RESULT'    => '<strong style="color:red">' . implode('<br>', $error) . '</strong>',
 
 					'S_EXPLAIN' => false,
 					'S_LEGEND'  => false,
@@ -482,7 +482,7 @@ class install_install extends module
 		}
 
 		// And finally where do we want to go next (well today is taken isn't it :P)
-		$s_hidden_fields = '<input type="hidden" name="language" value="' . $data['language'] . '" />';
+		$s_hidden_fields = '<input type="hidden" name="language" value="' . $data['language'] . '">';
 		if ($connect_test)
 		{
 			foreach ($this->db_config_options as $config_key => $vars)
@@ -491,12 +491,12 @@ class install_install extends module
 				{
 					continue;
 				}
-				$s_hidden_fields .= '<input type="hidden" name="' . $config_key . '" value="' . $data[$config_key] . '" />';
+				$s_hidden_fields .= '<input type="hidden" name="' . $config_key . '" value="' . $data[$config_key] . '">';
 			}
 		}
 
 		$url = ($connect_test) ? $this->p_master->module_url . "?mode={$mode}&amp;sub=administrator" : $this->p_master->module_url . "?mode={$mode}&amp;sub=database";
-		$s_hidden_fields .= ($connect_test) ? '' : '<input type="hidden" name="testdb" value="true" />';
+		$s_hidden_fields .= ($connect_test) ? '' : '<input type="hidden" name="testdb" value="true">';
 
 		$submit = $lang['NEXT_STEP'];
 
@@ -594,7 +594,7 @@ class install_install extends module
 			{
 				$template->assign_block_vars('checks', [
 					'TITLE'     => $lang['ADMIN_TEST'],
-					'RESULT'    => '<strong style="color:red">' . implode('<br />', $error) . '</strong>',
+					'RESULT'    => '<strong style="color:red">' . implode('<br>', $error) . '</strong>',
 
 					'S_EXPLAIN' => false,
 					'S_LEGEND'  => false,
@@ -642,11 +642,11 @@ class install_install extends module
 				{
 					continue;
 				}
-				$s_hidden_fields .= '<input type="hidden" name="' . $config_key . '" value="' . $data[$config_key] . '" />';
+				$s_hidden_fields .= '<input type="hidden" name="' . $config_key . '" value="' . $data[$config_key] . '">';
 			}
 		}
 
-		$s_hidden_fields .= '<input type="hidden" name="language" value="' . $data['language'] . '" />';
+		$s_hidden_fields .= '<input type="hidden" name="language" value="' . $data['language'] . '">';
 
 		foreach ($this->db_config_options as $config_key => $vars)
 		{
@@ -654,13 +654,13 @@ class install_install extends module
 			{
 				continue;
 			}
-			$s_hidden_fields .= '<input type="hidden" name="' . $config_key . '" value="' . $data[$config_key] . '" />';
+			$s_hidden_fields .= '<input type="hidden" name="' . $config_key . '" value="' . $data[$config_key] . '">';
 		}
 
 		$submit = $lang['NEXT_STEP'];
 
 		$url = ($passed) ? $this->p_master->module_url . "?mode={$mode}&amp;sub=create_table" : $this->p_master->module_url . "?mode={$mode}&amp;sub=administrator";
-		$s_hidden_fields .= ($passed) ? '' : '<input type="hidden" name="check" value="true" />';
+		$s_hidden_fields .= ($passed) ? '' : '<input type="hidden" name="check" value="true">';
 
 		$template->assign_vars([
 			'L_SUBMIT'  => $submit,
@@ -1275,12 +1275,12 @@ class install_install extends module
 
 			$this->page_title = $lang['STAGE_CONFIG_FILE'];
 
-			$s_hidden_fields = '<input type="hidden" name="language" value="' . $data['language'] . '" />';
+			$s_hidden_fields = '<input type="hidden" name="language" value="' . $data['language'] . '">';
 			$config_options = array_merge($this->db_config_options, $this->admin_config_options);
 			foreach ($config_options as $config_key => $vars)
 			{
 				if (!is_array($vars)) { continue; }
-				$s_hidden_fields .= '<input type="hidden" name="' . $config_key . '" value="' . $data[$config_key] . '" />';
+				$s_hidden_fields .= '<input type="hidden" name="' . $config_key . '" value="' . $data[$config_key] . '">';
 			}
 
 			$template->assign_vars([

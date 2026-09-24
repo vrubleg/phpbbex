@@ -289,8 +289,8 @@ if ($mode == 'bump')
 		$meta_url = phpbb_bump_topic($forum_id, $topic_id, $post_data, $current_time);
 		meta_refresh(3, $meta_url);
 
-		$message = $user->lang['TOPIC_BUMPED'] . '<br /><br />' . sprintf($user->lang['VIEW_MESSAGE'], '<a href="' . $meta_url . '">', '</a>');
-		$message .= '<br /><br />' . sprintf($user->lang['RETURN_FORUM'], '<a href="' . append_sid(PHPBB_ROOT_PATH . 'viewforum.php', 'f=' . $forum_id) . '">', '</a>');
+		$message = $user->lang['TOPIC_BUMPED'] . '<br><br>' . sprintf($user->lang['VIEW_MESSAGE'], '<a href="' . $meta_url . '">', '</a>');
+		$message .= '<br><br>' . sprintf($user->lang['RETURN_FORUM'], '<a href="' . append_sid(PHPBB_ROOT_PATH . 'viewforum.php', 'f=' . $forum_id) . '">', '</a>');
 
 		trigger_error($message);
 	}
@@ -518,8 +518,8 @@ if ($save && $user->data['is_registered'] && ($auth->acl_get('f_post', $forum_id
 
 			meta_refresh(3, $meta_info);
 
-			$message = $user->lang['DRAFT_SAVED'] . '<br /><br />';
-			$message .= ($mode != 'post') ? sprintf($user->lang['RETURN_TOPIC'], '<a href="' . $meta_info . '">', '</a>') . '<br /><br />' : '';
+			$message = $user->lang['DRAFT_SAVED'] . '<br><br>';
+			$message .= ($mode != 'post') ? sprintf($user->lang['RETURN_TOPIC'], '<a href="' . $meta_info . '">', '</a>') . '<br><br>' : '';
 			$message .= sprintf($user->lang['RETURN_FORUM'], '<a href="' . append_sid(PHPBB_ROOT_PATH . 'viewforum.php', 'f=' . $forum_id) . '">', '</a>');
 
 			trigger_error($message);
@@ -786,7 +786,7 @@ if ($submit || $preview || $refresh)
 	{
 		if (sizeof($message_parser->warn_msg))
 		{
-			$error[] = implode('<br />', $message_parser->warn_msg);
+			$error[] = implode('<br>', $message_parser->warn_msg);
 			$message_parser->warn_msg = [];
 		}
 
@@ -984,7 +984,7 @@ if ($submit || $preview || $refresh)
 
 	if (sizeof($message_parser->warn_msg))
 	{
-		$error[] = implode('<br />', $message_parser->warn_msg);
+		$error[] = implode('<br>', $message_parser->warn_msg);
 	}
 
 	// Store message, sync counters
@@ -1112,7 +1112,7 @@ if ($submit || $preview || $refresh)
 			redirect($redirect_url);
 		}
 
-		$message .= '<br /><br />' . sprintf($user->lang['RETURN_FORUM'], '<a href="' . append_sid(PHPBB_ROOT_PATH . 'viewforum.php', 'f=' . $data['forum_id']) . '">', '</a>');
+		$message .= '<br><br>' . sprintf($user->lang['RETURN_FORUM'], '<a href="' . append_sid(PHPBB_ROOT_PATH . 'viewforum.php', 'f=' . $data['forum_id']) . '">', '</a>');
 		trigger_error($message);
 	}
 }
@@ -1348,8 +1348,8 @@ if ($config['enable_post_confirm'] && !$user->data['is_registered'] && (isset($c
 	]);
 }
 
-$s_hidden_fields = ($mode == 'reply' || $mode == 'quote') ? '<input type="hidden" name="topic_cur_post_id" value="' . $post_data['topic_last_post_id'] . '" />' : '';
-$s_hidden_fields .= ($load_draft_id || $loaded_draft_id) ? '<input type="hidden" name="loaded_draft_id" value="' . (($loaded_draft_id) ? $loaded_draft_id : $load_draft_id) . '" />' : '';
+$s_hidden_fields = ($mode == 'reply' || $mode == 'quote') ? '<input type="hidden" name="topic_cur_post_id" value="' . $post_data['topic_last_post_id'] . '">' : '';
+$s_hidden_fields .= ($load_draft_id || $loaded_draft_id) ? '<input type="hidden" name="loaded_draft_id" value="' . (($loaded_draft_id) ? $loaded_draft_id : $load_draft_id) . '">' : '';
 
 if ($mode == 'edit')
 {
@@ -1395,7 +1395,7 @@ $template->assign_vars([
 	'MIN_FONT_SIZE'         => (int) $config['min_post_font_size'],
 	'MINI_POST_IMG'         => $user->img('icon_post_target', 'POST'),
 	'POST_DATE'             => ($post_data['post_time']) ? $user->format_date($post_data['post_time']) : '',
-	'ERROR'                 => (sizeof($error)) ? implode('<br />', $error) : '',
+	'ERROR'                 => (sizeof($error)) ? implode('<br>', $error) : '',
 	'TOPIC_TIME_LIMIT'      => (int) $post_data['topic_time_limit'],
 	'TOPIC_PRIORITY'        => (int) $post_data['topic_priority'],
 	'EDIT_REASON'           => $post_data['post_edit_reason'],
@@ -1540,11 +1540,11 @@ function handle_post_delete($forum_id, $topic_id, $post_id, &$post_data)
 				add_log('mod', $forum_id, $topic_id, 'LOG_DELETE_POST', $post_data['post_subject'] ?: $post_data['topic_title'], $post_username, $post_data['post_text']);
 
 				$meta_info = append_sid(PHPBB_ROOT_PATH . 'viewtopic.php', "t={$topic_id}&amp;p={$next_post_id}") . "#p{$next_post_id}";
-				$message = $user->lang['POST_DELETED'] . '<br /><br />' . sprintf($user->lang['RETURN_TOPIC'], '<a href="' . $meta_info . '">', '</a>');
+				$message = $user->lang['POST_DELETED'] . '<br><br>' . sprintf($user->lang['RETURN_TOPIC'], '<a href="' . $meta_info . '">', '</a>');
 			}
 
 			meta_refresh(3, $meta_info);
-			$message .= '<br /><br />' . sprintf($user->lang['RETURN_FORUM'], '<a href="' . append_sid(PHPBB_ROOT_PATH . 'viewforum.php', 'f=' . $forum_id) . '">', '</a>');
+			$message .= '<br><br>' . sprintf($user->lang['RETURN_FORUM'], '<a href="' . append_sid(PHPBB_ROOT_PATH . 'viewforum.php', 'f=' . $forum_id) . '">', '</a>');
 			trigger_error($message);
 		}
 		else

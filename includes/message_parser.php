@@ -524,6 +524,7 @@ class bbcode_firstpass extends bbcode
 				// Because highlight_string is specialcharing the text (but we already did this before), we have to reverse this in order to get correct results
 				$code = htmlspecialchars_decode($code);
 				$code = highlight_string($code, true);
+				$code = preg_replace('#<br\s*/?>#i', '<br>', $code);
 
 				// Starting from PHP 8.3, the output format was updated. An ugly hack to fix it.
 				if (strpos($code, '<pre><code ') === 0)
@@ -1444,7 +1445,7 @@ class parse_message extends bbcode_firstpass
 					// Symbolic smilies are only parsed as standalone whitespace-delimited tokens.
 					$match[] = '#(?<!\S)' . preg_quote($row['code'], '#') . '(?!\S)(?![^<>]*>)#u';
 				}
-				$replace[] = '<!-- s' . $row['code'] . ' --><img src="{SMILIES_PATH}/' . $row['smiley_url'] . '" alt="' . $row['code'] . '" title="' . ($user->lang[$row['emotion']] ?? $row['emotion']) . '" /><!-- s' . $row['code'] . ' -->';
+				$replace[] = '<!-- s' . $row['code'] . ' --><img src="{SMILIES_PATH}/' . $row['smiley_url'] . '" alt="' . $row['code'] . '" title="' . ($user->lang[$row['emotion']] ?? $row['emotion']) . '"><!-- s' . $row['code'] . ' -->';
 			}
 			$db->sql_freeresult($result);
 		}
