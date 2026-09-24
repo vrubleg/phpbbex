@@ -36,7 +36,7 @@ $sort_days      = request_var('st', 0);
 $sort_key       = request_var('sk', 'r');
 $sort_dir       = request_var('sd', 'd');
 
-$return_chars   = request_var('ch', ($topic_id) ? -1 : 300);
+$return_chars   = max(0, request_var('ch', ($topic_id) ? 0 : 500));
 $search_forum   = request_var('fid', [0]);
 
 // We put login boxes for the case if search_id is newposts or egosearch
@@ -557,7 +557,7 @@ if ($keywords || $author || $author_id || $search_id || $submit)
 	$u_search .= $u_amp_search_forum;
 	$u_search .= (!$search_child) ? '&amp;sc=0' : '';
 	$u_search .= ($search_fields != 'all') ? '&amp;sf=' . $search_fields : '';
-	$u_search .= ($return_chars != 300) ? '&amp;ch=' . $return_chars : '';
+	$u_search .= ($return_chars != 500) ? '&amp;ch=' . $return_chars : '';
 
 	$template->assign_vars([
 		'SEARCH_TITLE'      => $l_search_title,
@@ -682,7 +682,7 @@ if ($keywords || $author || $author_id || $search_id || $submit)
 					strip_bbcode($text_only_message, $row['bbcode_uid']);
 				}
 
-				if ($return_chars == -1 || utf8_strlen($text_only_message) < ($return_chars + 3))
+				if (!$return_chars || utf8_strlen($text_only_message) < ($return_chars + 3))
 				{
 					$row['display_text_only'] = false;
 					$bbcode_bitfield = $bbcode_bitfield | base64_decode($row['bbcode_bitfield']);
@@ -1040,16 +1040,15 @@ if (!$s_forums)
 }
 
 // Number of chars returned
-$s_characters = '<option value="-1">' . $user->lang['ALL_AVAILABLE'] . '</option>';
-$s_characters .= '<option value="0">0</option>';
-$s_characters .= '<option value="25">25</option>';
-$s_characters .= '<option value="50">50</option>';
+$s_characters = '';
 
-for ($i = 100; $i <= 1000 ; $i += 100)
+foreach ([500, 1000, 2000] as $i)
 {
-	$selected = ($i == 300) ? ' selected="selected"' : '';
+	$selected = ($i == $return_chars) ? ' selected="selected"' : '';
 	$s_characters .= '<option value="' . $i . '"' . $selected . '>' . $i . '</option>';
 }
+
+$s_characters .= '<option value="0"' . (!$return_chars ? ' selected="selected"' : '') . '>' . $user->lang['ALL_AVAILABLE'] . '</option>';
 
 $s_hidden_fields = ['t' => $topic_id];
 
