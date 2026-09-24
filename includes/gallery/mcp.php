@@ -14,7 +14,7 @@ if (!defined('IN_PHPBB'))
 
 class phpbb_gallery_mcp
 {
-	static protected $allowed_sort_params = ['image_time', 'image_name_clean', 'image_username_clean', 'image_view_count', 'image_rate_avg', 'image_comments', 'image_last_comment'];
+	static protected $allowed_sort_params = ['image_time', 'image_name_clean', 'image_username_clean', 'image_rate_avg', 'image_comments', 'image_last_comment'];
 	static protected $allowed_sort_params_report = ['reporter_name', 'mod_username'];
 
 	static public function build_navigation($album_id, $mode, $option_id = false)

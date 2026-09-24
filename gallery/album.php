@@ -131,9 +131,9 @@ if ($album_data['album_type'] != phpbb_gallery_album::TYPE_CAT)
 	/**
 	* Build the sort options
 	*/
-	$limit_days = [0 => $user->lang['ALL_IMAGES'], 1 => $user->lang['1_DAY'], 7 => $user->lang['7_DAYS'], 14 => $user->lang['2_WEEKS'], 30 => $user->lang['1_MONTH'], 90 => $user->lang['3_MONTHS'], 180 => $user->lang['6_MONTHS'], 365 => $user->lang['1_YEAR']];
-	$sort_by_text = ['t' => $user->lang['TIME'], 'n' => $user->lang['IMAGE_NAME'], 'vc' => $user->lang['GALLERY_VIEWS']];
-	$sort_by_sql = ['t' => 'image_time', 'n' => 'image_name_clean', 'vc' => 'image_view_count'];
+	$limit_days = [0 => $user->lang['ALL_IMAGES'], 7 => $user->lang['7_DAYS'], 30 => $user->lang['1_MONTH'], 90 => $user->lang['3_MONTHS'], 180 => $user->lang['6_MONTHS'], 365 => $user->lang['1_YEAR']];
+	$sort_by_text = ['t' => $user->lang['TIME'], 'n' => $user->lang['IMAGE_NAME']];
+	$sort_by_sql = ['t' => 'image_time', 'n' => 'image_name_clean'];
 
 	$sort_by_text['u'] = $user->lang['SORT_USERNAME'];
 	$sort_by_sql['u'] = 'image_username_clean';
