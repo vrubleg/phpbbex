@@ -46,13 +46,11 @@ if (!$forum_data)
 	trigger_error('NO_FORUM');
 }
 
-$default_sort_days  = 0;
-$default_sort_key   = $forum_data['forum_topic_sortby_type'] ?: 't';
-$default_sort_dir   = $forum_data['forum_topic_sortby_dir'] ?: 'd';
+$default_sort_key = in_array($forum_data['forum_topic_sortby_type'], ['t', 'c', 'r']) ? $forum_data['forum_topic_sortby_type'] : 't';
+$default_sort_dir = in_array($forum_data['forum_topic_sortby_dir'],  ['d', 'a'])      ? $forum_data['forum_topic_sortby_dir']  : 'd';
 
-$sort_days  = request_var('st', $default_sort_days);
-$sort_key   = request_var('sk', $default_sort_key);
-$sort_dir   = request_var('sd', $default_sort_dir);
+$sort_key = request_var('sk', $default_sort_key);
+$sort_dir = request_var('sd', $default_sort_dir);
 
 // Configure style, language, etc.
 $user->setup('viewforum');
@@ -171,42 +169,14 @@ $s_forum_rules = '';
 gen_forum_auth_level('forum', $forum_id, $forum_data['forum_status']);
 
 // Topic ordering options
-$limit_days = [0 => $user->lang['ALL_TOPICS'], 1 => $user->lang['1_DAY'], 7 => $user->lang['7_DAYS'], 14 => $user->lang['2_WEEKS'], 30 => $user->lang['1_MONTH'], 90 => $user->lang['3_MONTHS'], 180 => $user->lang['6_MONTHS'], 365 => $user->lang['1_YEAR']];
+$sort_by_text = ['t' => $user->lang['POST_TIME'], 'c' => $user->lang['CREATION_TIME'], 'r' => $user->lang['REPLIES']];
+$sort_by_sql = ['t' => 't.topic_last_post_time', 'c' => 't.topic_time', 'r' => 't.topic_replies'];
 
-$sort_by_text = ['t' => $user->lang['POST_TIME'], 'c' => $user->lang['CREATION_TIME'], 'r' => $user->lang['REPLIES'], 'v' => $user->lang['VIEWS'], 'a' => $user->lang['AUTHOR'], 's' => $user->lang['SUBJECT']];
-$sort_by_sql = ['t' => 't.topic_last_post_time', 'c' => 't.topic_time', 'r' => 't.topic_replies', 'v' => 't.topic_views', 'a' => 't.topic_first_poster_name', 's' => 't.topic_title'];
-
-$s_limit_days = $s_sort_key = $s_sort_dir = $u_sort_param = '';
+$limit_days = $sort_days = $s_limit_days = $default_sort_days = null; // unused
+$s_sort_key = $s_sort_dir = $u_sort_param = '';
 gen_sort_selects($limit_days, $sort_by_text, $sort_days, $sort_key, $sort_dir, $s_limit_days, $s_sort_key, $s_sort_dir, $u_sort_param, $default_sort_days, $default_sort_key, $default_sort_dir);
 
-// Limit topics to certain time frame, obtain correct topic count
-if ($sort_days)
-{
-	$min_post_time = time() - ($sort_days * 86400);
-
-	$sql = 'SELECT COUNT(topic_id) AS num_topics
-		FROM ' . TOPICS_TABLE . "
-		WHERE forum_id = {$forum_id}
-			AND topic_last_post_time >= {$min_post_time}
-		" . (($auth->acl_get('m_approve', $forum_id)) ? '' : 'AND topic_approved = 1');
-	$result = $db->sql_query($sql);
-	$topics_count = (int) $db->sql_fetchfield('num_topics');
-	$db->sql_freeresult($result);
-
-	if (isset($_POST['sort']))
-	{
-		$start = 0;
-	}
-	$sql_limit_time = "AND t.topic_last_post_time >= {$min_post_time}";
-
-	// Make sure we have information about day selection ready
-	$template->assign_var('S_SORT_DAYS', true);
-}
-else
-{
-	$topics_count = ($auth->acl_get('m_approve', $forum_id)) ? $forum_data['forum_topics_real'] : $forum_data['forum_topics'];
-	$sql_limit_time = '';
-}
+$topics_count = ($auth->acl_get('m_approve', $forum_id)) ? $forum_data['forum_topics_real'] : $forum_data['forum_topics'];
 
 // Make sure $start is set to the last page if it exceeds the amount
 if ($start < 0 || $start > $topics_count)
@@ -258,7 +228,6 @@ $template->assign_vars([
 	'S_DISPLAY_ACTIVE'      => $s_display_active,
 	'S_SELECT_SORT_DIR'     => $s_sort_dir,
 	'S_SELECT_SORT_KEY'     => $s_sort_key,
-	'S_SELECT_SORT_DAYS'    => $s_limit_days,
 	'S_WATCH_FORUM_LINK'    => $s_watching_forum['link'],
 	'S_WATCH_FORUM_TITLE'   => $s_watching_forum['title'],
 	'S_WATCHING_FORUM'      => $s_watching_forum['is_watching'],
@@ -339,7 +308,6 @@ $sql = 'SELECT t.topic_id
 	FROM ' . TOPICS_TABLE . " t
 	WHERE {$sql_where}
 		{$sql_approved}
-		{$sql_limit_time}
 	ORDER BY t.topic_type " . ((!$store_reverse) ? 'DESC' : 'ASC') . ', t.topic_priority ' . ((!$store_reverse) ? 'DESC' : 'ASC') . ', ' . $sql_sort_order;
 $result = $db->sql_query_limit($sql, $sql_limit, $sql_start);
 

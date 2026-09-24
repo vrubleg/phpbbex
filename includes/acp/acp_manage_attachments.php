@@ -214,7 +214,7 @@ class acp_manage_attachments
 		}
 
 		// Sorting
-		$limit_days = [0 => $user->lang['ALL_ENTRIES'], 1 => $user->lang['1_DAY'], 7 => $user->lang['7_DAYS'], 14 => $user->lang['2_WEEKS'], 30 => $user->lang['1_MONTH'], 90 => $user->lang['3_MONTHS'], 180 => $user->lang['6_MONTHS'], 365 => $user->lang['1_YEAR']];
+		$limit_days = [0 => $user->lang['ALL_ENTRIES'], 7 => $user->lang['7_DAYS'], 30 => $user->lang['1_MONTH'], 90 => $user->lang['3_MONTHS'], 180 => $user->lang['6_MONTHS'], 365 => $user->lang['1_YEAR']];
 		$sort_by_text = ['f' => $user->lang['FILENAME'], 't' => $user->lang['FILEDATE'], 's' => $user->lang['FILESIZE'], 'x' => $user->lang['EXTENSION'], 'd' => $user->lang['DOWNLOADS'],'p' => $user->lang['ATTACH_POST_ID'], 'u' => $user->lang['AUTHOR']];
 		$sort_by_sql = ['f' => 'a.real_filename', 't' => 'a.filetime', 's' => 'a.filesize', 'x' => 'a.extension', 'd' => 'a.download_count', 'p' => 'a.post_msg_id', 'u' => 'u.username'];
 

@@ -100,8 +100,8 @@ if ($interval && !in_array($search_id, ['newposts', 'active_topics', 'egosearch'
 }
 
 // Define some vars
-$limit_days     = [0 => $user->lang['ALL_RESULTS'], 1 => $user->lang['1_DAY'], 7 => $user->lang['7_DAYS'], 14 => $user->lang['2_WEEKS'], 30 => $user->lang['1_MONTH'], 90 => $user->lang['3_MONTHS'], 180 => $user->lang['6_MONTHS'], 365 => $user->lang['1_YEAR']];
-$sort_by_text   = ['r' => $user->lang['SORT_RELEVANCE'], 't' => $user->lang['SORT_TIME'], 'c' => $user->lang['CREATION_TIME'], 'f' => $user->lang['SORT_FORUM'], 'a' => $user->lang['SORT_AUTHOR'], 'i' => $user->lang['SORT_TOPIC_TITLE'], 's' => $user->lang['SORT_POST_SUBJECT']];
+$limit_days     = [0 => $user->lang['ALL_RESULTS'], 7 => $user->lang['7_DAYS'], 30 => $user->lang['1_MONTH'], 90 => $user->lang['3_MONTHS'], 180 => $user->lang['6_MONTHS'], 365 => $user->lang['1_YEAR']];
+$sort_by_text   = ['r' => $user->lang['SORT_RELEVANCE'], 't' => $user->lang['SORT_TIME'], 'c' => $user->lang['CREATION_TIME']];
 
 // Relevance is only available for keyword searches.
 if (($author || $author_id || $search_id || $submit) && !$keywords && !$add_keywords)
@@ -298,7 +298,7 @@ if ($keywords || $author || $author_id || $search_id || $submit)
 	}
 
 	// define some variables needed for retrieving post_id/topic_id information
-	$sort_by_sql = ['r' => 'relevance', 't' => (($show_results == 'posts') ? 'p.post_time' : 't.topic_last_post_time'), 'c' => (($show_results == 'posts') ? 'p.post_time' : 't.topic_time'), 'f' => 'f.forum_id', 'a' => 'u.username_clean', 'i' => 't.topic_title', 's' => (($show_results == 'posts') ? 'p.post_subject' : 't.topic_title')];
+	$sort_by_sql = ['r' => 'relevance', 't' => (($show_results == 'posts') ? 'p.post_time' : 't.topic_last_post_time'), 'c' => (($show_results == 'posts') ? 'p.post_time' : 't.topic_time')];
 
 	// pre-made searches
 	$sql = $field = $l_search_title = '';

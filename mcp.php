@@ -717,18 +717,6 @@ function mcp_sorting($mode, &$sort_days, &$sort_key, &$sort_dir, &$sort_by_sql, 
 						{$limit_time_sql}";
 			}
 		break;
-
-		case 'viewlogs':
-			$type = 'logs';
-			$default_key = 't';
-			$default_dir = 'd';
-
-			$sql = 'SELECT COUNT(log_id) AS total
-				FROM ' . LOG_TABLE . "
-				{$where_sql} " . $db->sql_in_set('forum_id', ($forum_id) ? [$forum_id] : array_intersect(get_forum_list('f_read'), get_forum_list('m_'))) . '
-					AND log_time >= ' . $min_time . '
-					AND log_type = ' . LOG_MOD;
-		break;
 	}
 
 	$sort_key = request_var('sk', $default_key);
@@ -738,39 +726,32 @@ function mcp_sorting($mode, &$sort_days, &$sort_key, &$sort_dir, &$sort_by_sql, 
 	switch ($type)
 	{
 		case 'topics':
-			$limit_days = [0 => $user->lang['ALL_TOPICS'], 1 => $user->lang['1_DAY'], 7 => $user->lang['7_DAYS'], 14 => $user->lang['2_WEEKS'], 30 => $user->lang['1_MONTH'], 90 => $user->lang['3_MONTHS'], 180 => $user->lang['6_MONTHS'], 365 => $user->lang['1_YEAR']];
-			$sort_by_text = ['a' => $user->lang['AUTHOR'], 't' => $user->lang['POST_TIME'], 'tt' => $user->lang['TOPIC_TIME'], 'r' => $user->lang['REPLIES'], 's' => $user->lang['SUBJECT'], 'v' => $user->lang['VIEWS']];
+			$limit_days = [0 => $user->lang['ALL_TOPICS'], 7 => $user->lang['7_DAYS'], 30 => $user->lang['1_MONTH'], 90 => $user->lang['3_MONTHS'], 180 => $user->lang['6_MONTHS'], 365 => $user->lang['1_YEAR']];
+			$sort_by_text = ['t' => $user->lang['POST_TIME'], 'tt' => $user->lang['TOPIC_TIME'], 'r' => $user->lang['REPLIES']];
 
-			$sort_by_sql = ['a' => 't.topic_first_poster_name', 't' => 't.topic_last_post_time', 'tt' => 't.topic_time', 'r' => (($auth->acl_get('m_approve', $forum_id)) ? 't.topic_replies_real' : 't.topic_replies'), 's' => 't.topic_title', 'v' => 't.topic_views'];
+			$sort_by_sql = ['t' => 't.topic_last_post_time', 'tt' => 't.topic_time', 'r' => (($auth->acl_get('m_approve', $forum_id)) ? 't.topic_replies_real' : 't.topic_replies')];
 			$limit_time_sql = ($min_time) ? "AND t.topic_last_post_time >= {$min_time}" : '';
 		break;
 
 		case 'posts':
-			$limit_days = [0 => $user->lang['ALL_POSTS'], 1 => $user->lang['1_DAY'], 7 => $user->lang['7_DAYS'], 14 => $user->lang['2_WEEKS'], 30 => $user->lang['1_MONTH'], 90 => $user->lang['3_MONTHS'], 180 => $user->lang['6_MONTHS'], 365 => $user->lang['1_YEAR']];
-			$sort_by_text = ['a' => $user->lang['AUTHOR'], 't' => $user->lang['POST_TIME'], 's' => $user->lang['SUBJECT']];
-			$sort_by_sql = ['a' => 'u.username_clean', 't' => 'p.post_time', 's' => 'p.post_subject'];
+			$limit_days = [0 => $user->lang['ALL_POSTS'], 7 => $user->lang['7_DAYS'], 30 => $user->lang['1_MONTH'], 90 => $user->lang['3_MONTHS'], 180 => $user->lang['6_MONTHS'], 365 => $user->lang['1_YEAR']];
+			$sort_by_text = ['t' => $user->lang['POST_TIME'], 'a' => $user->lang['AUTHOR']];
+			$sort_by_sql = ['t' => 'p.post_time', 'a' => 'u.username_clean'];
 			$limit_time_sql = ($min_time) ? "AND p.post_time >= {$min_time}" : '';
 		break;
 
 		case 'reports':
-			$limit_days = [0 => $user->lang['ALL_REPORTS'], 1 => $user->lang['1_DAY'], 7 => $user->lang['7_DAYS'], 14 => $user->lang['2_WEEKS'], 30 => $user->lang['1_MONTH'], 90 => $user->lang['3_MONTHS'], 180 => $user->lang['6_MONTHS'], 365 => $user->lang['1_YEAR']];
-			$sort_by_text = ['a' => $user->lang['AUTHOR'], 'r' => $user->lang['REPORTER'], 'p' => $user->lang['POST_TIME'], 't' => $user->lang['REPORT_TIME'], 's' => $user->lang['SUBJECT']];
-			$sort_by_sql = ['a' => 'u.username_clean', 'r' => 'ru.username', 'p' => 'p.post_time', 't' => 'r.report_time', 's' => 'p.post_subject'];
+			$limit_days = [0 => $user->lang['ALL_REPORTS'], 7 => $user->lang['7_DAYS'], 30 => $user->lang['1_MONTH'], 90 => $user->lang['3_MONTHS'], 180 => $user->lang['6_MONTHS'], 365 => $user->lang['1_YEAR']];
+			$sort_by_text = ['a' => $user->lang['AUTHOR'], 'r' => $user->lang['REPORTER'], 'p' => $user->lang['POST_TIME'], 't' => $user->lang['REPORT_TIME']];
+			$sort_by_sql = ['a' => 'u.username_clean', 'r' => 'ru.username', 'p' => 'p.post_time', 't' => 'r.report_time'];
 		break;
 
 		case 'pm_reports':
-			$limit_days = [0 => $user->lang['ALL_REPORTS'], 1 => $user->lang['1_DAY'], 7 => $user->lang['7_DAYS'], 14 => $user->lang['2_WEEKS'], 30 => $user->lang['1_MONTH'], 90 => $user->lang['3_MONTHS'], 180 => $user->lang['6_MONTHS'], 365 => $user->lang['1_YEAR']];
-			$sort_by_text = ['a' => $user->lang['AUTHOR'], 'r' => $user->lang['REPORTER'], 'p' => $user->lang['POST_TIME'], 't' => $user->lang['REPORT_TIME'], 's' => $user->lang['SUBJECT']];
-			$sort_by_sql = ['a' => 'u.username_clean', 'r' => 'ru.username', 'p' => 'p.message_time', 't' => 'r.report_time', 's' => 'p.message_subject'];
+			$limit_days = [0 => $user->lang['ALL_REPORTS'], 7 => $user->lang['7_DAYS'], 30 => $user->lang['1_MONTH'], 90 => $user->lang['3_MONTHS'], 180 => $user->lang['6_MONTHS'], 365 => $user->lang['1_YEAR']];
+			$sort_by_text = ['a' => $user->lang['AUTHOR'], 'r' => $user->lang['REPORTER'], 'p' => $user->lang['POST_TIME'], 't' => $user->lang['REPORT_TIME']];
+			$sort_by_sql = ['a' => 'u.username_clean', 'r' => 'ru.username', 'p' => 'p.message_time', 't' => 'r.report_time'];
 		break;
 
-		case 'logs':
-			$limit_days = [0 => $user->lang['ALL_ENTRIES'], 1 => $user->lang['1_DAY'], 7 => $user->lang['7_DAYS'], 14 => $user->lang['2_WEEKS'], 30 => $user->lang['1_MONTH'], 90 => $user->lang['3_MONTHS'], 180 => $user->lang['6_MONTHS'], 365 => $user->lang['1_YEAR']];
-			$sort_by_text = ['u' => $user->lang['SORT_USERNAME'], 't' => $user->lang['SORT_DATE'], 'i' => $user->lang['SORT_IP'], 'o' => $user->lang['SORT_ACTION']];
-
-			$sort_by_sql = ['u' => 'u.username_clean', 't' => 'l.log_time', 'i' => 'l.log_ip', 'o' => 'l.log_operation'];
-			$limit_time_sql = ($min_time) ? "AND l.log_time >= {$min_time}" : '';
-		break;
 	}
 
 	if (!isset($sort_by_sql[$sort_key]))
@@ -789,7 +770,7 @@ function mcp_sorting($mode, &$sort_days, &$sort_key, &$sort_dir, &$sort_by_sql, 
 		'S_SELECT_SORT_DAYS'    => $s_limit_days]
 	);
 
-	if (($sort_days && $mode != 'viewlogs') || in_array($mode, ['reports', 'unapproved_topics', 'unapproved_posts']) || $where_sql != 'WHERE')
+	if ($sort_days || in_array($mode, ['reports', 'unapproved_topics', 'unapproved_posts']) || $where_sql != 'WHERE')
 	{
 		$result = $db->sql_query($sql);
 		$total = (int) $db->sql_fetchfield('total');

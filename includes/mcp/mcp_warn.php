@@ -142,7 +142,7 @@ class mcp_warn
 		$sk     = request_var('sk', 'b');
 		$sd     = request_var('sd', 'd');
 
-		$limit_days = [0 => $user->lang['ALL_ENTRIES'], 1 => $user->lang['1_DAY'], 7 => $user->lang['7_DAYS'], 14 => $user->lang['2_WEEKS'], 30 => $user->lang['1_MONTH'], 90 => $user->lang['3_MONTHS'], 180 => $user->lang['6_MONTHS'], 365 => $user->lang['1_YEAR']];
+		$limit_days = [0 => $user->lang['ALL_ENTRIES'], 7 => $user->lang['7_DAYS'], 30 => $user->lang['1_MONTH'], 90 => $user->lang['3_MONTHS'], 180 => $user->lang['6_MONTHS'], 365 => $user->lang['1_YEAR']];
 		$sort_by_text = ['a' => $user->lang['SORT_USERNAME'], 'b' => $user->lang['SORT_DATE'], 'c' => $user->lang['SORT_WARNINGS']];
 		$sort_by_sql = ['a' => 'username_clean', 'b' => 'user_last_warning', 'c' => 'user_warnings'];
 
