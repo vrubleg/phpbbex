@@ -1115,7 +1115,7 @@ class acp_users
 
 			break;
 
-			case 'feedback':
+			case 'log':
 
 				$user->add_lang('mcp');
 
@@ -1124,7 +1124,6 @@ class acp_users
 				$deletemark = isset($_POST['delmarked']);
 				$deleteall  = isset($_POST['delall']);
 				$marked     = request_var('mark', [0]);
-				$message    = utf8_normalize_nfc(request_var('message', '', true));
 
 				// Sort keys
 				$sort_days  = request_var('st', 0);
@@ -1163,20 +1162,6 @@ class acp_users
 					}
 				}
 
-				if ($submit && $message)
-				{
-					if (!check_form_key($form_name))
-					{
-						trigger_error($user->lang['FORM_INVALID'] . adm_back_link($this->u_action . '&amp;u=' . $user_id), E_USER_WARNING);
-					}
-
-					add_log('admin', 'LOG_USER_FEEDBACK', $user_row['username']);
-					add_log('mod', 0, 0, 'LOG_USER_FEEDBACK', $user_row['username']);
-					add_log('user', $user_id, 'LOG_USER_GENERAL', $message);
-
-					trigger_error($user->lang['USER_FEEDBACK_ADDED'] . adm_back_link($this->u_action . '&amp;u=' . $user_id));
-				}
-
 				// Sorting
 				$limit_days = [0 => $user->lang['ALL_ENTRIES'], 7 => $user->lang['7_DAYS'], 30 => $user->lang['1_MONTH'], 90 => $user->lang['3_MONTHS'], 180 => $user->lang['6_MONTHS'], 365 => $user->lang['1_YEAR']];
 				$sort_by_text = ['u' => $user->lang['SORT_USERNAME'], 't' => $user->lang['SORT_DATE'], 'i' => $user->lang['SORT_IP'], 'o' => $user->lang['SORT_ACTION']];
@@ -1195,7 +1180,7 @@ class acp_users
 				$start = view_log('user', $log_data, $log_count, $config['topics_per_page'], $start, 0, 0, $user_id, $sql_where, $sql_sort);
 
 				$template->assign_vars([
-					'S_FEEDBACK'    => true,
+					'S_USER_LOG'    => true,
 					'S_ON_PAGE'     => on_page($log_count, $config['topics_per_page'], $start),
 					'PAGINATION'    => generate_pagination($this->u_action . "&amp;u={$user_id}&amp;{$u_sort_param}", $log_count, $config['topics_per_page'], $start),
 

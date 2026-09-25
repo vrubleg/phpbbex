@@ -232,7 +232,6 @@ if (!$forum_id)
 
 if (!$user_id && $username == '')
 {
-	$module->set_display('notes', 'user_notes', false);
 	$module->set_display('warn', 'warn_user', false);
 }
 
@@ -264,17 +263,6 @@ $module->display($module->get_page_title(), false);
 function _module__url($mode, &$module_row)
 {
 	return extra_url();
-}
-
-function _module_notes_url($mode, &$module_row)
-{
-	if ($mode == 'front')
-	{
-		return '';
-	}
-
-	global $user_id;
-	return ($user_id) ? "&amp;u={$user_id}" : '';
 }
 
 function _module_warn_url($mode, &$module_row)

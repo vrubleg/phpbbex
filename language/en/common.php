@@ -595,7 +595,6 @@ $lang = array_merge($lang, [
 	'VIEW_FORUM_LOGS'           => 'View Logs',
 	'VIEW_LATEST_POST'          => 'View the latest post',
 	'VIEW_NEWEST_POST'          => 'View first unread post',
-	'VIEW_NOTES'                => 'View user notes',
 	'VIEW_ONLINE_TIME'          => 'over the past %d minute',
 	'VIEW_ONLINE_TIMES'         => 'over the past %d minutes',
 	'VIEW_TOPIC'                => 'View topic',

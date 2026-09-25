@@ -416,8 +416,8 @@ switch ($mode)
 
 		$poster_avatar = get_user_avatar($member['user_avatar'], $member['user_avatar_type'], $member['user_avatar_width'], $member['user_avatar_height']);
 
-		// We need to check if the modules 'zebra' ('friends' & 'foes' mode),  'notes' ('user_notes' mode) and  'warn' ('warn_user' mode) are accessible to decide if we can display appropriate links
-		$zebra_enabled = $friends_enabled = $foes_enabled = $user_notes_enabled = $warn_user_enabled = false;
+		// We need to check if the modules 'zebra' ('friends' & 'foes' mode) and 'warn' ('warn_user' mode) are accessible to decide if we can display appropriate links
+		$zebra_enabled = $friends_enabled = $foes_enabled = $warn_user_enabled = false;
 
 		// Only check if the user is logged in
 		if ($user->data['is_registered'])
@@ -428,7 +428,6 @@ switch ($mode)
 			$module->list_modules('ucp');
 			$module->list_modules('mcp');
 
-			$user_notes_enabled = $module->loaded('notes', 'user_notes');
 			$warn_user_enabled = $module->loaded('warn', 'warn_user');
 			$zebra_enabled = $module->loaded('zebra');
 			$friends_enabled = $module->loaded('zebra', 'friends');
@@ -442,7 +441,7 @@ switch ($mode)
 			phpbb_gallery_integration::memberlist_viewprofile($member);
 		}
 
-		$template->assign_vars(show_profile($member, $user_notes_enabled, $warn_user_enabled));
+		$template->assign_vars(show_profile($member, $warn_user_enabled));
 
 		// Custom Profile Fields
 		$profile_fields = [];
@@ -511,7 +510,6 @@ switch ($mode)
 
 			'U_SWITCH_PERMISSIONS'  => ($auth->acl_get('a_switchperm') && $user->data['user_id'] != $user_id) ? append_sid(PHPBB_ROOT_PATH . 'ucp.php', "mode=switch_perm&amp;u={$user_id}&amp;hash=" . generate_link_hash('switchperm')) : '',
 
-			'S_USER_NOTES'      => ($user_notes_enabled),
 			'S_WARN_USER'       => ($warn_user_enabled),
 			'S_ZEBRA'           => ($user->data['user_id'] != $user_id && $user->data['is_registered'] && $zebra_enabled),
 			'U_ADD_FRIEND'      => (!$friend && !$foe && $friends_enabled) ? append_sid(PHPBB_ROOT_PATH . 'ucp.php', 'i=zebra&amp;add=' . urlencode(htmlspecialchars_decode($member['username']))) : '',
@@ -1213,7 +1211,7 @@ page_footer();
 /**
 * Prepare profile data
 */
-function show_profile($data, $user_notes_enabled = false, $warn_user_enabled = false)
+function show_profile($data, $warn_user_enabled = false)
 {
 	global $config, $auth, $template, $user;
 
@@ -1315,7 +1313,6 @@ function show_profile($data, $user_notes_enabled = false, $warn_user_enabled = f
 
 		'U_SEARCH_USER' => ($auth->acl_get('u_search')) ? append_sid(PHPBB_ROOT_PATH . 'search.php', "author_id={$user_id}&amp;sr=posts") : '',
 		'U_SEARCH_USER_TOPICS'  => ($auth->acl_get('u_search')) ? append_sid(PHPBB_ROOT_PATH . 'search.php', "author_id={$user_id}&amp;sr=topics&amp;sf=firstpost") : '',
-		'U_NOTES'       => ($user_notes_enabled && $auth->acl_getf_global('m_')) ? append_sid(PHPBB_ROOT_PATH . 'mcp.php', 'i=notes&amp;mode=user_notes&amp;u=' . $user_id) : '',
 		'U_WARN'        => ($warn_user_enabled && $auth->acl_get('m_warn')) ? append_sid(PHPBB_ROOT_PATH . 'mcp.php', 'i=warn&amp;mode=warn_user&amp;u=' . $user_id) : '',
 		'U_PM'          => ($config['allow_privmsg'] && $auth->acl_get('u_sendpm') && ($data['user_allow_pm'] || $auth->acl_gets('a_', 'm_') || $auth->acl_getf_global('m_'))) ? append_sid(PHPBB_ROOT_PATH . 'ucp.php', 'i=pm&amp;mode=compose&amp;u=' . $user_id) : '',
 		'U_EMAIL'       => $email,

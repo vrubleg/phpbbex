@@ -126,7 +126,7 @@
 					<input class="inputbox autowidth" type="text" name="username" value="">
 					<input type="submit" class="button2" name="action[chgposter]" value="{L_CONFIRM}">
 					<br>
-					<span>[ <a href="{U_FIND_USERNAME}" onclick="find_username(this.href); return false;">{L_FIND_USERNAME}</a> ]</span>
+					<span><a href="{U_FIND_USERNAME}" onclick="find_username(this.href); return false;">[{L_FIND_USERNAME}]</a></span>
 				</dd>
 			</dl>
 			{S_FORM_TOKEN}
@@ -168,48 +168,6 @@
 
 <!-- IF S_MCP_QUEUE -->
 <!-- ELSE -->
-
-	<!-- IF S_SHOW_USER_NOTES -->
-		<div class="panel" id="usernotes">
-			<div class="inner">
-
-			<form method="post" id="mcp_notes" action="{U_POST_ACTION}">
-
-			<!-- IF S_USER_NOTES -->
-				<h3>{L_FEEDBACK}</h3>
-
-				<!-- BEGIN usernotes -->
-					<span class="small"><strong>{L_REPORTED_BY}: {usernotes.REPORT_BY} &laquo; {usernotes.REPORT_AT}</strong></span>
-					<!-- IF S_CLEAR_ALLOWED --><div class="right-box"><input type="checkbox" name="marknote[]" value="{usernotes.ID}"></div><!-- ENDIF -->
-					<div class="postbody">{usernotes.ACTION}</div>
-
-					<hr class="dashed">
-				<!-- END usernotes -->
-
-				<!-- IF S_CLEAR_ALLOWED -->
-					<fieldset class="submit-buttons">
-						<input class="button2" type="submit" name="action[del_all]" value="{L_DELETE_ALL}">&nbsp;
-						<input class="button2" type="submit" name="action[del_marked]" value="{L_DELETE_MARKED}">
-					</fieldset>
-				<!-- ENDIF -->
-			<!-- ENDIF -->
-
-			<h3>{L_ADD_FEEDBACK}</h3>
-			<p>{L_ADD_FEEDBACK_EXPLAIN}</p>
-
-			<fieldset>
-				<textarea name="usernote" rows="4" cols="76" class="inputbox"></textarea>
-			</fieldset>
-
-			<fieldset class="submit-buttons">
-				<input class="button1" type="submit" name="action[add_feedback]" value="{L_SUBMIT}">
-				{S_FORM_TOKEN}
-			</fieldset>
-			</form>
-
-			</div>
-		</div>
-	<!-- ENDIF -->
 
 	<!-- IF S_SHOW_REPORTS -->
 		<div class="panel" id="reports">

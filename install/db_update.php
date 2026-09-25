@@ -1020,10 +1020,21 @@ if (version_compare($config['phpbbex_version'], '1.10.0', '<='))
 	remove_module('acp', 'quick_reply', 'quick_reply');
 	remove_module('ucp', 'pm', 'popup');
 	remove_module('ucp', 'pm', 'options');
+	remove_module('ucp', 'attachments', 'attachments');
 	remove_module('acp', 'database', 'backup');
 	remove_module('acp', 'database', 'restore');
 	remove_module('acp', 'search', 'index');
 	remove_module_category('acp', 'ACP_CAT_DATABASE');
+	remove_module('mcp', 'notes', 'user_notes');
+	remove_module('mcp', 'notes', 'front');
+	remove_module_category('mcp', 'MCP_NOTES');
+
+	// Rename the per-user log page and its route.
+	$db->sql_query('UPDATE ' . MODULES_TABLE . "
+		SET module_mode = 'log', module_langname = 'ACP_USER_LOG'
+		WHERE module_class = 'acp'
+			AND module_basename = 'users'
+			AND module_mode = 'feedback'");
 
 	// Remove obsolete permissions.
 
@@ -1520,6 +1531,7 @@ if (version_compare($config['phpbbex_version'], '1.10.0', '<='))
 			AND ((module_basename = 'reports' AND module_mode = 'report_details')
 				OR (module_basename = 'pm_reports' AND module_mode = 'pm_report_details'))");
 	$cache->destroy('_modules_mcp');
+	$cache->destroy('_modules_acp');
 
 	// Unread topics tracking does not need these anymore.
 	$db->sql_query('DROP TABLE IF EXISTS ' . $table_prefix . 'forums_track');
@@ -2757,7 +2769,7 @@ function change_database_data(&$no_updates, $version)
 					'auth'      => 'acl_a_user',
 					'display'   => 0,
 					'cat'       => 'ACP_CAT_USERS',
-					'after'     => ['feedback', 'ACP_USER_FEEDBACK']
+					'after'     => ['log', 'ACP_USER_LOG']
 				],
 				'setting_forum_copy'    => [
 					'base'      => 'permissions',

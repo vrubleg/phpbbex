@@ -1467,7 +1467,6 @@ class install_install extends module
 			'MCP_MAIN'      => null,
 			'MCP_QUEUE'     => null,
 			'MCP_REPORTS'   => null,
-			'MCP_NOTES'     => null,
 			'MCP_WARN'      => null,
 			'MCP_LOGS'      => null,
 			'MCP_BAN'       => null,

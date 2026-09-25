@@ -49,7 +49,7 @@
 	</tr>
 	<!-- BEGIN users -->
 		<tr class="<!-- IF items.S_ROW_COUNT is even -->row1<!-- ELSE -->row2<!-- ENDIF -->">
-			<td style="font-weight: bold;">{users.USERNAME} [ <a href="{users.U_USER_ADMIN}">{L_USER_ADMIN}</a> ]</td>
+			<td style="font-weight: bold;">{users.USERNAME} <a href="{users.U_USER_ADMIN}">[{L_USER_ADMIN}]</a></td>
 			<td class="mark"><input type="checkbox" name="marked_user_id[]" <!-- IF users.USERID -->value="{users.USERID}"<!-- ELSE -->disabled="disabled"<!-- ENDIF -->></td>
 		</tr>
 		<!-- IF S_DISPLAY_ALL || S_DISPLAY_SIG -->

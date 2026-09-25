@@ -15,7 +15,7 @@ if (!defined('IN_PHPBB'))
 */
 function mcp_post_details($id, $mode, $action)
 {
-	global $template, $db, $user, $auth, $cache, $config;
+	global $template, $db, $user, $auth, $cache;
 
 	$user->add_lang('posting');
 
@@ -174,14 +174,11 @@ function mcp_post_details($id, $mode, $action)
 		'S_POST_REPORTED'       => (bool) $post_info['post_reported'],
 		'S_POST_UNAPPROVED'     => !$post_info['post_approved'],
 		'S_POST_LOCKED'         => (bool) $post_info['post_edit_locked'],
-		'S_USER_NOTES'          => true,
-		'S_CLEAR_ALLOWED'       => (bool) $auth->acl_get('a_clearlogs'),
 
 		'U_EDIT'                => ($auth->acl_get('m_edit', $post_info['forum_id'])) ? append_sid(PHPBB_ROOT_PATH . 'posting.php', "mode=edit&amp;p={$post_info['post_id']}") : '',
 		'U_FIND_USERNAME'       => append_sid(PHPBB_ROOT_PATH . 'memberlist.php', 'mode=searchuser&amp;form=mcp_chgposter&amp;field=username&amp;select_single=true'),
 		'U_MCP_APPROVE'         => append_sid(PHPBB_ROOT_PATH . 'mcp.php', 'i=queue&amp;mode=approve_details&amp;f=' . $post_info['forum_id'] . '&amp;p=' . $post_id),
 		'U_MCP_REPORT'          => append_sid(PHPBB_ROOT_PATH . 'mcp.php', 'i=reports&amp;mode=report_details&amp;f=' . $post_info['forum_id'] . '&amp;p=' . $post_id),
-		'U_MCP_USER_NOTES'      => append_sid(PHPBB_ROOT_PATH . 'mcp.php', 'i=notes&amp;mode=user_notes&amp;u=' . $post_info['user_id']),
 		'U_MCP_WARN_USER'       => ($auth->acl_get('m_warn')) ? append_sid(PHPBB_ROOT_PATH . 'mcp.php', 'i=warn&amp;mode=warn_user&amp;u=' . $post_info['user_id']) : '',
 		'U_VIEW_POST'           => append_sid(PHPBB_ROOT_PATH . 'viewtopic.php', 'p=' . $post_info['post_id'] . '#p' . $post_info['post_id']),
 		'U_VIEW_TOPIC'          => append_sid(PHPBB_ROOT_PATH . 'viewtopic.php', 't=' . $post_info['topic_id']),
@@ -210,26 +207,6 @@ function mcp_post_details($id, $mode, $action)
 		'U_LOOKUP_IP'           => ($auth->acl_get('m_info', $post_info['forum_id'])) ? "{$url}&amp;i={$id}&amp;mode={$mode}&amp;lookup={$post_info['poster_ip']}#ip" : '',
 		'U_WHOIS'               => ($auth->acl_get('m_info', $post_info['forum_id'])) ? append_sid(PHPBB_ROOT_PATH . 'mcp.php', "i={$id}&amp;mode={$mode}&amp;action=whois&amp;p={$post_id}&amp;ip={$post_info['poster_ip']}") : '',
 	]);
-
-	// Get User Notes
-	$log_data = [];
-	$log_count = false;
-	view_log('user', $log_data, $log_count, $config['posts_per_page'], 0, 0, 0, $post_info['user_id']);
-
-	if (!empty($log_data))
-	{
-		$template->assign_var('S_USER_NOTES', true);
-
-		foreach ($log_data as $row)
-		{
-			$template->assign_block_vars('usernotes', [
-				'REPORT_BY'     => $row['username_full'],
-				'REPORT_AT'     => $user->format_date($row['time']),
-				'ACTION'        => $row['action'],
-				'ID'            => $row['id']]
-			);
-		}
-	}
 
 	// Get Reports
 	if ($auth->acl_get('m_report', $post_info['forum_id']))

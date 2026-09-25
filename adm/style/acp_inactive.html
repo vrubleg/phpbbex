@@ -33,7 +33,7 @@
 
 		<td style="vertical-align: top;">
 			{inactive.USERNAME_FULL}
-			<!-- IF inactive.POSTS --><br>{L_POSTS}: <strong>{inactive.POSTS}</strong> [<a href="{inactive.U_SEARCH_USER}">{L_SEARCH_USER_POSTS}</a>]<!-- ENDIF -->
+			<!-- IF inactive.POSTS --><br>{L_POSTS}: <strong>{inactive.POSTS}</strong> <a href="{inactive.U_SEARCH_USER}">[{L_SEARCH_USER_POSTS}]</a><!-- ENDIF -->
 		</td>
 		<td style="vertical-align: top;">{inactive.JOINED}</td>
 		<td style="vertical-align: top;">{inactive.INACTIVE_DATE}</td>
@@ -68,7 +68,7 @@
 <fieldset class="quick">
 	<select name="action">{S_INACTIVE_OPTIONS}</select>
 	<input class="button2" type="submit" name="submit" value="{L_SUBMIT}">
-	<p class="small"><a onclick="marklist('inactive', 'mark', true);">{L_MARK_ALL}</a> &bull; <a onclick="marklist('inactive', 'mark', false);">{L_UNMARK_ALL}</a></p>
+	<p class="small"><a onclick="marklist('inactive', 'mark', true);">[{L_MARK_ALL}]</a> <a onclick="marklist('inactive', 'mark', false);">[{L_UNMARK_ALL}]</a></p>
 	{S_FORM_TOKEN}
 </fieldset>
 

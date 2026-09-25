@@ -17,13 +17,9 @@ if (empty($lang) || !is_array($lang))
 
 $lang = array_merge($lang, [
 	'ACTION'                => 'Action',
-	'ACTION_NOTE'           => 'Action/Note',
-	'ADD_FEEDBACK'          => 'Add feedback',
-	'ADD_FEEDBACK_EXPLAIN'  => 'If you would like to add a report on this please fill out the following form. Only use plain text; HTML, BBCode, etc. are not permitted.',
 	'ADD_WARNING'           => 'Add warning',
 	'ADD_WARNING_EXPLAIN'   => 'To send a warning to this user please fill out the following form. Only use plain text; HTML, BBCode, etc. are not permitted.',
 	'ALL_ENTRIES'           => 'All entries',
-	'ALL_NOTES_DELETED'     => 'Successfully removed all user notes.',
 	'ALL_REPORTS'           => 'All reports',
 	'ALREADY_REPORTED'      => 'This post has already been reported.',
 	'ALREADY_REPORTED_PM'   => 'This private message has already been reported.',
@@ -74,7 +70,6 @@ $lang = array_merge($lang, [
 	'EMPTY_REPORT'                  => 'You must enter a reason for this report.',
 	'EMPTY_TOPICS_REMOVED_WARNING'  => 'Please note that one or several topics have been removed from the database because they were or become empty.',
 
-	'FEEDBACK'              => 'Feedback',
 	'FORK'                  => 'Copy',
 	'FORK_TOPIC'            => 'Copy topic',
 	'FORK_TOPIC_CONFIRM'    => 'Are you sure you want to copy this topic?',
@@ -113,7 +108,6 @@ $lang = array_merge($lang, [
 	'LOOKUP_ALL'                => 'Look up all IPs',
 	'LOOKUP_IP'                 => 'Look up IP',
 
-	'MARKED_NOTES_DELETED'      => 'Successfully removed all marked user notes.',
 
 	'MCP_ADD'                       => 'Add a warning',
 
@@ -144,10 +138,6 @@ $lang = array_merge($lang, [
 	'MCP_MAKE_NORMAL_CONFIRM'       => 'Are you sure you want to change this topic to a “Standard Topic”?',
 	'MCP_MAKE_NORMALS'              => 'Modify to “Standard Topics”',
 	'MCP_MAKE_NORMALS_CONFIRM'      => 'Are you sure you want to change the selected topics to “Standard Topics”?',
-
-	'MCP_NOTES'                     => 'User notes',
-	'MCP_NOTES_FRONT'               => 'Front page',
-	'MCP_NOTES_USER'                => 'User details',
 
 	'MCP_POST_REPORTS'              => 'Reports issued on this post',
 
@@ -203,7 +193,6 @@ $lang = array_merge($lang, [
 	'NO_DESTINATION_FORUM'          => 'Please select a forum for destination.',
 	'NO_DESTINATION_FORUM_FOUND'    => 'There is no destination forum available.',
 	'NO_ENTRIES'                    => 'No log entries for this period.',
-	'NO_FEEDBACK'                   => 'No feedback exists for this user.',
 	'NO_FINAL_TOPIC_SELECTED'       => 'You have to select a destination topic for merging posts.',
 	'NO_MATCHES_FOUND'              => 'No matches found.',
 	'NO_POST'                       => 'You have to select a post in order to warn the user for a post.',
@@ -246,7 +235,6 @@ $lang = array_merge($lang, [
 	'POST_REPORTED_SUCCESS'     => 'This post has been successfully reported.',
 	'POST_UNLOCKED_SUCCESS'     => 'Post unlocked successfully.',
 
-	'READ_USERNOTES'            => 'User notes',
 	'READ_WARNINGS'             => 'User warnings',
 	'REPORTER'                  => 'Reporter',
 	'REPORTED'                  => 'Reported',
@@ -335,7 +323,6 @@ $lang = array_merge($lang, [
 	'UNLOCK_TOPICS_CONFIRM'         => 'Are you sure you want to unlock all selected topics?',
 	'USER_CANNOT_POST'              => 'You cannot post in this forum.',
 	'USER_CANNOT_REPORT'            => 'You cannot report posts in this forum.',
-	'USER_FEEDBACK_ADDED'           => 'User feedback added successfully.',
 	'USER_WARNING_ADDED'            => 'User warned successfully.',
 	'USER_WARNING_EDITED'           => 'Warning edited successfully.',
 	'USER_WARNING_DELETED'          => 'Warning deleted successfully.',

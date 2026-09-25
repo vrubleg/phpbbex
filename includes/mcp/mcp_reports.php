@@ -171,13 +171,10 @@ class mcp_reports
 					'S_POST_UNAPPROVED'     => !$post_info['post_approved'],
 					'S_POST_LOCKED'         => $post_info['post_edit_locked'],
 					'S_REPORT_CLOSED'       => $report['report_closed'],
-					'S_USER_NOTES'          => true,
 
 					'U_EDIT'                    => ($auth->acl_get('m_edit', $post_info['forum_id'])) ? append_sid(PHPBB_ROOT_PATH . 'posting.php', "mode=edit&amp;p={$post_info['post_id']}") : '',
 					'U_MCP_APPROVE'             => append_sid(PHPBB_ROOT_PATH . 'mcp.php', 'i=queue&amp;mode=approve_details&amp;f=' . $post_info['forum_id'] . '&amp;p=' . $post_id),
 					'U_MCP_REPORT'              => append_sid(PHPBB_ROOT_PATH . 'mcp.php', 'i=reports&amp;mode=report_details&amp;f=' . $post_info['forum_id'] . '&amp;p=' . $post_id),
-					'U_MCP_REPORTER_NOTES'      => append_sid(PHPBB_ROOT_PATH . 'mcp.php', 'i=notes&amp;mode=user_notes&amp;u=' . $report['user_id']),
-					'U_MCP_USER_NOTES'          => append_sid(PHPBB_ROOT_PATH . 'mcp.php', 'i=notes&amp;mode=user_notes&amp;u=' . $post_info['user_id']),
 					'U_MCP_WARN_REPORTER'       => ($auth->acl_get('m_warn')) ? append_sid(PHPBB_ROOT_PATH . 'mcp.php', 'i=warn&amp;mode=warn_user&amp;u=' . $report['user_id']) : '',
 					'U_MCP_WARN_USER'           => ($auth->acl_get('m_warn')) ? append_sid(PHPBB_ROOT_PATH . 'mcp.php', 'i=warn&amp;mode=warn_user&amp;u=' . $post_info['user_id']) : '',
 					'U_VIEW_FORUM'              => append_sid(PHPBB_ROOT_PATH . 'viewforum.php', 'f=' . $post_info['forum_id']),

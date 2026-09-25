@@ -13,7 +13,7 @@
 		<th>{L_REPORT_BY}</th>
 		<th>{L_IP}</th>
 		<th>{L_TIME}</th>
-		<th>{L_FEEDBACK}</th>
+		<th>{L_ACTION}</th>
 		<th>{L_MARK}</th>
 	</tr>
 	</thead>
@@ -54,23 +54,9 @@
 		<fieldset class="quick">
 			<input class="button2" type="submit" name="delall" value="{L_DELETE_ALL}">&nbsp;
 			<input class="button2" type="submit" name="delmarked" value="{L_DELETE_MARKED}">
-			<p class="small"><a onclick="marklist('list', 'mark', true);">{L_MARK_ALL}</a> &bull; <a onclick="marklist('list', 'mark', false);">{L_UNMARK_ALL}</a></p>
+			<p class="small"><a onclick="marklist('list', 'mark', true);">[{L_MARK_ALL}]</a> <a onclick="marklist('list', 'mark', false);">[{L_UNMARK_ALL}]</a></p>
 		</fieldset>
 	<!-- ENDIF -->
 
-	<h1>{L_ADD_FEEDBACK}</h1>
-
-	<p>{L_ADD_FEEDBACK_EXPLAIN}</p>
-
-	<fieldset>
-		<legend>{L_ACP_USER_FEEDBACK}</legend>
-		<dl>
-			<dd class="full"><textarea name="message" id="message" rows="10" cols="76"></textarea></dd>
-		</dl>
-	</fieldset>
-
-	<fieldset class="quick">
-		<input class="button1" type="submit" name="update" value="{L_SUBMIT}">
-	</fieldset>
 	{S_FORM_TOKEN}
 	</form>

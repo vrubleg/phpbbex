@@ -54,7 +54,7 @@
 	<fieldset>
 	<dl>
 		<dt><label for="group_colour">{L_GROUP_COLOR}:</label><br><span>{L_GROUP_COLOR_EXPLAIN}</span></dt>
-		<dd><input name="group_colour" type="text" id="group_colour" value="{GROUP_COLOUR}" size="6" maxlength="6" class="inputbox narrow"> <span style="background-color: #{GROUP_COLOUR};">&nbsp;&nbsp;&nbsp;</span> [ <a href="{U_SWATCH}" onclick="popup(this.href, 636, 150, '_swatch'); return false;">{L_COLOUR_SWATCH}</a> ]</dd>
+		<dd><input name="group_colour" type="text" id="group_colour" value="{GROUP_COLOUR}" size="6" maxlength="6" class="inputbox narrow"> <span style="background-color: #{GROUP_COLOUR};">&nbsp;&nbsp;&nbsp;</span> <a href="{U_SWATCH}" onclick="popup(this.href, 636, 150, '_swatch'); return false;">[{L_COLOUR_SWATCH}]</a></dd>
 	</dl>
 	<dl>
 		<dt><label for="group_rank">{L_GROUP_RANK}:</label></dt>
@@ -164,7 +164,7 @@
 <fieldset class="display-actions">
 	<select name="action"><option value="">{L_SELECT_OPTION}</option>{S_ACTION_OPTIONS}</select>
 	<input class="button2" type="submit" name="update" value="{L_SUBMIT}">
-	<div><a onclick="marklist('ucp', 'mark', true);">{L_MARK_ALL}</a> &bull; <a onclick="marklist('ucp', 'mark', false);">{L_UNMARK_ALL}</a></div>
+	<div><a onclick="marklist('ucp', 'mark', true);">[{L_MARK_ALL}]</a> <a onclick="marklist('ucp', 'mark', false);">[{L_UNMARK_ALL}]</a></div>
 </fieldset>
 
 <div class="panel">

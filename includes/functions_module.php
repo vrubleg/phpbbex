@@ -520,7 +520,7 @@ class p_master
 	* This function is called for adding specific url parameters while executing the current module.
 	* It is doing the same as the _module_{name}_url() function, apart from being able to be called after
 	* having dynamically parsed specific parameters. This allows more freedom in choosing additional parameters.
-	* One example can be seen in /includes/mcp/mcp_notes.php - $this->p_master->adjust_url() call.
+	* The active module can use $this->p_master->adjust_url() to add context-specific parameters.
 	*
 	* @param string $url_extra Extra url parameters, e.g.: &amp;u=$user_id
 	*

@@ -29,7 +29,7 @@
 			<dl>
 				<dt><label for="{options.KEY}">{options.TITLE}:</label><!-- IF options.S_EXPLAIN --><br><span>{options.TITLE_EXPLAIN}</span><!-- ENDIF --></dt>
 				<dd>{options.CONTENT}</dd>
-				<!-- IF options.S_FIND_USER --><dd>[ <a href="{options.U_FIND_USER}" onclick="find_username(this.href); return false;">{L_FIND_USERNAME}</a> ]</dd><!-- ENDIF -->
+				<!-- IF options.S_FIND_USER --><dd><a href="{options.U_FIND_USER}" onclick="find_username(this.href); return false;">[{L_FIND_USERNAME}]</a></dd><!-- ENDIF -->
 			</dl>
 
 		<!-- ENDIF -->
@@ -38,7 +38,7 @@
 	<!-- IF S_MARK_ALL -->
 	<dl class="small">
 		<dt>&nbsp;</dt>
-		<dd><a onclick="marklist('stk', '{S_MARK_ALL}', true);">{L_MARK_ALL}</a> :: <a onclick="marklist('stk', '{S_MARK_ALL}', false);">{L_UNMARK_ALL}</a></dd>
+		<dd><a onclick="marklist('stk', '{S_MARK_ALL}', true);">[{L_MARK_ALL}]</a> <a onclick="marklist('stk', '{S_MARK_ALL}', false);">[{L_UNMARK_ALL}]</a></dd>
 	</dl>
 	<!-- ENDIF -->
 

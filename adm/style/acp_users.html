@@ -15,7 +15,7 @@
 	<dl>
 		<dt><label for="username">{L_ENTER_USERNAME}:</label></dt>
 		<dd><input class="text medium" type="text" id="username" name="username"></dd>
-		<dd>[ <a href="{U_FIND_USERNAME}" onclick="find_username(this.href); return false;">{L_FIND_USERNAME}</a> ]</dd>
+		<dd><a href="{U_FIND_USERNAME}" onclick="find_username(this.href); return false;">[{L_FIND_USERNAME}]</a></dd>
 		<dd class="full" style="text-align: left;"><label><input type="checkbox" class="radio" id="anonymous" name="u" value="{ANONYMOUS_USER_ID}"> {L_SELECT_ANONYMOUS}</label></dd>
 	</dl>
 
@@ -79,9 +79,9 @@
 
 <!-- INCLUDE acp_users_overview.html -->
 
-<!-- ELSEIF S_FEEDBACK -->
+<!-- ELSEIF S_USER_LOG -->
 
-<!-- INCLUDE acp_users_feedback.html -->
+<!-- INCLUDE acp_users_log.html -->
 
 <!-- ELSEIF S_WARNINGS -->
 
@@ -204,7 +204,7 @@
 
 	<fieldset class="quick">
 		<input class="button2" type="submit" name="delmarked" value="{L_DELETE_MARKED}">
-		<p class="small"><a onclick="marklist('user_attachments', 'mark', true);">{L_MARK_ALL}</a> &bull; <a onclick="marklist('user_attachments', 'mark', false);">{L_UNMARK_ALL}</a></p>
+		<p class="small"><a onclick="marklist('user_attachments', 'mark', true);">[{L_MARK_ALL}]</a> <a onclick="marklist('user_attachments', 'mark', false);">[{L_UNMARK_ALL}]</a></p>
 		{S_FORM_TOKEN}
 	</fieldset>
 	</form>

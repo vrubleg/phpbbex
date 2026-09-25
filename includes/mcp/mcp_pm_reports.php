@@ -149,11 +149,8 @@ class mcp_pm_reports
 					'S_CAN_VIEWIP'          => $auth->acl_getf_global('m_info'),
 					'S_POST_REPORTED'       => $pm_info['message_reported'],
 					'S_REPORT_CLOSED'       => $report['report_closed'],
-					'S_USER_NOTES'          => true,
 
 					'U_MCP_REPORT'              => append_sid(PHPBB_ROOT_PATH . 'mcp.php', 'i=pm_reports&amp;mode=pm_report_details&amp;r=' . $report_id),
-					'U_MCP_REPORTER_NOTES'      => append_sid(PHPBB_ROOT_PATH . 'mcp.php', 'i=notes&amp;mode=user_notes&amp;u=' . $report['user_id']),
-					'U_MCP_USER_NOTES'          => append_sid(PHPBB_ROOT_PATH . 'mcp.php', 'i=notes&amp;mode=user_notes&amp;u=' . $pm_info['author_id']),
 					'U_MCP_WARN_REPORTER'       => ($auth->acl_get('m_warn')) ? append_sid(PHPBB_ROOT_PATH . 'mcp.php', 'i=warn&amp;mode=warn_user&amp;u=' . $report['user_id']) : '',
 					'U_MCP_WARN_USER'           => ($auth->acl_get('m_warn')) ? append_sid(PHPBB_ROOT_PATH . 'mcp.php', 'i=warn&amp;mode=warn_user&amp;u=' . $pm_info['author_id']) : '',
 

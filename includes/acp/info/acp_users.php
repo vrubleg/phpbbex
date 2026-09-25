@@ -15,7 +15,7 @@ class acp_users_info
 			'version'   => '1.0.0',
 			'modes'     => [
 				'overview'      => ['title' => 'ACP_MANAGE_USERS', 'auth' => 'acl_a_user', 'cat' => ['ACP_CAT_USERS']],
-				'feedback'      => ['title' => 'ACP_USER_FEEDBACK', 'auth' => 'acl_a_user', 'display' => false, 'cat' => ['ACP_CAT_USERS']],
+				'log'           => ['title' => 'ACP_USER_LOG', 'auth' => 'acl_a_user', 'display' => false, 'cat' => ['ACP_CAT_USERS']],
 				'warnings'      => ['title' => 'ACP_USER_WARNINGS', 'auth' => 'acl_a_user', 'display' => false, 'cat' => ['ACP_CAT_USERS']],
 				'profile'       => ['title' => 'ACP_USER_PROFILE', 'auth' => 'acl_a_user', 'display' => false, 'cat' => ['ACP_CAT_USERS']],
 				'prefs'         => ['title' => 'ACP_USER_PREFS', 'auth' => 'acl_a_user', 'display' => false, 'cat' => ['ACP_CAT_USERS']],
