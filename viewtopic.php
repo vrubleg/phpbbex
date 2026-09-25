@@ -1562,7 +1562,6 @@ for ($i = 0, $end = sizeof($post_list); $i < $end; ++$i)
 		'U_MINI_POST'       => append_sid(PHPBB_ROOT_PATH . 'viewtopic.php', 'p=' . $row['post_id']) . '#p' . $row['post_id'],
 		'U_NEXT_POST_ID'    => ($i < $i_total && isset($rowset[$post_list[$i + 1]])) ? $rowset[$post_list[$i + 1]]['post_id'] : '',
 		'U_PREV_POST_ID'    => $prev_post_id,
-		'U_NOTES'           => ($auth->acl_getf_global('m_')) ? append_sid(PHPBB_ROOT_PATH . 'mcp.php', 'i=notes&amp;mode=user_notes&amp;u=' . $poster_id) : '',
 		'U_WARN'            => ($auth->acl_get('m_warn') && $poster_id != ANONYMOUS) ? append_sid(PHPBB_ROOT_PATH . 'mcp.php', count($row['warnings_data']) ? 'i=warn&amp;mode=warn_edit&amp;warning_id=' . $row['warnings_data'][0]['warning_id'] : 'i=warn&amp;mode=warn_post&amp;f=' . $forum_id . '&amp;p=' . $row['post_id']) : '',
 
 		'POST_ID'           => $row['post_id'],

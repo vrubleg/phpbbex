@@ -92,8 +92,6 @@ class mcp_warn
 		foreach ($highest as $row)
 		{
 			$template->assign_block_vars('highest', [
-				'U_NOTES'       => append_sid(PHPBB_ROOT_PATH . 'mcp.php', 'i=notes&amp;mode=user_notes&amp;u=' . $row['user_id']),
-
 				'USERNAME_FULL'     => get_username_string('full', $row['user_id'], $row['username'], $row['user_colour']),
 				'USERNAME'          => $row['username'],
 				'USERNAME_COLOUR'   => ($row['user_colour']) ? '#' . $row['user_colour'] : '',
@@ -114,8 +112,6 @@ class mcp_warn
 		while ($row = $db->sql_fetchrow($result))
 		{
 			$template->assign_block_vars('latest', [
-				'U_NOTES'       => append_sid(PHPBB_ROOT_PATH . 'mcp.php', 'i=notes&amp;mode=user_notes&amp;u=' . $row['user_id']),
-
 				'USERNAME_FULL'     => get_username_string('full', $row['user_id'], $row['username'], $row['user_colour']),
 				'USERNAME'          => $row['username'],
 				'USERNAME_COLOUR'   => ($row['user_colour']) ? '#' . $row['user_colour'] : '',
@@ -161,8 +157,6 @@ class mcp_warn
 		foreach ($users as $row)
 		{
 			$template->assign_block_vars('user', [
-				'U_NOTES'       => append_sid(PHPBB_ROOT_PATH . 'mcp.php', 'i=notes&amp;mode=user_notes&amp;u=' . $row['user_id']),
-
 				'USERNAME_FULL'     => get_username_string('full', $row['user_id'], $row['username'], $row['user_colour']),
 				'USERNAME'          => $row['username'],
 				'USERNAME_COLOUR'   => ($row['user_colour']) ? '#' . $row['user_colour'] : '',
@@ -393,7 +387,7 @@ class mcp_warn
 			{
 				$msg = $user->lang['FORM_INVALID'];
 			}
-			$redirect = append_sid(PHPBB_ROOT_PATH . 'mcp.php', "i=notes&amp;mode=user_notes&amp;u={$user_id}");
+			$redirect = append_sid(PHPBB_ROOT_PATH . 'memberlist.php', "mode=viewprofile&amp;u={$user_id}");
 			meta_refresh(2, $redirect);
 			trigger_error($msg . '<br><br>' . sprintf($user->lang['RETURN_PAGE'], '<a href="' . $redirect . '">', '</a>'));
 		}
@@ -498,7 +492,7 @@ class mcp_warn
 			}
 			$redirect = ($post_id && $post_row)
 				? append_sid(PHPBB_ROOT_PATH . 'viewtopic.php', "p={$post_id}#p{$post_id}")
-				: append_sid(PHPBB_ROOT_PATH . 'mcp.php', "i=notes&amp;mode=user_notes&amp;u={$user_id}");
+				: append_sid(PHPBB_ROOT_PATH . 'memberlist.php', "mode=viewprofile&amp;u={$user_id}");
 			meta_refresh(2, $redirect);
 			trigger_error($msg . '<br><br>' . sprintf($user->lang['RETURN_PAGE'], '<a href="' . $redirect . '">', '</a>'));
 		}

@@ -595,7 +595,6 @@ $lang = array_merge($lang, [
 	'VIEW_FORUM_LOGS'           => 'Просмотреть логи',
 	'VIEW_LATEST_POST'          => 'Перейти к последнему сообщению',
 	'VIEW_NEWEST_POST'          => 'Перейти к первому непрочитанному сообщению',
-	'VIEW_NOTES'                => 'Заметки о пользователе',
 	'VIEW_ONLINE_TIME'          => 'по активности за минуту',
 	'VIEW_ONLINE_TIMES'         => 'по активности за %d минут',
 	'VIEW_TOPIC'                => 'Просмотр темы',
