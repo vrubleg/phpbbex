@@ -19,9 +19,9 @@
 		<dd>
 			<!-- IF USER_COLOR --><span style="color: {USER_COLOR}; font-weight: bold;"><!-- ELSE --><span><!-- ENDIF -->{USERNAME}</span>
 			<!-- IF S_GENDER_M --><img src="{T_THEME_PATH}/images/icon_gender_m.gif" title="{L_GENDER}: {L_GENDER_M}" alt="M"><!-- ELSEIF S_GENDER_F --><img src="{T_THEME_PATH}/images/icon_gender_f.gif" title="{L_GENDER}: {L_GENDER_F}" alt="F"><!-- ENDIF -->
-			<!-- IF U_USER_ADMIN --> [ <a href="{U_USER_ADMIN}">{L_USER_ADMIN}</a> ]<!-- ENDIF -->
-			<!-- IF U_USER_BAN --> [ <a href="{U_USER_BAN}">{L_USER_BAN}</a> ]<!-- ENDIF -->
-			<!-- IF U_SWITCH_PERMISSIONS --> [ <a href="{U_SWITCH_PERMISSIONS}">{L_USE_PERMISSIONS}</a> ]<!-- ENDIF -->
+			<!-- IF U_USER_ADMIN --> <a href="{U_USER_ADMIN}">[{L_USER_ADMIN}]</a><!-- ENDIF -->
+			<!-- IF U_USER_BAN --> <a href="{U_USER_BAN}">[{L_USER_BAN}]</a><!-- ENDIF -->
+			<!-- IF U_SWITCH_PERMISSIONS --> <a href="{U_SWITCH_PERMISSIONS}">[{L_USE_PERMISSIONS}]</a><!-- ENDIF -->
 		</dd>
 		<!-- IF not AVATAR_IMG -->
 			<!-- IF RANK_TITLE --><dt>{L_RANK}:</dt> <dd>{RANK_TITLE}</dd><!-- ENDIF -->
@@ -92,7 +92,7 @@
 			<!-- IF (STYLE_P_SHOW_RATED or STYLE_P_SHOW_RATED_DETAILED) and S_RATING --><dt>{L_USER_RATED}:</dt> <dd><!-- IF not RATE_NO_POSITIVE and not RATE_NO_NEGATIVE --><!-- IF STYLE_P_SHOW_RATED and STYLE_P_SHOW_RATED_DETAILED -->{RATED} (+{RATED_POSITIVE}/−{RATED_NEGATIVE})<!-- ELSEIF STYLE_P_SHOW_RATED_DETAILED -->+{RATED_POSITIVE}/−{RATED_NEGATIVE}<!-- ELSE --><span title="+{RATED_POSITIVE}/−{RATED_NEGATIVE}">{RATED}</span><!-- ENDIF --><!-- ELSE -->{RATED}<!-- ENDIF --></dd><!-- ENDIF -->
 			<!-- IF S_WARNINGS -->
 			<dt>{L_WARNINGS}: </dt>
-			<dd><strong>{WARNINGS}</strong><!-- IF U_WARN --> [ <a href="{U_WARN}">{L_WARN_USER}</a> ]<!-- ENDIF --></dd>
+			<dd><strong>{WARNINGS}</strong><!-- IF U_WARN --> <a href="{U_WARN}">[{L_WARN_USER}]</a><!-- ENDIF --></dd>
 			<!-- ENDIF -->
 			<dt>{L_TOTAL_POSTS}:</dt>
 				<dd>{POSTS} <!-- IF S_DISPLAY_SEARCH -->| <strong><a href="{U_SEARCH_USER}">{L_SEARCH_USER_POSTS}</a></strong><!-- ENDIF -->

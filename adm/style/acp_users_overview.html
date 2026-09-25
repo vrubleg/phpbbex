@@ -5,7 +5,7 @@
 <dl>
 	<dt><label for="user">{L_USERNAME}:</label><br><span>{L_NAME_CHARS_EXPLAIN}</span></dt>
 	<dd><input type="text" id="user" name="user" value="{USER}" autocomplete="username"></dd>
-	<!-- IF U_SWITCH_PERMISSIONS --><dd>[ <a href="{U_SWITCH_PERMISSIONS}">{L_USE_PERMISSIONS}</a> ]</dd><!-- ENDIF -->
+	<!-- IF U_SWITCH_PERMISSIONS --><dd><a href="{U_SWITCH_PERMISSIONS}">[{L_USE_PERMISSIONS}]</a></dd><!-- ENDIF -->
 </dl>
 <!-- IF S_USER_INACTIVE -->
 <dl>
@@ -21,7 +21,7 @@
 <dl>
 	<dt><label>{L_REGISTERED_IP}:</label></dt>
 	<dd><a href="{U_SHOW_IP}">{REGISTERED_IP}</a></dd>
-	<dd>[ <a href="{U_WHOIS}" onclick="popup(this.href, 700, 500, '_whois'); return false;">{L_WHOIS}</a> ]</dd>
+	<dd><a href="{U_WHOIS}" onclick="popup(this.href, 700, 500, '_whois'); return false;">[{L_WHOIS}]</a></dd>
 </dl>
 <!-- ENDIF -->
 <dl>

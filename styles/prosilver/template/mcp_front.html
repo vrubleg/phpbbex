@@ -31,8 +31,8 @@
 						{L_POSTED} {L_POST_BY_AUTHOR} {unapproved.AUTHOR_FULL} &raquo; {unapproved.POST_TIME}
 					</dt>
 					<dd class="moderation">
-						{L_TOPIC}: <a href="{unapproved.U_TOPIC}">{unapproved.TOPIC_TITLE}</a> [<a href="{unapproved.U_MCP_TOPIC}">{L_MODERATE}</a>]<br>
-						{L_FORUM}: <!-- IF unapproved.U_FORUM --><a href="{unapproved.U_FORUM}">{unapproved.FORUM_NAME}</a><!-- ELSE -->{unapproved.FORUM_NAME}<!-- ENDIF --><!-- IF unapproved.U_MCP_FORUM --> [<a href="{unapproved.U_MCP_FORUM}">{L_MODERATE}</a>]<!-- ENDIF -->
+						{L_TOPIC}: <a href="{unapproved.U_TOPIC}">{unapproved.TOPIC_TITLE}</a> <a href="{unapproved.U_MCP_TOPIC}">[{L_MODERATE}]</a><br>
+						{L_FORUM}: <!-- IF unapproved.U_FORUM --><a href="{unapproved.U_FORUM}">{unapproved.FORUM_NAME}</a><!-- ELSE -->{unapproved.FORUM_NAME}<!-- ENDIF --><!-- IF unapproved.U_MCP_FORUM --> <a href="{unapproved.U_MCP_FORUM}">[{L_MODERATE}]</a><!-- ENDIF -->
 					</dd>
 
 					<dd class="mark"><input type="checkbox" name="post_id_list[]" value="{unapproved.POST_ID}"></dd>
@@ -53,7 +53,7 @@
 		{S_HIDDEN_FIELDS}
 		<input class="button2" type="submit" name="action[disapprove]" value="{L_DISAPPROVE}">&nbsp;
 		<input class="button1" type="submit" name="action[approve]" value="{L_APPROVE}">
-		<div><a onclick="marklist('mcp_queue', 'post_id_list', true);">{L_MARK_ALL}</a> :: <a onclick="marklist('mcp_queue', 'post_id_list', false);">{L_UNMARK_ALL}</a></div>
+		<div><a onclick="marklist('mcp_queue', 'post_id_list', true);">[{L_MARK_ALL}]</a> <a onclick="marklist('mcp_queue', 'post_id_list', false);">[{L_UNMARK_ALL}]</a></div>
 	</fieldset>
 	<!-- ENDIF -->
 		</form>

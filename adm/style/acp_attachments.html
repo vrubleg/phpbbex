@@ -196,7 +196,7 @@
 		</dl>
 		<dl>
 			<dt><label for="assigned_extensions">{L_ASSIGNED_EXTENSIONS}:</label></dt>
-			<dd><div id="ext">{ASSIGNED_EXTENSIONS}</div> <span>[<a href="{U_EXTENSIONS}">{L_GO_TO_EXTENSIONS}</a> ]</span></dd>
+			<dd><div id="ext">{ASSIGNED_EXTENSIONS}</div> <span><a href="{U_EXTENSIONS}">[{L_GO_TO_EXTENSIONS}]</a></span></dd>
 			<dd><select name="extensions[]" id="assigned_extensions" class="narrow" onchange="show_extensions(this);" multiple="multiple" size="8">{S_EXTENSION_OPTIONS}</select></dd>
 		</dl>
 		<dl>
@@ -349,8 +349,8 @@
 	<!-- END orphan -->
 	<tr class="row4">
 		<td colspan="4">&nbsp;</td>
-		<td class="small"><a onclick="marklist('orphan', 'add', true);">{L_MARK_ALL}</a> :: <a onclick="marklist('orphan', 'add', false);">{L_UNMARK_ALL}</a></td>
-		<td class="small"><a onclick="marklist('orphan', 'delete', true);">{L_MARK_ALL}</a> :: <a onclick="marklist('orphan', 'delete', false);">{L_UNMARK_ALL}</a></td>
+		<td class="small"><a onclick="marklist('orphan', 'add', true);">[{L_MARK_ALL}]</a> <a onclick="marklist('orphan', 'add', false);">[{L_UNMARK_ALL}]</a></td>
+		<td class="small"><a onclick="marklist('orphan', 'delete', true);">[{L_MARK_ALL}]</a> <a onclick="marklist('orphan', 'delete', false);">[{L_UNMARK_ALL}]</a></td>
 	</tr>
 	</tbody>
 	</table>
