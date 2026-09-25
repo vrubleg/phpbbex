@@ -36,11 +36,9 @@ $loaded_draft_id = request_var('loaded_draft_id', 0);
 $preview    = isset($_POST['preview']);
 $save       = isset($_POST['save']);
 $load       = isset($_POST['load']);
-$delete     = isset($_POST['delete']);
 $cancel     = (isset($_POST['cancel']) && !isset($_POST['save']));
 $refresh    = (isset($_POST['add_file']) || isset($_POST['update_file']) || isset($_POST['delete_file']) || isset($_POST['full_editor']) || isset($_POST['cancel_unglobalise']) || $save || $load);
 $submit     = isset($_POST['post']) && !$refresh && !$preview;
-$mode       = ($delete && !$preview && !$refresh && $submit) ? 'delete' : $mode;
 
 $error = $post_data = [];
 $current_time = time();
@@ -1407,7 +1405,6 @@ $template->assign_vars([
 	'S_EDIT_REASON'             => ($mode == 'edit' && $auth->acl_get('m_edit', $forum_id)),
 	'S_DISPLAY_USERNAME'        => (!$user->data['is_registered'] || ($mode == 'edit' && $post_data['poster_id'] == ANONYMOUS)),
 	'S_SHOW_TOPIC_ICONS'        => $s_topic_icons,
-	'S_DELETE_ALLOWED'          => ($mode == 'edit' && (($post_id == $post_data['topic_last_post_id'] && $post_data['poster_id'] == $user->data['user_id'] && $auth->acl_get('f_delete', $forum_id) && !$post_data['post_edit_locked'] && ($post_data['post_time'] > time() - ($config['delete_time'] * 60) || !$config['delete_time'])) || $auth->acl_get('m_delete', $forum_id))),
 	'S_BBCODE_ALLOWED'          => ($bbcode_status) ? 1 : 0,
 	'S_BBCODE_CHECKED'          => ($bbcode_checked) ? ' checked="checked"' : '',
 	'S_SMILIES_ALLOWED'         => $smilies_status,

@@ -64,7 +64,6 @@ $lang = array_merge($lang, [
 	'DELETE_MESSAGE_CONFIRM'    => 'Are you sure you want to delete this message?',
 	'DELETE_OWN_POSTS'          => 'Sorry but you can only delete your own posts.',
 	'DELETE_POST_CONFIRM'       => 'Are you sure you want to delete this post?',
-	'DELETE_POST_WARN'          => 'Once deleted the post cannot be recovered',
 	'DISABLE_BBCODE'            => 'Disable BBCode',
 	'DISABLE_MAGIC_URL'         => 'Do not automatically parse URLs',
 	'DISABLE_SMILIES'           => 'Disable smilies',

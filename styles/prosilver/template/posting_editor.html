@@ -130,7 +130,7 @@
 	<div class="panel bg2">
 		<div class="inner">
 
-		<!-- IF S_TYPE_TOGGLE or S_TOPIC_TYPE_ANNOUNCE or S_TOPIC_TYPE_STICKY or S_EDIT_REASON or S_DELETE_ALLOWED -->
+		<!-- IF S_TYPE_TOGGLE or S_TOPIC_TYPE_ANNOUNCE or S_TOPIC_TYPE_STICKY or S_EDIT_REASON -->
 		<fieldset class="fields2">
 			<!-- IF S_TYPE_TOGGLE -->
 			<dl>
@@ -158,13 +158,6 @@
 			<dl class="only-for-announces">
 				<dt><label for="topic_priority">{L_TOPIC_PRIORITY}:</label></dt>
 				<dd><label for="topic_priority"><input type="text" name="topic_priority" id="topic_priority" size="3" maxlength="5" value="{TOPIC_PRIORITY}" class="inputbox autowidth"> {L_TOPIC_PRIORITY_EXPLAIN}</label></dd>
-			</dl>
-			<!-- ENDIF -->
-
-			<!-- IF S_DELETE_ALLOWED -->
-			<dl>
-				<dt><label for="delete">{L_DELETE_POST}:</label></dt>
-				<dd><label for="delete"><input type="checkbox" name="delete" id="delete"> {L_DELETE_POST_WARN}</label></dd>
 			</dl>
 			<!-- ENDIF -->
 
