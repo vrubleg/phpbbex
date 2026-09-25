@@ -159,7 +159,7 @@ class mcp_main
 				mcp_forum_view($id, $mode, $action, $forum_info);
 
 				$this->tpl_name = 'mcp_forum';
-				$this->page_title = 'MCP_MAIN_FORUM_VIEW';
+				$this->page_title = 'MODERATE_FORUM';
 			break;
 
 			case 'topic_view':
@@ -168,7 +168,7 @@ class mcp_main
 				mcp_topic_view($id, $mode, $action);
 
 				$this->tpl_name = 'mcp_topic';
-				$this->page_title = 'MCP_MAIN_TOPIC_VIEW';
+				$this->page_title = 'MODERATE_TOPIC';
 			break;
 
 			case 'post_details':
@@ -177,7 +177,7 @@ class mcp_main
 				mcp_post_details($id, $mode, $action);
 
 				$this->tpl_name = ($action == 'whois') ? 'mcp_whois' : 'mcp_post';
-				$this->page_title = 'MCP_MAIN_POST_DETAILS';
+				$this->page_title = 'MODERATE_POST';
 			break;
 
 			default:

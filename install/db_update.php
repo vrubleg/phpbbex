@@ -737,11 +737,12 @@ if (version_compare($config['phpbbex_version'], '1.10.0', '<='))
 	remove_module_category('mcp', 'MCP_NOTES');
 
 	// Rename the per-user log page and its route.
-	$db->sql_query('UPDATE ' . MODULES_TABLE . "
-		SET module_mode = 'log', module_langname = 'ACP_USER_LOG'
-		WHERE module_class = 'acp'
-			AND module_basename = 'users'
-			AND module_mode = 'feedback'");
+	$db->sql_query('UPDATE ' . MODULES_TABLE . " SET module_mode = 'log', module_langname = 'ACP_USER_LOG' WHERE module_class = 'acp' AND module_basename = 'users' AND module_mode = 'feedback'");
+
+	// Rename the main MCP navigation items.
+	$db->sql_query("UPDATE " . MODULES_TABLE . " SET module_langname = 'MODERATE_FORUM' WHERE module_langname = 'MCP_MAIN_FORUM_VIEW'");
+	$db->sql_query("UPDATE " . MODULES_TABLE . " SET module_langname = 'MODERATE_TOPIC' WHERE module_langname = 'MCP_MAIN_TOPIC_VIEW'");
+	$db->sql_query("UPDATE " . MODULES_TABLE . " SET module_langname = 'MODERATE_POST' WHERE module_langname = 'MCP_MAIN_POST_DETAILS'");
 
 	// Remove obsolete permissions.
 
