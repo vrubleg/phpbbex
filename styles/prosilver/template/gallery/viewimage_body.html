@@ -98,7 +98,7 @@
 			<!-- IF POSTER_GALLERY_IMAGES != '' --><dd><strong>{L_IMAGES}:</strong> <!-- IF U_POSTER_GALLERY_SEARCH --><a href="{U_POSTER_GALLERY_SEARCH}">{POSTER_GALLERY_IMAGES}</a><!-- ELSE -->{POSTER_GALLERY_IMAGES}<!-- ENDIF --></dd><!-- ENDIF -->
 			<!-- IF POSTER_JOINED --><dd><strong>{L_JOINED}:</strong> {POSTER_JOINED}</dd><!-- ENDIF -->
 			<!-- IF POSTER_FROM --><dd><strong>{L_LOCATION}:</strong> {POSTER_FROM}</dd><!-- ENDIF -->
-			<!-- IF POSTER_IP --><dd><strong>{L_IP}:</strong> {POSTER_IP} [ <a href="{U_POSTER_WHOIS}" onclick="popup(this.href, 750, 500); return false;">{L_WHOIS}</a> ]</dd><!-- ENDIF -->
+			<!-- IF POSTER_IP --><dd><strong>{L_IP}:</strong> {POSTER_IP} <a href="{U_POSTER_WHOIS}" onclick="popup(this.href, 750, 500); return false;">[{L_WHOIS}]</a></dd><!-- ENDIF -->
 
 			<!-- IF S_PROFILE_FIELD1 -->
 				<!-- Use a construct like this to include admin defined profile fields. Replace FIELD1 with the name of your field. -->
