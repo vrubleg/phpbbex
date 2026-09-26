@@ -161,7 +161,7 @@ if ((phpbb_gallery::$auth->acl_check('m_', $album_id, $album_data['album_user_id
 
 	$user->add_lang('mods/gallery_mcp');
 	$template->assign_vars([
-		'S_MOD_ACTION'      => phpbb_gallery_url::append_sid('mcp', "image_id={$image_id}&amp;quickmod=1" /*&amp;redirect=" . urlencode(str_replace('&amp;', '&', $viewtopic_url))*/, true, $user->session_id),
+		'S_MOD_ACTION'      => phpbb_gallery_url::append_sid('mcp', "image_id={$image_id}&amp;quickmod=1" /*&amp;redirect=" . urlencode(str_replace('&amp;', '&', $viewtopic_url))*/, true, true),
 		'S_QUICK_MOD'       => $s_quick_mod,
 		'S_QM_MOVE'         => phpbb_gallery::$auth->acl_check('m_move', $album_id, $album_data['album_user_id']),
 		'S_QM_EDIT'         => $s_allowed_edit,
@@ -210,8 +210,8 @@ $template->assign_vars([
 
 	'IMAGE_NAME'        => $image_data['image_name'],
 	'IMAGE_DESC'        => $image_desc,
-	'IMAGE_IMGURL_BBCODE'   => (phpbb_gallery_config::get('disp_image_url')) ? '[url=' . phpbb_gallery_url::append_sid('full', 'image', "image_id={$image_id}", true, '') . '][img]' . phpbb_gallery_url::append_sid('full', 'image', "mode=thumbnail&amp;image_id={$image_id}", true, '') . '[/img][/url]' : '',
-	'IMAGE_URL'         => (phpbb_gallery_config::get('disp_image_url')) ? phpbb_gallery_url::append_sid('full', 'image', "image_id={$image_id}", true, '') : '',
+	'IMAGE_IMGURL_BBCODE'   => (phpbb_gallery_config::get('disp_image_url')) ? '[url=' . phpbb_gallery_url::append_sid('full', 'image', "image_id={$image_id}", true, false) . '][img]' . phpbb_gallery_url::append_sid('full', 'image', "mode=thumbnail&amp;image_id={$image_id}", true, false) . '[/img][/url]' : '',
+	'IMAGE_URL'         => (phpbb_gallery_config::get('disp_image_url')) ? phpbb_gallery_url::append_sid('full', 'image', "image_id={$image_id}", true, false) : '',
 	'IMAGE_TIME'        => $user->format_date($image_data['image_time']),
 	'IMAGE_VIEW'        => $image_data['image_view_count'],
 	'POSTER_IP'         => ($auth->acl_get('a_')) ? $image_data['image_user_ip'] : '',

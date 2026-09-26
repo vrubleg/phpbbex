@@ -124,7 +124,7 @@ class phpbb_gallery_url
 			$params = implode('&', explode('&amp;', $params));
 		}
 
-		return self::append_sid($path, $file, $params, false, '');
+		return self::append_sid($path, $file, $params, false, false);
 	}
 
 	static public function redirect($file, ...$args)
