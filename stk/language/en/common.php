@@ -56,7 +56,6 @@ $lang = array_merge($lang, [
 	'STK_LOGIN'                         => 'Support Toolkit Login',
 	'STK_LOGIN_WAIT'                        => 'You must wait three seconds before re-attempting login. Please try again.',
 	'STK_LOGOUT'                            => 'STK Logout',
-	'STK_LOGOUT_SUCCESS'                    => 'You have successfully logged out from the Support Toolkit.',
 	'STK_NON_LOGIN'                     => 'Login to access the STK.',
 	'SUPPORT_TOOL_KIT'                  => 'Support Toolkit',
 	'SUPPORT_TOOL_KIT_INDEX'                => 'Support Toolkit index',

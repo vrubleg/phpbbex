@@ -174,7 +174,6 @@ $lang = array_merge($lang, [
 	'ADMIN_PANEL'           => 'Administration Control Panel',
 
 	'ADM_LOGOUT'            => 'ACP&nbsp;Logout',
-	'ADM_LOGGED_OUT'        => 'Successfully logged out from Administration Control Panel',
 
 	'BACK'                  => 'Back',
 

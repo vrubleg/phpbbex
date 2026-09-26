@@ -1485,12 +1485,20 @@ if (!defined('NEED_SID'))
 }
 
 /**
-* Append session id to url.
+* Generate the short URL token for a session id.
+*/
+function get_sid_token($session_id)
+{
+	return hash('crc32c', (string) $session_id);
+}
+
+/**
+* Append session token to url.
 *
 * @param string $url The url the session id needs to be appended to (can have params)
 * @param mixed $params String or array of additional url parameters
 * @param bool $is_amp Is url using &amp; (true) or & (false)
-* @param string $session_id Possibility to use a custom session id instead of the global one
+* @param bool $add_sid Whether to append the CRC32C hash of the current session id
 *
 * Examples:
 * <code>
@@ -1501,9 +1509,9 @@ if (!defined('NEED_SID'))
 * </code>
 *
 */
-function append_sid($url, $params = false, $is_amp = true, $session_id = NEED_SID)
+function append_sid($url, $params = false, $is_amp = true, $add_sid = NEED_SID)
 {
-	global $_SID, $_EXTRA_URL, $config, $user;
+	global $_SID, $_EXTRA_URL;
 
 	if ($params === '' || (is_array($params) && empty($params)))
 	{
@@ -1527,7 +1535,7 @@ function append_sid($url, $params = false, $is_amp = true, $session_id = NEED_SI
 	}
 
 	// Handle really simple cases quickly
-	if ((!$_SID || !$session_id) && empty($_EXTRA_URL) && !$params_is_array && !$anchor)
+	if ((!$_SID || !$add_sid) && empty($_EXTRA_URL) && !$params_is_array && !$anchor)
 	{
 		if ($params === false)
 		{
@@ -1538,11 +1546,7 @@ function append_sid($url, $params = false, $is_amp = true, $session_id = NEED_SI
 		return $url . ($params !== false ? $url_delim. $params : '');
 	}
 
-	// Assign sid if session id is not specified
-	if ($session_id === true)
-	{
-		$session_id = $_SID;
-	}
+	$sid = ($add_sid && $_SID) ? get_sid_token($_SID) : '';
 
 	$amp_delim = ($is_amp) ? '&amp;' : '&';
 	$url_delim = (strpos($url, '?') === false) ? '?' : $amp_delim;
@@ -1553,14 +1557,14 @@ function append_sid($url, $params = false, $is_amp = true, $session_id = NEED_SI
 	// Use the short variant if possible ;)
 	if ($params === false)
 	{
-		// Append session id
-		if (!$session_id)
+		// Append session token
+		if (!$sid)
 		{
 			return $url . (($append_url) ? $url_delim . $append_url : '') . $anchor;
 		}
 		else
 		{
-			return $url . (($append_url) ? $url_delim . $append_url . $amp_delim : $url_delim) . 'sid=' . $session_id . $anchor;
+			return $url . (($append_url) ? $url_delim . $append_url . $amp_delim : $url_delim) . 'sid=' . $sid . $anchor;
 		}
 	}
 
@@ -1588,9 +1592,9 @@ function append_sid($url, $params = false, $is_amp = true, $session_id = NEED_SI
 		$params = implode($amp_delim, $output);
 	}
 
-	// Append session id and parameters (even if they are empty)
+	// Append session token and parameters (even if they are empty)
 	// If parameters are empty, the developer can still append his/her parameters without caring about the delimiter
-	return $url . (($append_url) ? $url_delim . $append_url . $amp_delim : $url_delim) . $params . ((!$session_id) ? '' : $amp_delim . 'sid=' . $session_id) . $anchor;
+	return $url . (($append_url) ? $url_delim . $append_url . $amp_delim : $url_delim) . $params . ((!$sid) ? '' : $amp_delim . 'sid=' . $sid) . $anchor;
 }
 
 /**
@@ -2587,7 +2591,7 @@ function get_preg_expression($mode)
 		case 'bbcode_htm':
 			return [
 				'#<!\-\- e \-\-><a href="mailto:(.*?)">.*?</a><!\-\- e \-\->#',
-				'#<!\-\- l \-\-><a [-= "\w]*href="(.*?)(?:(&amp;|\?)sid=[0-9a-f]{32})?">.*?</a><!\-\- l \-\->#',
+				'#<!\-\- l \-\-><a [-= "\w]*href="(.*?)">.*?</a><!\-\- l \-\->#',
 				'#(?|<!\-\- (m) \-\-><a [-= "\w]*href="(.*?)">.*?</a><!\-\- m \-\->|<!\-\- (w) \-\-><a [-= "\w]*href="(?:https?://)?(.*?)">.*?</a><!\-\- w \-\->)#',
 				'#<!\-\- s(.*?) \-\-><img src="\{SMILIES_PATH\}\/.*?\s*/?><!\-\- s\1 \-\->#',
 				'#<!\-\- .*? \-\->#s',
@@ -3228,7 +3232,7 @@ function page_header($page_title = '', $display_online_list = true)
 	// Generate logged in/logged out status
 	if ($user->data['user_id'] != ANONYMOUS)
 	{
-		$u_login_logout = append_sid(PHPBB_ROOT_PATH . 'ucp.php', 'mode=logout', true, $user->session_id);
+		$u_login_logout = append_sid(PHPBB_ROOT_PATH . 'ucp.php', 'mode=logout', true, true);
 		$l_login_logout = sprintf($user->lang['LOGOUT_USER'], $user->data['username']);
 	}
 	else
@@ -3581,7 +3585,7 @@ function page_footer($run_cron = true)
 	$template->assign_vars([
 		'DEBUG_OUTPUT'          => $debug_output ?? '',
 		'COPYRIGHT_NOTICE'      => nl2br(preg_replace_callback('#{L_([_A-Z0-9]+)}#', function ($m) use ($user) { return $user->lang[$m[1]] ?? $m[0]; }, trim($config['copyright_notice']))),
-		'U_ACP' => ($auth->acl_get('a_') && !empty($user->data['is_registered'])) ? append_sid(PHPBB_ROOT_PATH . 'adm/index.php', false, true, $user->session_id) : '']
+		'U_ACP' => ($auth->acl_get('a_') && !empty($user->data['is_registered'])) ? append_sid(PHPBB_ROOT_PATH . 'adm/index.php', false, true, true) : '']
 	);
 
 	// Call cron-type script

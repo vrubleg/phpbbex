@@ -338,8 +338,7 @@ function perform_unauthed_quick_tasks($action, $submit = false)
 		case 'stklogout' :
 			setcookie('stk_token', '', (time() - 31536000));
 			$user->unset_admin();
-			meta_refresh(3, append_sid(PHPBB_ROOT_PATH . 'index.php'));
-			trigger_error('STK_LOGOUT_SUCCESS');
+			redirect(PHPBB_ROOT_PATH . 'index.php');
 		break;
 
 		// Generate the passwd file

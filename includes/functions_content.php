@@ -598,7 +598,7 @@ function make_clickable_callback($type, $whitespace, $url, $server_url)
 			{
 				$tag        = ($type == MAGIC_URL_WWW) ? 'w' : 'l';
 				$attrs      = ' class="postlink local"';
-				$url        = preg_replace('/[&?]sid=[0-9a-f]{32}$/', '', preg_replace('/([&?])sid=[0-9a-f]{32}&/', '$1', $url));
+				$url        = preg_replace('/[&?]sid=[0-9a-f]{8,32}$/', '', preg_replace('/([&?])sid=[0-9a-f]{8,32}&/', '$1', $url));
 				$text       = urldecode($url);
 			}
 		break;

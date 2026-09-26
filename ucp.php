@@ -72,7 +72,7 @@ switch ($mode)
 	break;
 
 	case 'logout':
-		if ($user->data['user_id'] != ANONYMOUS && isset($_GET['sid']) && !is_array($_GET['sid']) && $_GET['sid'] === $user->session_id)
+		if ($user->data['user_id'] != ANONYMOUS && isset($_GET['sid']) && is_string($_GET['sid']) && get_sid_token($user->session_id) == $_GET['sid'])
 		{
 			$user->session_kill();
 			$user->session_begin();
