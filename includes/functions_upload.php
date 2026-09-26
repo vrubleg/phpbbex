@@ -442,7 +442,7 @@ class fileupload
 	* Init file upload class.
 	*
 	* @param string $error_prefix Used error messages will get prefixed by this string
-	* @param array $allowed_extensions Array of allowed extensions, for example array('jpg', 'jpeg', 'gif', 'png')
+	* @param array $allowed_extensions Array of allowed extensions, for example array('jpg', 'jpeg', 'gif', 'png', 'webp')
 	* @param int $max_filesize Maximum filesize
 	* @param int $min_width Minimum image width (only checked for images)
 	* @param int $min_height Minimum image height (only checked for images)

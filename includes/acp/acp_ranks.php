@@ -49,8 +49,8 @@ class acp_ranks
 				$min_posts = ($special_rank) ? 0 : max(0, request_var('min_posts', 0));
 				$rank_image = request_var('rank_image', '');
 
-				// The rank image has to be a jpg, gif or png
-				if ($rank_image != '' && !preg_match('#(\.gif|\.png|\.jpg|\.jpeg)$#i', $rank_image))
+				// The rank image has to be a jpg, gif, png or webp
+				if ($rank_image != '' && !preg_match('#\.(?:gif|png|jpe?g|webp)$#i', $rank_image))
 				{
 					$rank_image = '';
 				}
