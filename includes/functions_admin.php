@@ -443,7 +443,7 @@ function copy_forum_permissions($src_forum_id, $dest_forum_ids, $clear_dest_perm
 /**
 * Get physical file listing
 */
-function filelist($rootdir, $dir = '', $type = 'gif|jpg|jpeg|png')
+function filelist($rootdir, $dir = '', $type = 'gif|jpg|jpeg|png|webp')
 {
 	$matches = [$dir => []];
 
@@ -473,7 +473,7 @@ function filelist($rootdir, $dir = '', $type = 'gif|jpg|jpeg|png')
 	{
 		if (is_file("{$rootdir}{$dir}{$fname}"))
 		{
-			if (filesize("{$rootdir}{$dir}{$fname}") && preg_match('#\.' . $type . '$#i', $fname))
+			if (filesize("{$rootdir}{$dir}{$fname}") && preg_match('#\.(?:' . $type . ')$#i', $fname))
 			{
 				$matches[$dir][] = $fname;
 			}

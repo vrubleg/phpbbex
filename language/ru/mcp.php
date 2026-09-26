@@ -122,10 +122,7 @@ $lang = array_merge($lang, [
 	'MCP_LOGS_TOPIC_VIEW'           => 'Лог темы',
 
 	'MCP_MAIN'                      => 'Главная',
-	'MCP_MAIN_FORUM_VIEW'           => 'Просмотреть раздел',
 	'MCP_MAIN_FRONT'                => 'Главная страница',
-	'MCP_MAIN_POST_DETAILS'         => 'Информация о сообщении',
-	'MCP_MAIN_TOPIC_VIEW'           => 'Просмотреть тему',
 	'MCP_MAKE_ANNOUNCEMENT'         => 'Сделать тему объявлением',
 	'MCP_MAKE_ANNOUNCEMENT_CONFIRM' => 'Вы уверены, что хотите сделать эту тему объявлением?',
 	'MCP_MAKE_ANNOUNCEMENTS'        => 'Сделать темы объявлениями',

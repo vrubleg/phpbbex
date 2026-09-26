@@ -64,7 +64,6 @@ $lang = array_merge($lang, [
 	'DELETE_MESSAGE_CONFIRM'    => 'Вы уверены, что хотите удалить это сообщение?',
 	'DELETE_OWN_POSTS'          => 'Извините, но вы можете удалять только ваши собственные сообщения.',
 	'DELETE_POST_CONFIRM'       => 'Вы уверены, что хотите удалить это сообщение?',
-	'DELETE_POST_WARN'          => 'Удаленное сообщение восстановить невозможно',
 	'DISABLE_BBCODE'            => 'Отключить BBCode',
 	'DISABLE_MAGIC_URL'         => 'Не обрабатывать URL',
 	'DISABLE_SMILIES'           => 'Отключить смайлики',

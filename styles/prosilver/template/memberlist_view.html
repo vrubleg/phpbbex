@@ -93,7 +93,7 @@
 			<!-- IF (STYLE_P_SHOW_RATED or STYLE_P_SHOW_RATED_DETAILED) and S_RATING --><dt>{L_USER_RATED}:</dt> <dd><!-- IF not RATE_NO_POSITIVE and not RATE_NO_NEGATIVE --><!-- IF STYLE_P_SHOW_RATED and STYLE_P_SHOW_RATED_DETAILED -->{RATED} (+{RATED_POSITIVE}/−{RATED_NEGATIVE})<!-- ELSEIF STYLE_P_SHOW_RATED_DETAILED -->+{RATED_POSITIVE}/−{RATED_NEGATIVE}<!-- ELSE --><span title="+{RATED_POSITIVE}/−{RATED_NEGATIVE}">{RATED}</span><!-- ENDIF --><!-- ELSE -->{RATED}<!-- ENDIF --></dd><!-- ENDIF -->
 			<!-- IF S_WARNINGS -->
 			<dt>{L_WARNINGS}: </dt>
-			<dd><strong>{WARNINGS}</strong><!-- IF U_WARN --> <a href="{U_WARN}">[{L_WARN_USER}]</a><!-- ENDIF --></dd>
+			<dd>{WARNINGS}<!-- IF U_WARN --> <a href="{U_WARN}">[{L_WARN_USER}]</a><!-- ENDIF --></dd>
 			<!-- ENDIF -->
 			<dt>{L_TOTAL_POSTS}:</dt>
 				<dd>{POSTS} <!-- IF S_DISPLAY_SEARCH -->| <strong><a href="{U_SEARCH_USER}">{L_SEARCH_USER_POSTS}</a></strong><!-- ENDIF -->

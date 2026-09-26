@@ -1880,7 +1880,7 @@ function avatar_upload($data, &$error)
 
 	// Init upload class
 	require_once(PHPBB_ROOT_PATH . 'includes/functions_upload.php');
-	$upload = new fileupload('AVATAR_', ['jpg', 'jpeg', 'gif', 'png'], $config['avatar_filesize'], $config['avatar_min_width'], $config['avatar_min_height'], $config['avatar_max_width'], $config['avatar_max_height'], (isset($config['mime_triggers']) ? explode('|', $config['mime_triggers']) : false));
+	$upload = new fileupload('AVATAR_', ['jpg', 'jpeg', 'gif', 'png', 'webp'], $config['avatar_filesize'], $config['avatar_min_width'], $config['avatar_min_height'], $config['avatar_max_width'], $config['avatar_max_height'], (isset($config['mime_triggers']) ? explode('|', $config['mime_triggers']) : false));
 
 	if (!empty($_FILES['uploadfile']['name']))
 	{
@@ -1941,7 +1941,7 @@ function avatar_gallery($category, $avatar_select, $items_per_column, $block_var
 				{
 					while (($sub_file = readdir($dp2)) !== false)
 					{
-						if (preg_match('#^[^&\'"<>]+\.(?:gif|png|jpe?g)$#i', $sub_file))
+						if (preg_match('#^[^&\'"<>]+\.(?:gif|png|jpe?g|webp)$#i', $sub_file))
 						{
 							$avatar_list[$file][$avatar_row_count][$avatar_col_count] = [
 								'file'      => rawurlencode($file) . '/' . rawurlencode($sub_file),

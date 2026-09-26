@@ -122,10 +122,7 @@ $lang = array_merge($lang, [
 	'MCP_LOGS_TOPIC_VIEW'           => 'Topic logs',
 
 	'MCP_MAIN'                      => 'Main',
-	'MCP_MAIN_FORUM_VIEW'           => 'View forum',
 	'MCP_MAIN_FRONT'                => 'Front page',
-	'MCP_MAIN_POST_DETAILS'         => 'Post details',
-	'MCP_MAIN_TOPIC_VIEW'           => 'View topic',
 	'MCP_MAKE_ANNOUNCEMENT'         => 'Modify to “Announcement”',
 	'MCP_MAKE_ANNOUNCEMENT_CONFIRM' => 'Are you sure you want to change this topic to an “Announcement”?',
 	'MCP_MAKE_ANNOUNCEMENTS'        => 'Modify to “Announcements”',

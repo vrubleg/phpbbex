@@ -246,14 +246,6 @@ $module->load_active();
 // Assign data to the template engine for the list of modules
 $module->assign_tpl_vars(append_sid(PHPBB_ROOT_PATH . 'mcp.php'));
 
-// Generate urls for letting the moderation control panel being accessed in different modes
-$template->assign_vars([
-	'U_MCP'         => append_sid(PHPBB_ROOT_PATH . 'mcp.php', 'i=main'),
-	'U_MCP_FORUM'   => ($forum_id) ? append_sid(PHPBB_ROOT_PATH . 'mcp.php', "i=main&amp;mode=forum_view&amp;f={$forum_id}") : '',
-	'U_MCP_TOPIC'   => ($forum_id && $topic_id) ? append_sid(PHPBB_ROOT_PATH . 'mcp.php', "i=main&amp;mode=topic_view&amp;t={$topic_id}") : '',
-	'U_MCP_POST'    => ($forum_id && $topic_id && $post_id) ? append_sid(PHPBB_ROOT_PATH . 'mcp.php', "i=main&amp;mode=post_details&amp;t={$topic_id}&amp;p={$post_id}") : '',
-]);
-
 // Generate the page, do not display/query online list
 $module->display($module->get_page_title(), false);
 

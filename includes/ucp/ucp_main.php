@@ -34,83 +34,7 @@ class ucp_main
 		{
 			case 'front':
 
-				require_once(PHPBB_ROOT_PATH . 'includes/functions_display.php');
-
 				$user->add_lang('memberlist');
-
-				$sql_from = TOPICS_TABLE . ' t ';
-				$sql_select = '';
-
-				// Get forums having the f_read permission
-				$forum_ary = $auth->acl_getf('f_read', true);
-				$forum_ary = array_unique(array_keys($forum_ary));
-
-				$rowset = [];
-				if (sizeof($forum_ary))
-				{
-					$sql = "SELECT t.* {$sql_select}
-						FROM {$sql_from}
-						WHERE " . $db->sql_in_set('t.forum_id', $forum_ary) . "
-							AND t.topic_type = " . POST_ANNOUNCE . '
-						ORDER BY t.topic_priority DESC, t.topic_time DESC';
-					$result = $db->sql_query($sql);
-
-					while ($row = $db->sql_fetchrow($result))
-					{
-						if (!$row['topic_approved'] && !$auth->acl_get('m_approve', $row['forum_id']))
-						{
-							continue;
-						}
-
-						$topic_id = $row['topic_id'];
-						$rowset[$topic_id] = $row;
-					}
-					$db->sql_freeresult($result);
-				}
-
-				mark_user_posted_topics($rowset);
-
-				$topic_tracking_info = get_topic_tracking(array_keys($rowset));
-
-				foreach ($rowset as $row)
-				{
-					$forum_id = $row['forum_id'];
-					$topic_id = $row['topic_id'];
-
-					$folder_img = $folder_alt = $topic_type = '';
-					$unread_topic = (isset($topic_tracking_info[$topic_id]) && $row['topic_last_post_time'] > $topic_tracking_info[$topic_id]);
-					topic_status($row, $row['topic_replies'], $unread_topic, $folder_img, $folder_alt, $topic_type);
-
-					$template->assign_block_vars('topicrow', [
-						'FORUM_ID'                  => $forum_id,
-						'TOPIC_ID'                  => $topic_id,
-						'TOPIC_AUTHOR'              => get_username_string('username', $row['topic_poster'], $row['topic_first_poster_name'], $row['topic_first_poster_colour']),
-						'TOPIC_AUTHOR_COLOUR'       => get_username_string('colour', $row['topic_poster'], $row['topic_first_poster_name'], $row['topic_first_poster_colour']),
-						'TOPIC_AUTHOR_FULL'         => get_username_string('full', $row['topic_poster'], $row['topic_first_poster_name'], $row['topic_first_poster_colour']),
-						'FIRST_POST_TIME'           => $user->format_date($row['topic_time']),
-						'LAST_POST_SUBJECT'         => censor_text($row['topic_last_post_subject']),
-						'LAST_POST_TIME'            => $user->format_date($row['topic_last_post_time']),
-						'LAST_VIEW_TIME'            => $user->format_date($row['topic_last_view_time']),
-						'LAST_POST_AUTHOR'          => get_username_string('username', $row['topic_last_poster_id'], $row['topic_last_poster_name'], $row['topic_last_poster_colour']),
-						'LAST_POST_AUTHOR_COLOUR'   => get_username_string('colour', $row['topic_last_poster_id'], $row['topic_last_poster_name'], $row['topic_last_poster_colour']),
-						'LAST_POST_AUTHOR_FULL'     => get_username_string('full', $row['topic_last_poster_id'], $row['topic_last_poster_name'], $row['topic_last_poster_colour']),
-						'TOPIC_TITLE'               => censor_text($row['topic_title']),
-						'TOPIC_TYPE'                => $topic_type,
-
-						'TOPIC_FOLDER_IMG'      => $user->img($folder_img, $folder_alt),
-						'TOPIC_FOLDER_IMG_SRC'  => $user->img($folder_img, $folder_alt, false, '', 'src'),
-						'ATTACH_ICON_IMG'       => ($auth->acl_get('u_download') && $auth->acl_get('f_download', $forum_id) && $row['topic_attachment']) ? $user->img('icon_topic_attach', 'TOTAL_ATTACHMENTS') : '',
-
-						'S_USER_POSTED'     => (!empty($row['topic_posted']) && $row['topic_posted']),
-						'S_UNREAD'          => $unread_topic,
-
-						'U_TOPIC_AUTHOR'        => get_username_string('profile', $row['topic_poster'], $row['topic_first_poster_name'], $row['topic_first_poster_colour']),
-						'U_LAST_POST'           => append_sid(PHPBB_ROOT_PATH . 'viewtopic.php', "t={$topic_id}&amp;p=" . $row['topic_last_post_id']) . '#p' . $row['topic_last_post_id'],
-						'U_LAST_POST_AUTHOR'    => get_username_string('profile', $row['topic_last_poster_id'], $row['topic_last_poster_name'], $row['topic_last_poster_colour']),
-						'U_NEWEST_POST'         => append_sid(PHPBB_ROOT_PATH . 'viewtopic.php', "t={$topic_id}&amp;view=unread") . '#unread',
-						'U_VIEW_TOPIC'          => append_sid(PHPBB_ROOT_PATH . 'viewtopic.php', "t={$topic_id}")]
-					);
-				}
 
 				if ($config['load_user_activity'])
 				{
@@ -137,9 +61,6 @@ class ucp_main
 					'TOPICS_DAY'            => sprintf($user->lang['TOPIC_DAY'], $topics_per_day),
 					'TOPICS_PCT'            => sprintf($user->lang['TOPIC_PCT'], $percentage_topics),
 					'U_SEARCH_USER_TOPICS'  => ($auth->acl_get('u_search')) ? append_sid(PHPBB_ROOT_PATH . 'search.php', 'author_id=' . $user->data['user_id'] . '&amp;sr=topics&amp;sf=firstpost') : '',
-
-					'OCCUPATION'    => $row['user_occupation'] ?? '',
-					'ABOUT'         => $row['user_about'] ?? '',
 
 //                  'S_GROUP_OPTIONS'   => $group_options,
 
