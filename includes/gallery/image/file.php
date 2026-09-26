@@ -90,6 +90,9 @@ class phpbb_gallery_image_file
 			case '.gif':
 				return 'image/gif';
 			break;
+			case 'webp':
+				return 'image/webp';
+			break;
 			case 'jpeg':
 			case '.jpg':
 				return 'image/jpeg';
@@ -128,6 +131,16 @@ class phpbb_gallery_image_file
 					return false;
 				}
 				$this->image_type = 'gif';
+			break;
+			case 'webp':
+				$this->image = @imagecreatefromwebp($this->image_source);
+				if ($this->image === false)
+				{
+					return false;
+				}
+				imagealphablending($this->image, true);
+				imagesavealpha($this->image, true);
+				$this->image_type = 'webp';
 			break;
 			default:
 				$this->image = @imagecreatefromjpeg($this->image_source);
@@ -180,6 +193,9 @@ class phpbb_gallery_image_file
 			break;
 			case 'gif':
 				@imagegif($this->image, $destination);
+			break;
+			case 'webp':
+				@imagewebp($this->image, $destination, $quality);
 			break;
 		}
 		@chmod($destination, $this->chmod);

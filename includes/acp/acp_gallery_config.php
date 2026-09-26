@@ -56,6 +56,12 @@ class acp_gallery_config
 					$this->display_vars['vars']['allow_rotate']['explain'] = true;
 					$this->display_vars['vars']['allow_rotate']['method'] = 'disabled_boolean';
 				}
+				if (!function_exists('imagecreatefromwebp') || !function_exists('imagewebp'))
+				{
+					$this->display_vars['vars']['allow_webp']['type'] = 'custom';
+					$this->display_vars['vars']['allow_webp']['explain'] = true;
+					$this->display_vars['vars']['allow_webp']['method'] = 'disabled_boolean';
+				}
 			break;
 
 			default:
@@ -335,6 +341,7 @@ class acp_gallery_config
 			'allow_gif'             => ['lang' => 'GIF_ALLOWED',            'validate' => 'bool',   'type' => 'radio:yes_no',   'gallery' => true,  'explain' => false],
 			'allow_jpg'             => ['lang' => 'JPG_ALLOWED',            'validate' => 'bool',   'type' => 'radio:yes_no',   'gallery' => true,  'explain' => false],
 			'allow_png'             => ['lang' => 'PNG_ALLOWED',            'validate' => 'bool',   'type' => 'radio:yes_no',   'gallery' => true,  'explain' => false],
+			'allow_webp'            => ['lang' => 'WEBP_ALLOWED',           'validate' => 'bool',   'type' => 'radio:yes_no',   'gallery' => true,  'explain' => false],
 			'disp_exifdata'         => ['lang' => 'DISP_EXIF_DATA',     'validate' => 'bool',   'type' => 'radio:yes_no',   'gallery' => true,  'explain' => false],
 			'disp_image_url'        => ['lang' => 'VIEW_IMAGE_URL',     'validate' => 'bool',   'type' => 'radio:yes_no',   'gallery' => true,  'explain' => false],
 

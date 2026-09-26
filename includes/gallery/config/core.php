@@ -31,6 +31,7 @@ class phpbb_gallery_config_core
 		'allow_hotlinking'  => true,
 		'allow_jpg'         => true,
 		'allow_png'         => true,
+		'allow_webp'        => true,
 		'allow_rates'       => true,
 		'allow_resize'      => true,
 		'allow_rotate'      => true,

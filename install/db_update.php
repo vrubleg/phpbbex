@@ -674,6 +674,7 @@ if (version_compare($config['phpbbex_version'], '1.10.0', '<='))
 	set_config('phpbb_gallery_max_height', 1600);
 	set_config('phpbb_gallery_medium_width', 1024);
 	set_config('phpbb_gallery_medium_height', 768);
+	set_config('phpbb_gallery_allow_webp', 1);
 
 	if ($db_tools->sql_table_exists(GALLERY_ALBUMS_TABLE) && $db_tools->sql_column_exists(GALLERY_ALBUMS_TABLE, 'album_watermark'))
 	{

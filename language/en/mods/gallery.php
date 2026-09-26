@@ -101,6 +101,7 @@ $lang = array_merge($lang, [
 	'FILETYPES_GIF'                 => 'gif',
 	'FILETYPES_JPG'                 => 'jpg',
 	'FILETYPES_PNG'                 => 'png',
+	'FILETYPES_WEBP'                => 'webp',
 
 	'GALLERY_IMAGE'                 => 'Image',
 	'GALLERY_VIEWS'                 => 'Views',

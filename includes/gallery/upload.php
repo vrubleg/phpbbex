@@ -497,6 +497,11 @@ class phpbb_gallery_upload
 			$types[] = $user->lang['FILETYPES_PNG'];
 			$extensions[] = 'png';
 		}
+		if (phpbb_gallery_config::get('allow_webp') && function_exists('imagecreatefromwebp') && function_exists('imagewebp'))
+		{
+			$types[] = $user->lang['FILETYPES_WEBP'];
+			$extensions[] = 'webp';
+		}
 		return ($get_types) ? $types : $extensions;
 	}
 

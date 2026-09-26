@@ -251,6 +251,7 @@ $lang = array_merge($lang, [
 	'PGALLERIES_PER_PAGE'           => 'Number of personal galleries per page',
 	'PHPBB_INTEGRATION'             => 'phpBB integration',
 	'PNG_ALLOWED'                   => 'Allowed to upload PNG files',
+	'WEBP_ALLOWED'                  => 'Allowed to upload WebP files',
 	'PURGED_IMAGE_CACHE'            => 'Purged the image cache',
 	'PURGE_IMAGE_CACHE'             => 'Purge image cache',
 	'PURGE_IMAGE_CACHE_EXPLAIN'     => 'Clear the cache after changing thumbnail settings so that thumbnails are regenerated.',

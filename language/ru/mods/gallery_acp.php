@@ -251,6 +251,7 @@ $lang = array_merge($lang, [
 	'PGALLERIES_PER_PAGE'           => 'Количество личных альбомов на странице',
 	'PHPBB_INTEGRATION'             => 'Интеграция в phpBB',
 	'PNG_ALLOWED'                   => 'PNG разрешён',
+	'WEBP_ALLOWED'                  => 'WebP разрешён',
 	'PURGED_IMAGE_CACHE'            => 'Кэш изображений очищен',
 	'PURGE_IMAGE_CACHE'             => 'Очистить кэш изображений',
 	'PURGE_IMAGE_CACHE_EXPLAIN'     => 'После изменения параметров миниатюр очистите кэш, чтобы они были созданы заново.',

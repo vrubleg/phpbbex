@@ -216,7 +216,7 @@ class acp_gallery
 					$cache_dir = @opendir(phpbb_gallery_url::path('thumbnail'));
 					while ($cache_file = @readdir($cache_dir))
 					{
-						if (preg_match('/(\.gif$|\.png$|\.jpg|\.jpeg)$/is', $cache_file))
+						if (preg_match('/\.(?:gif|png|jpe?g|webp)$/i', $cache_file))
 						{
 							@unlink(phpbb_gallery_url::path('thumbnail') . $cache_file);
 						}
@@ -564,7 +564,7 @@ class acp_gallery
 			while ($file = readdir($handle))
 			{
 				if (!is_dir($directory . $file) &&
-				 ((substr(strtolower($file), '-4') == '.png') || (substr(strtolower($file), '-4') == '.gif') || (substr(strtolower($file), '-4') == '.jpg'))
+				 preg_match('/\.(?:gif|png|jpe?g|webp)$/i', $file)
 				 && !in_array($file, $requested_source)
 				)
 				{
