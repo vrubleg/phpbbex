@@ -225,8 +225,8 @@ class phpbb_session
 			}
 		}
 
-		// if no session id is set, redirect to index.php
-		if (defined('NEED_SID') && NEED_SID && (!isset($_GET['sid']) || $this->session_id !== $_GET['sid']))
+		// If no valid session token is set, redirect to index.php.
+		if (defined('NEED_SID') && NEED_SID && (!$this->session_id || !isset($_GET['sid']) || !is_string($_GET['sid']) || get_sid_token($this->session_id) != $_GET['sid']))
 		{
 			http_response_code(401);
 			redirect(append_sid(PHPBB_ROOT_PATH . 'index.php'));

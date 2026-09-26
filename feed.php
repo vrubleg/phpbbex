@@ -260,7 +260,7 @@ function feed_append_sid($url, $params)
 {
 	global $board_url;
 
-	return append_sid($board_url . $url, $params, true, '');
+	return append_sid($board_url . $url, $params, true, false);
 }
 
 /**

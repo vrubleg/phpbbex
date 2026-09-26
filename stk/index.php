@@ -234,12 +234,12 @@ $plugin = new plugin();
 // Output common stuff
 $template->assign_vars([
 	'U_ACTION'      => append_sid(STK_INDEX, $plugin->url_arg()),
-	'U_ADM_INDEX'   => append_sid(PHPBB_ROOT_PATH . 'adm/index.php', false, true, $user->session_id),
+	'U_ADM_INDEX'   => append_sid(PHPBB_ROOT_PATH . 'adm/index.php', false, true, true),
 	'U_STK_INDEX'   => append_sid(STK_INDEX),
 	'U_STK_LOGOUT'  => append_sid(STK_INDEX, 'action=stklogout'),
 	'U_BACK_TOOL'   => ($plugin->get_part('t')) ? append_sid(STK_INDEX, $plugin->url_arg()) : false,
 	'U_INDEX'       => append_sid(PHPBB_ROOT_PATH . 'index.php'),
-	'U_LOGOUT'      => append_sid(PHPBB_ROOT_PATH . 'ucp.php', 'mode=logout', true, $user->session_id),
+	'U_LOGOUT'      => append_sid(PHPBB_ROOT_PATH . 'ucp.php', 'mode=logout', true, true),
 
 	'USERNAME'      => $user->data['username'],
 ]);

@@ -1101,10 +1101,10 @@ class bbcode_firstpass extends bbcode
 			// Is this a link to somewhere inside this board? If so then remove the session id from the url
 			if (($is_relative || stripos($url, generate_board_url(true)) === 0) && strpos($url, 'sid=') !== false)
 			{
-				$url = preg_replace('/(&amp;|\?)sid=[0-9a-f]{32}&amp;/', '\1', $url);
-				$url = preg_replace('/(&amp;|\?)sid=[0-9a-f]{32}$/', '', $url);
-				$text = preg_replace('/(&amp;|\?)sid=[0-9a-f]{32}&amp;/', '\1', $text);
-				$text = preg_replace('/(&amp;|\?)sid=[0-9a-f]{32}$/', '', $text);
+				$url = preg_replace('/(&amp;|\?)sid=[0-9a-f]{8,32}&amp;/', '\1', $url);
+				$url = preg_replace('/(&amp;|\?)sid=[0-9a-f]{8,32}$/', '', $url);
+				$text = preg_replace('/(&amp;|\?)sid=[0-9a-f]{8,32}&amp;/', '\1', $text);
+				$text = preg_replace('/(&amp;|\?)sid=[0-9a-f]{8,32}$/', '', $text);
 			}
 
 			return ($url != $text) ? '[url=' . $this->bbcode_specialchars($url) . ':' . $this->bbcode_uid . ']' . $text . '[/url:' . $this->bbcode_uid . ']' : '[url:' . $this->bbcode_uid . ']' . $this->bbcode_specialchars($url) . '[/url:' . $this->bbcode_uid . ']';
