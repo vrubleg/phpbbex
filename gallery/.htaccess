@@ -12,8 +12,10 @@
 
 # Use X-SendFile to deliver images if supported
 <IfModule mod_xsendfile.c>
+<IfModule mod_env.c>
 	<Files "image.php">
 		XSendFile On
 		SetEnv XSENDFILE on
 	</Files>
+</IfModule>
 </IfModule>
