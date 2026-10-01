@@ -8,17 +8,19 @@
 </IfModule>
 
 # Common directives.
-AddDefaultCharset utf-8
-AddCharset utf-8 .html .css .js .xml .json .rss
+AddDefaultCharset UTF-8
+AddCharset UTF-8 .css .js
 Options -Indexes -MultiViews
 FileETag None
 
 # Use X-SendFile to deliver files if supported
 <IfModule mod_xsendfile.c>
+<IfModule mod_env.c>
 <Files "file.php">
 XSendFile On
 SetEnv XSENDFILE on
 </Files>
+</IfModule>
 </IfModule>
 
 # Default expiration.

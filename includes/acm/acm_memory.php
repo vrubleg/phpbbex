@@ -29,23 +29,14 @@ class acm_memory
 	*/
 	function __construct()
 	{
-		global $dbname, $table_prefix;
+		global $dbhost, $dbname, $table_prefix;
 
 		$this->cache_dir    = PHPBB_ROOT_PATH . 'cache/';
-		$this->key_prefix   = substr(md5($dbname . $table_prefix), 0, 8) . '_';
+		$this->key_prefix   = substr(md5($dbhost . "\0" . $dbname . "\0" . $table_prefix), 0, 8) . '_';
 
 		if (!isset($this->extension) || !extension_loaded($this->extension))
 		{
-			global $acm_type;
-
-			trigger_error("Could not find required extension [{$this->extension}] for the ACM module {$acm_type}.", E_USER_ERROR);
-		}
-
-		if (isset($this->function) && !function_exists($this->function))
-		{
-			global $acm_type;
-
-			trigger_error("The required function [{$this->function}] is not available for the ACM module {$acm_type}.", E_USER_ERROR);
+			trigger_error("Could not find required extension [{$this->extension}].", E_USER_ERROR);
 		}
 	}
 

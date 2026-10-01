@@ -2791,8 +2791,13 @@ function msg_handler($errno, $msg_text, $errfile, $errline, $backtrace = [])
 
 		case E_USER_ERROR:
 
-			// Don't allow robots to index error pages.
-			header('X-Robots-Tag: noindex');
+			if (!headers_sent())
+			{
+				// Don't allow robots to index error pages.
+				header('X-Robots-Tag: noindex');
+				// Do not send 200 OK, but service unavailable on errors.
+				http_response_code(503);
+			}
 
 			if (!empty($user) && !empty($user->lang))
 			{
@@ -2830,9 +2835,6 @@ function msg_handler($errno, $msg_text, $errfile, $errline, $backtrace = [])
 				add_log('critical', 'LOG_ERROR_GENERAL', $msg_title, $log_text);
 				$db->sql_return_on_error(false);
 			}
-
-			// Do not send 200 OK, but service unavailable on errors
-			http_response_code(503);
 
 			garbage_collection();
 
