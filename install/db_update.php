@@ -49,7 +49,6 @@ if (!$allowed && !defined('DEBUG_EXTRA'))
 set_time_limit(0);
 ignore_user_abort(true);
 
-require_once(PHPBB_ROOT_PATH . 'includes/acm/acm.php');
 require_once(PHPBB_ROOT_PATH . 'includes/cache.php');
 require_once(PHPBB_ROOT_PATH . 'includes/template.php');
 require_once(PHPBB_ROOT_PATH . 'includes/session.php');

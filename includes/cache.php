@@ -10,8 +10,11 @@ if (!defined('IN_PHPBB'))
 	exit;
 }
 
+$acm_type = defined('ACM_TYPE') ? ACM_TYPE : ((extension_loaded('apcu') && apcu_enabled()) ? 'apcu' : 'file');
+require_once(PHPBB_ROOT_PATH . 'includes/acm/acm_' . $acm_type . '.php');
+
 /**
-* Class for grabbing/handling cached entries, extends acm_file or acm_db depending on the setup
+* Class for grabbing/handling cached entries, extends acm_file or acm_acpu depending on the setup
 */
 class phpbb_cache extends acm
 {

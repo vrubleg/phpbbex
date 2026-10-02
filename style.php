@@ -26,7 +26,6 @@ if (($mtime = (int) ($_GET['mtime'] ?? 0)) && $mtime > 999999999 && $mtime == $_
 	header('Etag: "' . $mtime . '"');
 }
 
-require_once(PHPBB_ROOT_PATH . 'includes/acm/acm.php');
 require_once(PHPBB_ROOT_PATH . 'includes/cache.php');
 require_once(PHPBB_ROOT_PATH . 'includes/db/mysql.php');
 require_once(PHPBB_ROOT_PATH . 'includes/constants.php');
