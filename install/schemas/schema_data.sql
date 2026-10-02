@@ -445,7 +445,7 @@ INSERT INTO phpbb_acl_roles (role_name, role_description, role_type, role_order)
 INSERT INTO phpbb_acl_roles (role_name, role_description, role_type, role_order) VALUES ('ROLE_FORUM_GUEST_TOPIC', 'ROLE_DESCRIPTION_FORUM_GUEST_TOPIC', 'f_', 12);
 
 # -- phpbb_styles
-INSERT INTO phpbb_styles (style_name, style_active, template_dir, theme_dir, imageset_dir) VALUES ('prosilver', 1, 'prosilver', 'prosilver', 'prosilver');
+INSERT INTO phpbb_styles (style_name, style_active, style_dir, template_dir, theme_dir, imageset_dir) VALUES ('prosilver', 1, 'prosilver', 'prosilver', 'prosilver', 'prosilver');
 
 # -- Forums
 INSERT INTO phpbb_forums (forum_name, forum_desc, left_id, right_id, parent_id, forum_type, forum_posts, forum_topics, forum_topics_real, forum_last_post_id, forum_last_poster_id, forum_last_poster_name, forum_last_poster_colour, forum_last_post_time, forum_link, forum_rules, forum_rules_link, forum_rules_uid, forum_desc_uid, prune_days, prune_viewed, forum_parents) VALUES ('{L_FORUMS_FIRST_CATEGORY}', '', 1, 4, 0, 0, 1, 1, 1, 1, 2, 'Admin', 'AA0000', 972086460, '', '', '', '', '', 0, 0, '');

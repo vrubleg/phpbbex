@@ -1118,7 +1118,7 @@ if (version_compare($config['phpbbex_version'], '1.10.0', '<='))
 
 	// Style components are merged into a single style table.
 	// Currently, prosilver is the only v1.10 compatible theme in the world, so we can remove the rest from DB.
-	if ($db_tools->sql_table_exists("{$table_prefix}styles_imageset_data"))
+	if (!$db_tools->sql_column_exists(STYLES_TABLE, 'style_dir'))
 	{
 		$db->sql_query("DROP TABLE IF EXISTS {$table_prefix}styles_template");
 		$db->sql_query("DROP TABLE IF EXISTS {$table_prefix}styles_template_data");
@@ -1130,13 +1130,14 @@ if (version_compare($config['phpbbex_version'], '1.10.0', '<='))
 			style_id mediumint(8) UNSIGNED NOT NULL auto_increment,
 			style_name varchar(30) DEFAULT '' NOT NULL,
 			style_active tinyint(1) UNSIGNED DEFAULT '1' NOT NULL,
+			style_dir varchar(50) CHARACTER SET ascii COLLATE ascii_bin DEFAULT '' NOT NULL,
 			template_dir varchar(50) CHARACTER SET ascii COLLATE ascii_bin DEFAULT '' NOT NULL,
 			theme_dir varchar(50) CHARACTER SET ascii COLLATE ascii_bin DEFAULT '' NOT NULL,
 			imageset_dir varchar(50) CHARACTER SET ascii COLLATE ascii_bin DEFAULT '' NOT NULL,
 			PRIMARY KEY (style_id),
 			UNIQUE style_name (style_name)
 		) CHARACTER SET `utf8mb4` COLLATE `utf8mb4_bin`");
-		$db->sql_query("INSERT INTO " . STYLES_TABLE . " (style_name, style_active, template_dir, theme_dir, imageset_dir) VALUES ('prosilver', 1, 'prosilver', 'prosilver', 'prosilver')");
+		$db->sql_query("INSERT INTO " . STYLES_TABLE . " (style_name, style_active, style_dir, template_dir, theme_dir, imageset_dir) VALUES ('prosilver', 1, 'prosilver', 'prosilver', 'prosilver', 'prosilver')");
 		$db->sql_query("UPDATE " . USERS_TABLE . " SET user_style = 1");
 		set_config('default_style', '1');
 
