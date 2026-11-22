@@ -144,7 +144,7 @@ class acp_styles
 		$installed = [];
 		while ($row = $db->sql_fetchrow($result))
 		{
-			$installed[] = $row['style_name'];
+			$installed[] = $row['style_dir'];
 
 			$stylevis = (!$row['style_active']) ? 'activate' : 'deactivate';
 			$s_actions = [
@@ -165,36 +165,21 @@ class acp_styles
 		}
 		$db->sql_freeresult($result);
 
-		$new_ary = [];
 		foreach ($this->available_style_dirs() as $dir => $cfg)
 		{
 			$name = $cfg['name'] ?? '';
-			if (!$name || in_array($name, $installed))
+			if (!$name || in_array($dir, $installed, true))
 			{
 				continue;
 			}
 
-			$new_ary[$name . $dir] = [
-				'path'      => $dir,
-				'name'      => $name,
-				'copyright' => $cfg['copyright'] ?? '',
-			];
+			$template->assign_block_vars('uninstalled', [
+				'NAME'          => $name,
+				'COPYRIGHT'     => $cfg['copyright'] ?? '',
+				'U_INSTALL'     => $this->u_action . '&amp;action=install&amp;path=' . urlencode($dir),
+			]);
 		}
 		unset($installed);
-
-		if (sizeof($new_ary))
-		{
-			ksort($new_ary);
-
-			foreach ($new_ary as $cfg)
-			{
-				$template->assign_block_vars('uninstalled', [
-					'NAME'          => $cfg['name'],
-					'COPYRIGHT'     => $cfg['copyright'] ?? '',
-					'U_INSTALL'     => $this->u_action . '&amp;action=install&amp;path=' . urlencode($cfg['path']),
-				]);
-			}
-		}
 	}
 
 	/**
@@ -340,7 +325,7 @@ class acp_styles
 			trigger_error($user->lang['STYLE_DETAILS_UPDATED'] . adm_back_link($this->u_action));
 		}
 
-		$copyright = $cache->obtain_style_cfg($style_row['style_name'], 'style')['copyright'] ?? '';
+		$copyright = $style_row['style_dir'] ? ($cache->obtain_style_cfg($style_row['style_dir'], 'style')['copyright'] ?? '') : '';
 
 		$this->page_title = 'EDIT_DETAILS_STYLE';
 
@@ -388,6 +373,7 @@ class acp_styles
 		$style_row = [
 			'style_id'       => 0,
 			'style_name'     => $installcfg['name'] ?? '',
+			'style_dir'      => $install_path,
 			'template_dir'   => $installcfg['required_template'] ?? $install_path,
 			'theme_dir'      => $installcfg['required_theme'] ?? $install_path,
 			'imageset_dir'   => $installcfg['required_imageset'] ?? $install_path,
@@ -449,6 +435,7 @@ class acp_styles
 
 		$style_row = [
 			'style_name'      => utf8_normalize_nfc(request_var('name', '', true)),
+			'style_dir'       => '',
 			'template_dir'    => '',
 			'theme_dir'       => '',
 			'imageset_dir'    => '',
@@ -517,6 +504,7 @@ class acp_styles
 		$sql_ary = [
 			'style_name'        => $style_row['style_name'],
 			'style_active'      => (int) $style_row['style_active'],
+			'style_dir'         => $style_row['style_dir'],
 			'template_dir'      => $style_row['template_dir'],
 			'theme_dir'         => $style_row['theme_dir'],
 			'imageset_dir'      => $style_row['imageset_dir'],
@@ -656,6 +644,7 @@ class acp_styles
 				$styles[$dir] = $cfg;
 			}
 		}
+		ksort($styles);
 
 		return $styles;
 	}

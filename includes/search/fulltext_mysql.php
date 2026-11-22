@@ -83,10 +83,10 @@ class fulltext_mysql extends search_backend
 		$split_keywords = preg_replace("#[\n\r\t]+#", ' ', trim(htmlspecialchars_decode($keywords)));
 
 		// Split words
-		$split_keywords = preg_replace('#([^\p{L}\p{N}\'*"()])#u', '$1$1', str_replace('\'\'', '\' \'', trim($split_keywords)));
+		$split_keywords = preg_replace('#([^\p{L}\p{N}_\'*"()])#u', '$1$1', str_replace('\'\'', '\' \'', trim($split_keywords)));
 
 		$matches = [];
-		preg_match_all('#(?:[^\p{L}\p{N}*"()]|^)([+\-|]?(?:[\p{L}\p{N}*"()]+\'?)*[\p{L}\p{N}*"()])(?:[^\p{L}\p{N}*"()]|$)#u', $split_keywords, $matches);
+		preg_match_all('#(?:[^\p{L}\p{N}_*"()]|^)([+\-|]?(?:[\p{L}\p{N}_*"()]+\'?)*[\p{L}\p{N}_*"()])(?:[^\p{L}\p{N}_*"()]|$)#u', $split_keywords, $matches);
 		$this->split_words = $matches[1];
 
 		// We limit the number of allowed keywords to minimize load on the database
@@ -192,10 +192,10 @@ class fulltext_mysql extends search_backend
 		global $config;
 
 		// Split words
-		$text = preg_replace('#([^\p{L}\p{N}\'*])#u', '$1$1', str_replace('\'\'', '\' \'', trim($text)));
+		$text = preg_replace('#([^\p{L}\p{N}_\'*])#u', '$1$1', str_replace('\'\'', '\' \'', trim($text)));
 
 		$matches = [];
-		preg_match_all('#(?:[^\p{L}\p{N}*]|^)([+\-|]?(?:[\p{L}\p{N}*]+\'?)*[\p{L}\p{N}*])(?:[^\p{L}\p{N}*]|$)#u', $text, $matches);
+		preg_match_all('#(?:[^\p{L}\p{N}_*]|^)([+\-|]?(?:[\p{L}\p{N}_*]+\'?)*[\p{L}\p{N}_*])(?:[^\p{L}\p{N}_*]|$)#u', $text, $matches);
 		$text = $matches[1];
 
 		// remove too short or too long words
