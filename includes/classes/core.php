@@ -10,7 +10,7 @@ class core
 		set_exception_handler('core::exception_handler');
 		// set_error_handler('core::exception_error_handler');
 		request::init(false);
-		response::init(['gzip' => true]);
+		response::init();
 	}
 
 	static function exception_error_handler($errno, $errstr, $file, $line)

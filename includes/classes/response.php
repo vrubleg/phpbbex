@@ -18,7 +18,6 @@ class response
 
 		$type    = arr::get($config, 'type',    'text/html');
 		$charset = arr::get($config, 'charset', 'utf-8');
-		$gzip    = arr::get($config, 'gzip',    false);
 		$buffer  = arr::get($config, 'buffer',  false);
 
 		if ($type)
@@ -26,11 +25,7 @@ class response
 			self::type($type, $charset);
 		}
 
-		if ($gzip && @extension_loaded('zlib') && !headers_sent() && ob_get_level() <= 1 && ob_get_length() == 0)
-		{
-			if (!ob_start('ob_gzhandler')) ob_start();
-		}
-		elseif ($buffer)
+		if ($buffer)
 		{
 			ob_start();
 		}

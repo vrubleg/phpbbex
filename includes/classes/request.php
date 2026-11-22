@@ -28,7 +28,7 @@ class request
 		if (self::$ready) return;
 		$_GET  = self::sanitize($_GET);
 		$_POST = self::sanitize($_POST);
-		self::$is_https   = (strtolower(arr::get($_SERVER, 'HTTPS')) === 'on');
+		self::$is_https   = (strtolower(arr::get($_SERVER, 'HTTPS', '')) === 'on');
 		self::$method     = arr::get($_SERVER, 'REQUEST_METHOD', '');
 		self::$uri        = arr::get($_SERVER, 'REQUEST_URI', '');
 		self::$domain     = strtolower(arr::get($_SERVER, 'SERVER_NAME', ''));
